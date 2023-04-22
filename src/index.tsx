@@ -1,6 +1,7 @@
-import './style/index.css';
+import './style/css/index.css';
 import App from './App';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 
 const root = ReactDOM.createRoot(
@@ -8,5 +9,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <App />
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
 );
