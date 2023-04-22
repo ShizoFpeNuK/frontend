@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Custom
-src/image/
+/src/image/
+/public/favicon/
