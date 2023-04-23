@@ -1,0 +1,27 @@
+.header {
+  margin-top: 40px;
+}
+
+.navigation {
+  margin: auto 0;
+}
+
+:where(.css-dev-only-do-not-override-1fviqcj).ant-anchor-wrapper-horizontal::before {
+  border-bottom: 0;
+}
+
+:where(.css-dev-only-do-not-override-1fviqcj).ant-anchor-wrapper-horizontal.navigation_left .ant-anchor {
+  justify-content: flex-end;
+}
+
+:where(.css-dev-only-do-not-override-1fviqcj).ant-menu-horizontal {
+  border-bottom: 0;
+  line-height: 28px;
+}
+
+:where(.css-dev-only-do-not-override-1fviqcj).ant-menu-light.ant-menu-horizontal >.ant-menu-item-selected::after, 
+:where(.css-dev-only-do-not-override-1fviqcj).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-item-selected::after, 
+:where(.css-dev-only-do-not-override-1fviqcj).ant-menu-light.ant-menu-horizontal >.ant-menu-submenu-selected::after, 
+:where(.css-dev-only-do-not-override-1fviqcj).ant-menu-light>.ant-menu.ant-menu-horizontal >.ant-menu-submenu-selected::after {
+  border-width: 3px;
+}

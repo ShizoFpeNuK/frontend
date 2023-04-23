@@ -1,4 +1,6 @@
 import './style/css/App.css';
+import './style/css/header.css';
+import './style/css/footer.css';
 import { Auth } from './pages/Auth';
 import { Home } from './pages/Home';
 import { Enroll } from './pages/Enroll';
@@ -31,8 +33,8 @@ function App() {
         </Row>
       </footer>
     </div>
-  );
-}
+  )
+};
 
 
 export default App;

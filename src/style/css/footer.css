@@ -1,0 +1,12 @@
+.footer {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.footer_row {
+  align-items: center;
+}
+
+.footer_address {
+  text-align: left;
+}
