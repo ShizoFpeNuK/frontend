@@ -1,4 +1,5 @@
-import { Button, List } from "antd";
+import { Button, Card, List } from "antd";
+import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 
 
 const data = [
@@ -19,33 +20,34 @@ const data = [
 
 export const ListDates = () => {
   return (
-    <List
-      itemLayout="horizontal"
-      dataSource={data}
-      bordered={true}
-      renderItem={(item, index) => (
-        <List.Item className="enroll_list_dates_item">
-          <List.Item.Meta
-            title={"23 мая"}
-            description={
-              <div className="enroll_list_dates_item_buttons">
-                <Button className="enroll_list_dates_item_button">15:00</Button>
-                <Button className="enroll_list_dates_item_button">17:00</Button>
-                <Button className="enroll_list_dates_item_button">18:00</Button>
-                <Button className="enroll_list_dates_item_button">19:00</Button>
-                <Button className="enroll_list_dates_item_button">15:00</Button>
-                <Button className="enroll_list_dates_item_button">17:00</Button>
-                <Button className="enroll_list_dates_item_button">18:00</Button>
-                <Button className="enroll_list_dates_item_button">19:00</Button>
-                <Button className="enroll_list_dates_item_button">15:00</Button>
-                <Button className="enroll_list_dates_item_button">17:00</Button>
-                <Button className="enroll_list_dates_item_button">18:00</Button>
-                <Button className="enroll_list_dates_item_button">19:00</Button>
-              </div>
-            }
-          />
-        </List.Item>
-      )}
-    />
+    <Card title="Список дат и времени" style={CardForm} bodyStyle={CardBodyForm}>
+      <List
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item className="enroll_list_dates_item">
+            <List.Item.Meta
+              title={"23 мая"}
+              description={
+                <div className="enroll_list_dates_item_buttons">
+                  <Button className="enroll_list_dates_item_button">15:00</Button>
+                  <Button className="enroll_list_dates_item_button">17:00</Button>
+                  <Button className="enroll_list_dates_item_button">18:00</Button>
+                  <Button className="enroll_list_dates_item_button">19:00</Button>
+                  <Button className="enroll_list_dates_item_button">15:00</Button>
+                  <Button className="enroll_list_dates_item_button">17:00</Button>
+                  <Button className="enroll_list_dates_item_button">18:00</Button>
+                  <Button className="enroll_list_dates_item_button">19:00</Button>
+                  <Button className="enroll_list_dates_item_button">15:00</Button>
+                  <Button className="enroll_list_dates_item_button">17:00</Button>
+                  <Button className="enroll_list_dates_item_button">18:00</Button>
+                  <Button className="enroll_list_dates_item_button">19:00</Button>
+                </div>
+              }
+            />
+          </List.Item>
+        )}
+      />
+    </Card>
   )
 };

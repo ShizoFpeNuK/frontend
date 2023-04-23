@@ -1,4 +1,5 @@
-import { Col, List } from "antd";
+import { Card, List } from "antd";
+import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 
 
 const data = [
@@ -19,11 +20,10 @@ const data = [
 
 export const OrderDetails = () => {
   return (
-    <Col className="enroll_order_details" span={24}>
+    <Card title="Детали записи" style={CardForm} bodyStyle={CardBodyForm}>
       <List //Скорее всего, можно заменить на два div
         itemLayout="horizontal"
         dataSource={data}
-        bordered={true}
         renderItem={(item, index) => (
           <List.Item className="enroll_order_details_item">
             <List.Item.Meta
@@ -33,6 +33,6 @@ export const OrderDetails = () => {
           </List.Item>
         )}
       />
-    </Col>
+    </Card>
   )
 };

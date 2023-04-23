@@ -1,4 +1,5 @@
-import { Avatar, List } from "antd";
+import { Avatar, Card, List } from "antd";
+import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 
 
 const data = [
@@ -24,19 +25,20 @@ export const ListSpecialists = () => {
 
 
   return (
-    <List
-      itemLayout="horizontal"
-      dataSource={data}
-      bordered={true}
-      renderItem={(item, index) => (
-        <List.Item className="enroll_list_specialists_item" onClick={onClick}>
-          <List.Item.Meta
-            avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
-            title={item.title}
-            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-          />
-        </List.Item>
-      )}
-    />
+    <Card title="Список специалистов" style={CardForm} bodyStyle={CardBodyForm}>
+      <List
+        itemLayout="horizontal"
+        dataSource={data}
+        renderItem={(item, index) => (
+          <List.Item className="enroll_list_specialists_item" onClick={onClick}>
+            <List.Item.Meta
+              avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
+              title={item.title}
+              description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+            />
+          </List.Item>
+        )}
+      />
+    </Card>
   )
 };

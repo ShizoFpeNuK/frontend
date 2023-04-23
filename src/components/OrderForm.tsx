@@ -1,5 +1,6 @@
 import { useForm } from "antd/es/form/Form";
-import { Button, Col, Form, Input } from "antd";
+import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
+import { Button, Card, Form, Input } from "antd";
 
 
 export const OrderForm = () => {
@@ -7,7 +8,7 @@ export const OrderForm = () => {
 
 
   return (
-    <Col className="enroll_order_form" span={24}>
+    <Card title="Ваши данные" style={CardForm} bodyStyle={CardBodyForm}>
       <Form layout="vertical" form={form}
       >
         <Form.Item
@@ -34,10 +35,10 @@ export const OrderForm = () => {
         >
           <Input placeholder="Введите ваш номер телефона" />
         </Form.Item>
-        <Form.Item>
+        <Form.Item style={{ marginBottom: "15px" }}>
           <Button type="primary"> Submit </Button>
         </Form.Item>
       </Form>
-    </Col>
+    </Card>
   )
 }

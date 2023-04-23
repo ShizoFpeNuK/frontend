@@ -1,3 +1,4 @@
+import '../style/css/enroll.css'
 import { useState } from "react";
 import { OrderForm } from "../components/OrderForm";
 import { ListDates } from "../components/ListDates";
@@ -45,6 +46,7 @@ export const Enroll = () => {
           </Space>
         </Col>
 
+        {/* Появление какого-либо списка в зависимости от нажатой кнопки */}
         {isOpenListSpecialist === false && isOpenListDate === false && isOpenListServices === false &&
           <Col className="enroll_list_message" span={8}> Ждём вашего заказа </Col>
         }
@@ -66,10 +68,14 @@ export const Enroll = () => {
 
         <Col className="enroll_order" span={8}>
           <Row className="enroll_order_row">
-            <OrderForm />
+            <Col className="enroll_order_form" span={24}>
+              <OrderForm />
+            </Col>
           </Row>
           <Row className="enroll_order_row">
-            <OrderDetails />
+            <Col className="enroll_order_details" span={24}>
+              <OrderDetails />
+            </Col>
           </Row>
         </Col>
       </Row>
