@@ -1,0 +1,36 @@
+.auth_header {
+  margin-bottom: 40px;
+}
+
+.auth_row {
+  justify-content: space-between;
+}
+
+
+/* auth_user_info */
+.auth_user_info {
+  text-align: left;
+}
+
+.auth_user_info_title {
+  margin-bottom: 30px;
+}
+
+.auth_user_info_inner {
+  margin-bottom: 15px;
+}
+
+.auth_user_info_inner_title {
+  margin-bottom: 6px;
+}
+
+
+/* auth_user_checks */
+.auth_user_checks_title {
+  margin-bottom: 40px;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.88);
+  line-height: 1.5714285714285714;
+  border: 1px solid rgb(217, 217, 217);
+  border-radius: 8px;
+}

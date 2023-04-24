@@ -1,17 +1,28 @@
 import '../style/css/main.css';
+import { observer } from "mobx-react";
 import { Col, Row } from "antd";
-import { CardServices } from "../components/CardServices";
+import { IService } from "../options/model/service.model";
+import { useEffect } from "react";
+import { CardService } from "../components/CardService";
+import servicesStore from "../store/ServicesStoreClass";
 
 
-export const Home = () => {
+export const Home = observer(() => {
+  useEffect(() => {
+    servicesStore.getServicesList();
+  }, [])
+
+
   return (
     <div className="home_page">
       <div className="services_and_price" id="services-and-price">
         <h1 className="services_and_price_header"> Услуги и цены </h1>
         <Row className="services_and_price_row">
-          <Col span={4} className="services_and_price_card">
-            <CardServices />
-          </Col>
+          {servicesStore.ServicesList.map((service: IService) =>
+            <Col className="services_and_price_card" key={service.service_id} span={4}>
+              <CardService service={service}/>
+            </Col>
+          )}
         </Row>
       </div>
 
@@ -41,6 +52,6 @@ export const Home = () => {
           </p>
         </div>
       </div>
-    </div >
+    </div>
   )
-};
+});
