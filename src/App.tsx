@@ -24,11 +24,11 @@ function App() {
       </main>
       <footer className="footer">
         <Row className="footer_row">
-          <Col className="footer_logo" span={4}>
+          <Col className="footer_logo">
             <Image src={require('./image/logo/logo1.png')} width="150px" preview={false} />
           </Col>
-          <Col className="footer_address" span={8}>
-            Адрес головного заведения
+          <Col className="footer_address">
+            <span> Адрес головного заведения </span>
           </Col>
         </Row>
       </footer>

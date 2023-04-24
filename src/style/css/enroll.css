@@ -82,6 +82,9 @@
   margin-bottom: 0;
 }
 
-.enroll_order_details_item:first-child {
-  padding-top: 0;
+.enroll_order_details_specialist {
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
+
+

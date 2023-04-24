@@ -13,11 +13,23 @@
 }
 
 .services_and_price_row {
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .services_and_price_card {
-  margin-bottom: 20px;
+  margin-right: 20px;
+  margin-bottom: 30px;
+}
+
+.services_and_price_card:last-child {
+  margin-bottom: 0;
+}
+
+.services_and_price_card_name {
+  min-height: 60px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 

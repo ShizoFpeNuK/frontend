@@ -7,6 +7,8 @@ import { OrderDetails } from "../components/OrderDetails";
 import { ListSpecialists } from "../components/ListSpecialists";
 import { Button, Col, Row, Space } from "antd";
 import { CalendarOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
+import specialistsStore from "../store/SpecialistsStoreClass";
+import { ISpecialist } from '../options/model/specialist.model';
 
 
 export const Enroll = () => {
@@ -52,6 +54,9 @@ export const Enroll = () => {
         }
         {isOpenListSpecialist &&
           <Col className="enroll_list_specialists" span={8}>
+            {/* {specialistsStore.SpecialistsList.map((specialist: ISpecialist) =>
+              <ListSpecialists specialist={specialist}/>
+            )} */}
             <ListSpecialists />
           </Col>
         }

@@ -5,6 +5,11 @@
 
 .footer_row {
   align-items: center;
+  justify-content: center;
+}
+
+.footer_logo {
+  margin-right: 40px;
 }
 
 .footer_address {
