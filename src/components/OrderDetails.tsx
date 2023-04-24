@@ -1,38 +1,29 @@
+import { observer } from "mobx-react";
 import { Card, List } from "antd";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
+import orderDetailsStore from "../store/OrderDetailsStoreClass";
 
 
-const data = [
-  {
-    title: 'Ant Design Title 1',
-  },
-  {
-    title: 'Ant Design Title 2',
-  },
-  {
-    title: 'Ant Design Title 3',
-  },
-  {
-    title: 'Ant Design Title 4',
-  },
-];
+export const OrderDetails = observer(() => {
+  function deleteService(id: number) {
+    orderDetailsStore.deleteOrderDetailsServices(id)
+  }
 
 
-export const OrderDetails = () => {
   return (
-    <Card title="Детали записи" style={CardForm} bodyStyle={CardBodyForm}>
-      <List //Скорее всего, можно заменить на два div
+    <Card title="Детали записи" style={CardForm} bodyStyle={{ textAlign: "left", ...CardBodyForm }}>
+      <List
+        header={orderDetailsStore.OrderDetailsSpecialistName}
+        className="enroll_order_details_services"
         itemLayout="horizontal"
-        dataSource={data}
-        renderItem={(item, index) => (
-          <List.Item className="enroll_order_details_item">
+      >
+        {orderDetailsStore.OrderDetailsServices.map((service, index) =>
+          <List.Item className="enroll_order_details_item" key={index} onClick={() => deleteService(index)}>
             <List.Item.Meta
-              title={"Детали"}
-              description={"Серёжа"}
-            />
+              description={service} />
           </List.Item>
         )}
-      />
+      </List>
     </Card>
   )
-};
+});

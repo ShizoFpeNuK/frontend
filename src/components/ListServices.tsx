@@ -1,5 +1,7 @@
 import { Card, List } from "antd";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
+import orderDetailsStore from "../store/OrderDetailsStoreClass";
+import { observer } from "mobx-react";
 
 
 const data = [
@@ -18,9 +20,15 @@ const data = [
 ];
 
 
-export const ListServices = () => {
-  const onClick = (e: any) => { //Для теста
-    console.log(e);
+export const ListServices = observer(() => {
+  const onClick = (e: any) => {
+    const serviceItem = e.target.closest(".enroll_list_services_item");
+    if (serviceItem) {
+      const serviceName = serviceItem.querySelector(".ant-list-item-meta-title");
+      orderDetailsStore.setOrderDetailsServices(serviceName.innerText);
+      console.log(serviceName.innerText);
+      // console.log(orderDetailsStore.OrderDetailsServices);
+    }
   }
 
 
@@ -32,7 +40,8 @@ export const ListServices = () => {
         renderItem={(item, index) => (
           <List.Item className="enroll_list_services_item" onClick={onClick}>
             <List.Item.Meta
-              title={"Стрижка налысо"}
+              className="enroll_list_services_item_meta"
+              title={item.title}
               description={
                 <div>10 мин - 300 руб.</div>
               }
@@ -42,4 +51,4 @@ export const ListServices = () => {
       />
     </Card>
   )
-};
+});
