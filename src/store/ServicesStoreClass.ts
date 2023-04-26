@@ -16,26 +16,6 @@ class ServicesStoreClass {
     this.setServicesList(services);
   }
 
-  async createToDo(title: string, description: string): Promise<void> {
-    await ServicesServices.create(title, description);
-    this.getServicesList();
-  }
-
-  async updateToDo(id: string, title: string, description: string): Promise<void> {
-    await ServicesServices.update(id, title, description);
-    this.getServicesList();
-  }
-
-  async deleteToDoList() {
-    await ServicesServices.deleteAll();
-    this.getServicesList();
-  }
-
-  async deleteToDo(id: string) {
-    await ServicesServices.deleteOne(id);
-    this.getServicesList();
-  }
-
 
   setServicesList(services: IService[]) {
     this.ServicesList = services;

@@ -2,13 +2,13 @@ import '../style/css/enroll.css'
 import { useState } from "react";
 import { OrderForm } from "../components/OrderForm";
 import { ListDates } from "../components/ListDates";
+import { ISpecialist } from "../options/model/specialist.model";
 import { ListServices } from "../components/ListServices";
 import { OrderDetails } from "../components/OrderDetails";
 import { ListSpecialists } from "../components/ListSpecialists";
 import { Button, Col, Row, Space } from "antd";
 import { CalendarOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
 import specialistsStore from "../store/SpecialistsStoreClass";
-import { ISpecialist } from '../options/model/specialist.model';
 
 
 export const Enroll = () => {
@@ -40,7 +40,7 @@ export const Enroll = () => {
     <div className="enroll_page">
       <h1 className="enroll_title"> Запись на приём </h1>
       <Row className="enroll_row">
-        <Col className="enroll_buttons" span={8}>
+        <Col className="enroll_buttons" span={6}>
           <Space direction="vertical" style={{ width: "100%" }}>
             <Button className="enroll_button_specialist" onClick={onClickButtonSpecialist} block> <UserOutlined /> Выбрать специалиста </Button>
             <Button className="enroll_button_date" onClick={onClickButtonDate} block> <CalendarOutlined /> Выбрать дату и время </Button>
@@ -50,23 +50,20 @@ export const Enroll = () => {
 
         {/* Появление какого-либо списка в зависимости от нажатой кнопки */}
         {isOpenListSpecialist === false && isOpenListDate === false && isOpenListServices === false &&
-          <Col className="enroll_list_message" span={8}> Ждём вашего заказа </Col>
+          <Col className="enroll_list_message" span={10}> Ждём вашего заказа </Col>
         }
         {isOpenListSpecialist &&
-          <Col className="enroll_list_specialists" span={8}>
-            {/* {specialistsStore.SpecialistsList.map((specialist: ISpecialist) =>
-              <ListSpecialists specialist={specialist}/>
-            )} */}
+          <Col className="enroll_list_specialists" span={10}>
             <ListSpecialists />
           </Col>
         }
         {isOpenListDate &&
-          <Col className="enroll_list_services" span={8}>
+          <Col className="enroll_list_services" span={10}>
             <ListDates />
           </Col>
         }
         {isOpenListServices &&
-          <Col className="enroll_list_dates" span={8}>
+          <Col className="enroll_list_dates" span={10}>
             <ListServices />
           </Col>
         }

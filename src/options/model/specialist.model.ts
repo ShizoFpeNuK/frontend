@@ -1,8 +1,8 @@
 
 
 export interface ISpecialist {
-  id: string,
+  employee_id: number,
   full_name: string,
-  experience: number,
+  position: string,
   rating: number,
 }

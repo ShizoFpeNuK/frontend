@@ -1,15 +1,10 @@
 import '../style/css/auth.css';
-import { Card, Col, Row } from "antd";
 import { CardChecks } from "../components/CardChecks";
+import { Card, Col, Row } from "antd";
 import { CardAuth, CardBodyAuth, CardTitleAuth } from "../style/typescript/cardAuth";
-import ServicesServices from '../services/services.service';
 
 
-
-
-export const Auth = () => {
-  ServicesServices.login();
-  
+export const Auth = () => {  
   return (
     <div className="auth_page">
       <h1 className="auth_header"> Личный кабинет </h1>

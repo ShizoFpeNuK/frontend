@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 export default class SpecialistsServices {
-  static pathDefault: string = 'http://localhost:4000/todos'; //Поменять!!!!!!!!!
+  static pathDefault: string = "/specialists";
 
 
   static async getAll(): Promise<ISpecialist[]> {
@@ -22,7 +22,7 @@ export default class SpecialistsServices {
   }
 
   static async update(id: string, title: string, description: string) { //Переделать
-    await axios.patch(this.pathDefault + '/' + id, {
+    await axios.patch(this.pathDefault + "/" + id, {
       title: title,
       description: description,
     });
@@ -33,6 +33,6 @@ export default class SpecialistsServices {
   }
 
   static async deleteOne(id: string) {
-    await axios.delete(this.pathDefault + '/' + id);
+    await axios.delete(this.pathDefault + "/" + id);
   }
 }

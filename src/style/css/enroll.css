@@ -1,3 +1,8 @@
+.ant-list-header {
+  font-weight: 500;
+  font-size: 16px;
+}
+
 .enroll_title {
   margin-bottom: 40px;
 }
@@ -14,18 +19,24 @@
   padding: 0 20px;
 }
 
+.black:enabled {
+  background-color: black;
+  color: white;
+ }
+
 
 /* eroll_list_specialists */
 .enroll_list_specialists {
   padding: 0 20px;
 }
 
-.enroll_list_specialists_item:first-child {
-  padding-top: 0;
+.enroll_list_specialists_item_meta_row {
+  justify-content: space-between;
+  align-items: center;
 }
 
-.enroll_list_specialists_item:hover {
-  cursor: pointer;
+.enroll_list_specialists_item_meta_button_add {
+  margin-right: 10px;
 }
 
 
@@ -60,14 +71,14 @@
   padding: 0 20px;
 }
 
-.enroll_list_services_item:first-child {
-  padding-top: 0;
+.enroll_list_services_item_meta_row {
+  justify-content: space-between;
+  align-items: center;
 }
 
-.enroll_list_services_item:hover {
-  cursor: pointer;
+.enroll_list_services_item_meta_button_add {
+  margin-right: 10px;
 }
-
 
 /* enroll_order */
 .enroll_order {
@@ -87,4 +98,12 @@
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
 
+.enroll_order_details_item_meta_row {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.enroll_list_services_item_meta_info_name-services {
+  margin-right: 20px;
+}
 

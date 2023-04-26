@@ -3,6 +3,19 @@
   margin-bottom: auto;
 }
 
+.main_wrapper {
+  margin-bottom: 50px;
+}
+
+.title {
+  margin-bottom: 40px;
+  padding: 10px;
+  color: rgba(0, 0, 0, 0.88);
+  line-height: 1.5714285714285714;
+  border: 1px solid rgb(217, 217, 217);
+  border-radius: 8px;
+}
+
 /* ------------- SERVICES AND PRICE ------------- */
 .services_and_price {
   margin-bottom: 50px;
