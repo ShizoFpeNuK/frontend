@@ -2,13 +2,11 @@ import '../style/css/enroll.css'
 import { useState } from "react";
 import { OrderForm } from "../components/OrderForm";
 import { ListDates } from "../components/ListDates";
-import { ISpecialist } from "../options/model/specialist.model";
 import { ListServices } from "../components/ListServices";
 import { OrderDetails } from "../components/OrderDetails";
 import { ListSpecialists } from "../components/ListSpecialists";
 import { Button, Col, Row, Space } from "antd";
 import { CalendarOutlined, UnorderedListOutlined, UserOutlined } from "@ant-design/icons";
-import specialistsStore from "../store/SpecialistsStoreClass";
 
 
 export const Enroll = () => {
@@ -43,8 +41,9 @@ export const Enroll = () => {
         <Col className="enroll_buttons" span={6}>
           <Space direction="vertical" style={{ width: "100%" }}>
             <Button className="enroll_button_specialist" onClick={onClickButtonSpecialist} block> <UserOutlined /> Выбрать специалиста </Button>
-            <Button className="enroll_button_date" onClick={onClickButtonDate} block> <CalendarOutlined /> Выбрать дату и время </Button>
             <Button className="enroll_button_services" onClick={onClickButtonServices} block> <UnorderedListOutlined /> Выбрать услуги </Button>
+            {/* Disable, пока не выбраны мастер и услуга */}
+            <Button className="enroll_button_date" onClick={onClickButtonDate} block> <CalendarOutlined /> Выбрать дату и время </Button>
           </Space>
         </Col>
 

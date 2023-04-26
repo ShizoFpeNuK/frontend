@@ -1,10 +1,11 @@
-import { ISpecialist } from "../options/model/specialist.model";
-import { Avatar, List, Row, Col, Button, Rate } from "antd";
-import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 import { observer } from "mobx-react";
-import { useEffect, useRef, useState } from "react";
+import { ISpecialist } from "../options/model/specialist.model";
+import { useEffect, useState } from "react";
+import { Avatar, List, Row, Col, Button, Rate } from "antd";
 import specialistsStore from "../store/SpecialistsStoreClass";
 import orderDetailsStore from "../store/OrderDetailsStoreClass";
+import servicesStore from "../store/ServicesStoreClass";
+import scheduleStore from "../store/ScheduleStoreClass";
 
 
 export const ListSpecialists = observer(() => {
@@ -14,27 +15,26 @@ export const ListSpecialists = observer(() => {
   const loaderPage = async () => {
     await specialistsStore.getSpecialistsList()
       .then(() => {
-        const deleteButtons = document.querySelectorAll(".enroll_list_specialists_item_meta_button_delete");
-        Array.from(deleteButtons).forEach((el: any) => el.disabled = true);
+        setIsLoader(true);
       })
-
-    getListItems();
-    setIsLoader(true);
   }
-
 
   const getListItems = () => {
     const ListItems = document.querySelectorAll(".enroll_list_specialists_item");
-    Array.from(ListItems).forEach((el: any) => {
+    Array.from(ListItems).every((el: any) => {
       if (el.getAttribute("data-id") == orderDetailsStore.OrderDetailsSpecialist?.employee_id) {
         const addButton = el.querySelector(".enroll_list_specialists_item_meta_button_add");
         onlyOneDeleteButton();
         addButton.disabled = true;
         addButton.nextElementSibling.disabled = false;
+        return false;
+      } else {
+        const deleteButton = el.querySelector(".enroll_list_specialists_item_meta_button_delete");
+        deleteButton.disabled = true;
+        return true;
       }
     });
   }
-
 
   const onlyOneDeleteButton = () => {
     const deleteButtons = document.querySelectorAll(".enroll_list_specialists_item_meta_button_delete");
@@ -43,31 +43,43 @@ export const ListSpecialists = observer(() => {
     Array.from(addButtons).forEach((el: any) => el.disabled = false);
   }
 
-
-  const onClickAddService = (e: any, specialist: ISpecialist) => {
-    const button = e.target.closest(".enroll_list_specialists_item_meta_button_add");
-
-    if (!button.disabled) {
-      orderDetailsStore.setOrderDetailsSpecialist(specialist);
-      onlyOneDeleteButton();
-      button.disabled = true;
-      button.nextElementSibling.disabled = false;
-    }
+  const clearOrderDeatils = () => {
+    servicesStore.deleteServicesList();
+    scheduleStore.deleteScheduleBySpecialistList();
+    orderDetailsStore.deleteOrderDetailsSpecialist();
+    orderDetailsStore.deleteOrderDetailsServices()
+    orderDetailsStore.deleteOrderDetailsDate();
+    orderDetailsStore.deleteOrderDetailsTime();
+    orderDetailsStore.deleteOrderDetailsDateWithTimes();
   }
 
-  const onClickDeleteService = (e: any, specialist: ISpecialist) => {
-    const button = e.target.closest(".enroll_list_specialists_item_meta_button_delete");
 
-    if (!button.disabled) {
-      orderDetailsStore.deleteOrderDetailsSpecialist();
-      button.disabled = true;
-      button.previousElementSibling.disabled = false;
-    }
+  const onClickAddService = async (e: any, specialist: ISpecialist) => {
+    const button = e.target.closest(".enroll_list_specialists_item_meta_button_add");
+    onlyOneDeleteButton();
+    button.disabled = true;
+    button.nextElementSibling.disabled = false;
+
+    clearOrderDeatils();
+    orderDetailsStore.setOrderDetailsSpecialist(specialist);
+    await servicesStore.getServicesListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id);
+  }
+
+  const onClickDeleteService = (e: any) => {
+    const button = e.target.closest(".enroll_list_specialists_item_meta_button_delete");
+    button.disabled = true;
+    button.previousElementSibling.disabled = false;
+    
+    clearOrderDeatils();
   }
 
 
   useEffect(() => {
-    loaderPage();
+    if (!specialistsStore.SpecialistsList.length) {
+      loaderPage();
+    } else {
+      getListItems();
+    }
   }, [isLoader])
 
 
@@ -91,15 +103,15 @@ export const ListSpecialists = observer(() => {
                 </Col>
                 <Col className="enroll_list_specialists_item_meta_buttons">
                   <Button
-                    className="enroll_list_specialists_item_meta_button_add black"
+                    className="enroll_list_specialists_item_meta_button_add button--black"
                     shape="circle"
                     onClick={(e) => onClickAddService(e, specialist)}>
                     +
                   </Button>
                   <Button
-                    className="enroll_list_specialists_item_meta_button_delete black"
+                    className="enroll_list_specialists_item_meta_button_delete button--black"
                     shape="circle"
-                    onClick={(e) => onClickDeleteService(e, specialist)}>
+                    onClick={(e) => onClickDeleteService(e)}>
                     -
                   </Button>
                 </Col>
@@ -110,28 +122,4 @@ export const ListSpecialists = observer(() => {
       )}
     </List>
   )
-
-  // return (
-  //   <Card title="Список специалистов" style={CardForm} bodyStyle={CardBodyForm}>
-  //     <List
-  //       itemLayout="horizontal"
-  //       // dataSource={data}
-  //       dataSource={specialistsStore.SpecialistsList}
-  //       renderItem={(specialist, index) => (
-  //         <List.Item className="enroll_list_specialists_item" key={specialist.id} onClick={onClick}>
-  //           <List.Item.Meta
-  //             avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${index}`} />}
-  //             title={specialist.full_name}
-  //             description={
-  //               <div className="enroll_list_specialists_item_description">
-  //                 <p> Опыт работы: {specialist.experience} </p>
-  //                 <p> Рейтинг: {specialist.rating} </p>
-  //               </div>
-  //             }
-  //           />
-  //         </List.Item>
-  //       )}
-  //     />
-  //   </Card>
-  // )
 });

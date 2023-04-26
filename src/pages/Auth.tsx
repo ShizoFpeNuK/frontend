@@ -30,7 +30,7 @@ export const Auth = () => {
           </Card>
         </Col>
         <Col className="auth_user_checks" span={19}>
-          <h2 className="auth_user_checks_title"> Ваши последние заказы </h2>
+          <h2 className="auth_user_checks_title title--border"> Ваши последние заказы </h2>
           <Row className="auth_user_checks_info">
             <Col className="auth_user_checks_cards" span={4}>
               <CardChecks />

@@ -22,7 +22,7 @@ export const Home = observer(() => {
   return (
     <div className="home_page">
       <div className="services_and_price" id="services-and-price">
-        <h1 className="services_and_price_header title"> Услуги и цены </h1>
+        <h1 className="services_and_price_header title--border"> Услуги и цены </h1>
         <Row className="services_and_price_row">
           {servicesStore.ServicesList.map((service: IService) =>
             <Col className="services_and_price_card" key={service.service_id} span={4}>

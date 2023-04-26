@@ -16,6 +16,15 @@ class ServicesStoreClass {
     this.setServicesList(services);
   }
 
+  async getServicesListBySpecialistId(specialistId: number | string): Promise<void> {
+    const services: IService[] = await ServicesServices.getAllServicesBySpecialistId(specialistId);
+    this.setServicesList(services);
+  }
+
+  deleteServicesList() {
+    this.setServicesList([]);
+  }
+
 
   setServicesList(services: IService[]) {
     this.ServicesList = services;

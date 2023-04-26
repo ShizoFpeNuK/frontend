@@ -1,6 +1,7 @@
 import './style/css/App.css';
 import './style/css/header.css';
 import './style/css/footer.css';
+import './style/css/general.css';
 import { Auth } from './pages/Auth';
 import { Home } from './pages/Home';
 import { Enroll } from './pages/Enroll';
@@ -37,7 +38,7 @@ const App = observer(() => {
       <footer className="footer">
         <Row className="footer_row">
           <Col className="footer_logo">
-            <Image src={require("./options/image/logo/logo1.png")} width="150px" preview={false} />
+            <Image src={require("./options/logo/logo1.png")} width="150px" preview={false} />
           </Col>
           <Col className="footer_address">
             <span> Адрес головного заведения </span>

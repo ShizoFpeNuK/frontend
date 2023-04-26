@@ -11,28 +11,4 @@ export default class SpecialistsServices {
 
     return specialists.data;
   }
-
-  static async create(title: string, description: string) { //Переделать
-    if (title) {
-      await axios.post(this.pathDefault, {
-        title: title,
-        description: description,
-      });
-    }
-  }
-
-  static async update(id: string, title: string, description: string) { //Переделать
-    await axios.patch(this.pathDefault + "/" + id, {
-      title: title,
-      description: description,
-    });
-  }
-
-  static async deleteAll() {
-    await axios.delete(this.pathDefault);
-  }
-
-  static async deleteOne(id: string) {
-    await axios.delete(this.pathDefault + "/" + id);
-  }
 }

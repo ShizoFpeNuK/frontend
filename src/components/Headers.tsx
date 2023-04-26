@@ -46,7 +46,7 @@ export const Header = () => {
           ]} />
       </Col>
       <Col span={4}>
-        <Image src={require('../options/image/logo/logo1.png')} width="200px" preview={false} />
+        <Image src={require('../options/logo/logo1.png')} width="200px" preview={false} />
       </Col>
       <Col span={10} className="navigation">
         <Menu mode="horizontal" items={items} />
