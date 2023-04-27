@@ -1,5 +1,5 @@
-import { ISpecialist } from "../options/model/specialist.model";
 import axios from "axios";
+import { ISpecialist } from "../options/model/specialist.model";
 
 
 export default class SpecialistsServices {

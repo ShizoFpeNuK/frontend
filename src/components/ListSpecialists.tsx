@@ -2,10 +2,10 @@ import { observer } from "mobx-react";
 import { ISpecialist } from "../options/model/specialist.model";
 import { useEffect, useState } from "react";
 import { Avatar, List, Row, Col, Button, Rate } from "antd";
-import specialistsStore from "../store/SpecialistsStoreClass";
-import orderDetailsStore from "../store/OrderDetailsStoreClass";
 import servicesStore from "../store/ServicesStoreClass";
 import scheduleStore from "../store/ScheduleStoreClass";
+import specialistsStore from "../store/SpecialistsStoreClass";
+import orderDetailsStore from "../store/OrderDetailsStoreClass";
 
 
 export const ListSpecialists = observer(() => {
@@ -43,34 +43,36 @@ export const ListSpecialists = observer(() => {
     Array.from(addButtons).forEach((el: any) => el.disabled = false);
   }
 
-  const clearOrderDeatils = () => {
+  const clearOrderDetails = () => {
     servicesStore.deleteServicesList();
     scheduleStore.deleteScheduleBySpecialistList();
-    orderDetailsStore.deleteOrderDetailsSpecialist();
-    orderDetailsStore.deleteOrderDetailsServices()
-    orderDetailsStore.deleteOrderDetailsDate();
-    orderDetailsStore.deleteOrderDetailsTime();
-    orderDetailsStore.deleteOrderDetailsDateWithTimes();
+    orderDetailsStore.clearStore();
   }
 
 
   const onClickAddService = async (e: any, specialist: ISpecialist) => {
     const button = e.target.closest(".enroll_list_specialists_item_meta_button_add");
-    onlyOneDeleteButton();
-    button.disabled = true;
-    button.nextElementSibling.disabled = false;
 
-    clearOrderDeatils();
-    orderDetailsStore.setOrderDetailsSpecialist(specialist);
-    await servicesStore.getServicesListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id);
+    if (!button.disabled) {
+      onlyOneDeleteButton();
+      button.disabled = true;
+      button.nextElementSibling.disabled = false;
+
+      clearOrderDetails();
+      orderDetailsStore.setOrderDetailsSpecialist(specialist);
+      // await servicesStore.getServicesListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id);
+    }
   }
 
   const onClickDeleteService = (e: any) => {
     const button = e.target.closest(".enroll_list_specialists_item_meta_button_delete");
-    button.disabled = true;
-    button.previousElementSibling.disabled = false;
-    
-    clearOrderDeatils();
+
+    if (!button.disabled) {
+      button.disabled = true;
+      button.previousElementSibling.disabled = false;
+      clearOrderDetails();
+    }
+
   }
 
 

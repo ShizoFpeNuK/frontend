@@ -1,51 +1,104 @@
-import { Button, Card, Col, List, Row } from "antd";
+import { observer } from "mobx-react";
+import { ISchedule } from "../options/model/schedule.model";
+import { Button, Card } from "antd";
+import { useEffect, useState } from "react";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 import scheduleStore from "../store/ScheduleStoreClass";
-import { ISchedule } from "../options/model/schedule.model";
-import { useEffect, useState } from "react";
 import orderDetailsStore from "../store/OrderDetailsStoreClass";
 
 
-export const ListDates = () => {
+export const ListDates = observer(() => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
-  const [isOpenTimes, setIsOpenTimes] = useState<boolean>(false);
 
 
   const loaderPage = async () => {
     if (orderDetailsStore.OrderDetailsSpecialist) {
-      await scheduleStore.getScheduleListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist.employee_id)
-        .then(() => {
-          setIsLoader(true);
-        })
+      // await scheduleStore.getScheduleListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist.employee_id)
+      //   .then(() => {
+      //     setIsLoader(true);
+      //   })
     }
   }
 
-  const onlyOneButtonDisabled = (parentOfButton: any) => {
-    const enableButtons = parentOfButton.querySelectorAll(".enroll_list_dates_item_button");
-    Array.from(enableButtons).forEach((el: any) => el.disabled = false);
+
+  const getListButtonsDate = () => {
+    const ListButtonsTime = document.querySelectorAll(".enroll_list_dates_button");
+    Array.from(ListButtonsTime).every((el: any) => {
+      if (el.getAttribute("data-id") == (orderDetailsStore.OrderDetailsDate)) {
+        el.classList.add("button--black");
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  const getListButtonsTime = () => {
+    const ListButtonsTime = document.querySelectorAll(".enroll_list_times_button");
+    Array.from(ListButtonsTime).every((el: any) => {
+      if (el.getAttribute("data-id") == (orderDetailsStore.OrderDetailsTime + orderDetailsStore.OrderDetailsDate)) {
+        el.classList.add("button--black");
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+
+  const onlyOneButtonDateDisabled = (parentOfButton: any) => {
+    const enableButtons = parentOfButton.querySelectorAll(".enroll_list_dates_button");
+    Array.from(enableButtons).forEach((el: any) => el.classList.remove("button--black"));
+  }
+
+  const onlyOneButtonTimeDisabled = (parentOfButton: any) => {
+    const enableButtons = parentOfButton.querySelectorAll(".enroll_list_times_button");
+    Array.from(enableButtons).forEach((el: any) => el.classList.remove("button--black"));
   }
 
 
   const onClickButtonDate = (e: any, date: string, schedule: ISchedule) => {
-    setIsOpenTimes(!isOpenTimes);
-    orderDetailsStore.setOrderDetailsDate(date);
-    orderDetailsStore.setOrderDetailsDateWithTimes(schedule);
+    const button = e.target.closest(".enroll_list_dates_button");
+    const className: string = "button--black";
+
+    if (!button.classList.contains(className)) {
+      onlyOneButtonDateDisabled(button.parentNode);
+      button.classList.add(className);
+
+      orderDetailsStore.setOrderDetailsDate(date);
+      orderDetailsStore.deleteOrderDetailsTime();
+      orderDetailsStore.setOrderDetailsDateWithTimes(schedule);
+    } else {
+      button.classList.remove(className);
+      orderDetailsStore.deleteOrderDetailsDate();
+      orderDetailsStore.setOrderDetailsDateWithTimes(undefined);
+    }
   }
 
 
   const onClickTime = (e: any, time: string) => {
-    // const button = e.target.closest(".enroll_list_dates_item_button");
-    // onlyOneButtonDisabled(button.parentNode);
-    // button.disabled = true;
-    orderDetailsStore.setOrderDetailsTime(time);
+    const button = e.target.closest(".enroll_list_times_button");
+    const className: string = "button--black";
+
+    if (!button.classList.contains(className)) {
+      onlyOneButtonTimeDisabled(button.parentNode);
+      button.classList.add(className);
+      orderDetailsStore.setOrderDetailsTime(time);
+    } else {
+      button.classList.remove(className);
+      orderDetailsStore.deleteOrderDetailsTime();
+    }
   }
 
 
   useEffect(() => {
     if (!scheduleStore.ScheduleList.length) {
       loaderPage();
+    } else {
+      getListButtonsTime();
+      getListButtonsDate();
     }
-  }, [isLoader, isOpenTimes])
+  }, [isLoader])
 
 
   return (
@@ -55,32 +108,36 @@ export const ListDates = () => {
       style={CardForm}
       bodyStyle={CardBodyForm}
     >
-      <Row className="enroll_list_dates_row">
-        <Col className="enroll_list_dates_buttons">
+
+      {scheduleStore.ScheduleList.length !== 0 &&
+        <div className="enroll_list_dates_buttons">
           {scheduleStore.ScheduleList.map((schedule: ISchedule) =>
             <Button
               className="enroll_list_dates_button"
               key={schedule.date}
+              data-id={schedule.date}
               onClick={(e) => onClickButtonDate(e, schedule.date, schedule)}
             >
               {schedule.date}
             </Button>
           )}
-        </Col>
-      </Row>
-      <Row className="enroll_list_times_row">
+        </div>
+      }
+
+      {orderDetailsStore.OrderDetailsDateWithTimes !== undefined &&
         <div className="enroll_list_times_buttons">
           {orderDetailsStore.OrderDetailsDateWithTimes?.times.map((time: string) =>
             <Button
               className="enroll_list_times_button"
-              key={time}
+              key={time + orderDetailsStore.OrderDetailsDateWithTimes?.date}
+              data-id={time + orderDetailsStore.OrderDetailsDateWithTimes?.date}
               onClick={(e) => onClickTime(e, time)}
             >
               {time}
             </Button>
           )}
-        </div>
-      </Row >
+        </div >
+      }
     </Card >
   )
-};
+});

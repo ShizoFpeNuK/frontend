@@ -16,6 +16,7 @@ export const ListServices = observer(() => {
         .then(() => {
           setIsLoader(true);
         });
+
     }
 
   }
@@ -47,18 +48,23 @@ export const ListServices = observer(() => {
 
   const onClickAddService = (e: any, service: IService) => {
     const button = e.target.closest(".enroll_list_services_item_meta_button_add");
-    button.disabled = true;
-    button.nextElementSibling.disabled = false;
-    
-    orderDetailsStore.addOrderDetailsService(service);
+
+    if (!button.disabled) {
+      button.disabled = true;
+      button.nextElementSibling.disabled = false;
+      orderDetailsStore.addOrderDetailsService(service);
+    }
   }
 
   const onClickDeleteService = (e: any, service: IService) => {
     const button = e.target.closest(".enroll_list_services_item_meta_button_delete");
-    button.disabled = true;
-    button.previousElementSibling.disabled = false;
 
-    orderDetailsStore.deleteOrderDetailsService(service);
+    if (!button.disabled) {
+      button.disabled = true;
+      button.previousElementSibling.disabled = false;
+      orderDetailsStore.deleteOrderDetailsService(service);
+    }
+
   }
 
 

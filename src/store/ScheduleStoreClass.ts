@@ -1,5 +1,5 @@
-import { makeAutoObservable } from "mobx";
 import { ISchedule } from "../options/model/schedule.model";
+import { makeAutoObservable } from "mobx";
 import ScheduleServices from "../services/schedule.service";
 
 

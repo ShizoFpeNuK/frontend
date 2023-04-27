@@ -40,24 +40,6 @@
 }
 
 
-/* eroll_list_dates */
-.enroll_list_dates_times {
-  padding: 0 20px;
-}
-
-.enroll_list_times_buttons {
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-.enroll_list_times_button {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-
 /* eroll_list_services */
 .enroll_list_services {
   padding: 0 20px;
@@ -71,6 +53,35 @@
 .enroll_list_services_item_meta_button_add {
   margin-right: 10px;
 }
+
+
+/* eroll_list_dates */
+.enroll_list_dates_buttons {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.enroll_list_dates_button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.enroll_list_times_buttons {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.enroll_list_times_button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
 
 /* enroll_order */
 .enroll_order {
@@ -95,14 +106,33 @@
   align-items: center;
 }
 
-.enroll_order_details_services {
-  margin-bottom: 20px;
-}
-
-.enroll_list_services_item_meta_info_name-services {
-  margin-right: 20px;
+.enroll_order_details_service {
+  justify-content: space-between;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+  margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
 
 .enroll_order_details_datetime {
+  justify-content: space-between;
   margin-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.enroll_order_details_totalcount {
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.enroll_order_details_next_step {
+  margin-top: 20px; 
+  text-align: center;
+}
+
+.enroll_order_details_submit {
+  text-align: center;
+  margin-top: 20px;
 }
