@@ -33,7 +33,7 @@ export const Home = observer(() => {
       </div>
 
       <div className="about_us" id="about-us">
-        <h1 className="about_us_header title"> О нас </h1>
+        <h1 className="about_us_header title--border "> О нас </h1>
         <h3 className="about_us_subtitle"> BarberShop В МОСКВЕ - ЭТО МОЙ БАРБЕРШОП! </h3>
         <p className="about_us_text">
           Твой имидж - инструмент успеха? Ты сам решаешь, как тебе выглядеть? BarberShop - это место где мужчина, знающий,
@@ -43,7 +43,7 @@ export const Home = observer(() => {
       </div>
 
       <div className="contacts" id="contacts">
-        <h1 className="contacts_header title"> Контакты </h1>
+        <h1 className="contacts_header title--border"> Контакты </h1>
         <div className="contacts_info">
           <div className="contacts_info_address">
             МОСКВА,

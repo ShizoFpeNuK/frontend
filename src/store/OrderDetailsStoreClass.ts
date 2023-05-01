@@ -77,24 +77,27 @@ class OrderDetailsStoreClass {
 
 
   clearStore() {
-    orderDetailsStore.deleteOrderDetailsSpecialist();
-    orderDetailsStore.deleteOrderDetailsServices()
-    orderDetailsStore.deleteOrderDetailsDate();
-    orderDetailsStore.deleteOrderDetailsTime();
-    orderDetailsStore.deleteOrderDetailsDateWithTimes();
+    this.deleteOrderDetailsSpecialist();
+    this.deleteOrderDetailsServices()
+    this.deleteOrderDetailsDate();
+    this.deleteOrderDetailsTime();
+    this.deleteOrderDetailsDateWithTimes();
+  }
+
+  getOrderDetailServicesId(): number[] {
+    const servicesId: number[] = [];
+    this.OrderDetailsServices.forEach((service: IService) => {
+      servicesId.push(service.service_id);
+    })
+    return servicesId;
   }
 
   getOrderDetails(): Order {
-    const servicesId: number[] = [];
-    this.OrderDetailsServices.map((service: IService) => {
-      servicesId.push(service.service_id);
-    })
-
     return {
       client_id: this.OrderDetailsClientId,
       employee_id: this.OrderDetailsSpecialist!.employee_id,
-      services_id: servicesId, 
-      date: this.OrderDetailsDateWithTimes!.date_correct, 
+      services_id: this.getOrderDetailServicesId(),
+      date: this.OrderDetailsDateWithTimes!.date,
       time: this.OrderDetailsTime
     }
   }
@@ -102,10 +105,18 @@ class OrderDetailsStoreClass {
 
   get getOrderDetailsTotalCount() {
     let totalCount: number = 0;
-    this.OrderDetailsServices.map((service: IService) => {
+    this.OrderDetailsServices.forEach((service: IService) => {
       totalCount += service.cost
     })
     return totalCount;
+  }
+
+  get getOrderDetailsTotalTime() {
+    const totalTime: Date = new Date(`${this.OrderDetailsDateWithTimes!.date} ${this.OrderDetailsTime}:00`);
+    this.OrderDetailsServices.forEach((service: IService) => {
+      totalTime.setMinutes(totalTime.getMinutes() + Number(service.duration));
+    })
+    return totalTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
   }
 }
 

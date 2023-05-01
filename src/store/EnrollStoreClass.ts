@@ -3,30 +3,20 @@ import orderDetailsStore from "./OrderDetailsStoreClass";
 
 
 class EnrollStoreClass {
-  EnrollIsDisabledButtonSpecialist: boolean = false;
-  EnrollIsDisabledButtonServices: boolean = true;
-  EnrollIsDisabledButtonDates: boolean = true;
   selectButtonSpecialistIsClicked: boolean = false;
   selectButtonServicesIsClicked: boolean = false;
   selectButtonDateIsClicked: boolean = false;
+
+  isOpenListSpecialist: boolean = true;
+  isOpenListServices: boolean = false;
+  isOpenListDate: boolean = false;
+  isSubmitOrder: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-
-  setEnrollIsDisabledButtonSpecialist(boolean: boolean) {
-    this.EnrollIsDisabledButtonSpecialist = boolean;
-  }
-
-  setEnrollIsDisabledButtonServices(boolean: boolean) {
-    this.EnrollIsDisabledButtonServices = boolean;
-  }
-
-  setEnrollIsDisabledButtonDates(boolean: boolean) {
-    this.EnrollIsDisabledButtonDates = boolean;
-  }
-
+  
   setSelectButtonSpecialistIsClicked(boolean: boolean) {
     this.selectButtonSpecialistIsClicked = boolean;
   }
@@ -37,6 +27,23 @@ class EnrollStoreClass {
 
   setSelectButtonDateIsClicked(boolean: boolean) {
     this.selectButtonDateIsClicked = boolean;
+  }
+
+
+  setIsOpenListSpecialist(boolean: boolean) {
+    this.isOpenListSpecialist = boolean;
+  }
+
+  setIsOpenListServices(boolean: boolean) {
+    this.isOpenListServices = boolean;
+  }
+
+  setIsOpenListDate(boolean: boolean) {
+    this.isOpenListDate = boolean;
+  }
+
+  setIsSubmitOrder(boolean: boolean) {
+    this.isSubmitOrder = boolean;
   }
 
 

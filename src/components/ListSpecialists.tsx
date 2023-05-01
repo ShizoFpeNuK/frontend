@@ -1,5 +1,6 @@
 import { observer } from "mobx-react";
 import { ISpecialist } from "../options/model/specialist.model";
+import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { Avatar, List, Row, Col, Button, Rate } from "antd";
 import servicesStore from "../store/ServicesStoreClass";
@@ -20,27 +21,27 @@ export const ListSpecialists = observer(() => {
   }
 
   const getListItems = () => {
-    const ListItems = document.querySelectorAll(".enroll_list_specialists_item");
+    const listSpecialist = document.querySelector(".enroll_list_specialists");
+    const ListItems = listSpecialist!.querySelectorAll(".enroll_list_specialists_item");
     Array.from(ListItems).every((el: any) => {
       if (el.getAttribute("data-id") == orderDetailsStore.OrderDetailsSpecialist?.employee_id) {
         const addButton = el.querySelector(".enroll_list_specialists_item_meta_button_add");
-        onlyOneDeleteButton();
-        addButton.disabled = true;
-        addButton.nextElementSibling.disabled = false;
+        clearChoice()
+        addButton.style.display = "none";
+        addButton.nextElementSibling.style.display = "inline-block";
         return false;
-      } else {
-        const deleteButton = el.querySelector(".enroll_list_specialists_item_meta_button_delete");
-        deleteButton.disabled = true;
-        return true;
       }
+      return true;
     });
   }
 
-  const onlyOneDeleteButton = () => {
-    const deleteButtons = document.querySelectorAll(".enroll_list_specialists_item_meta_button_delete");
-    Array.from(deleteButtons).forEach((el: any) => el.disabled = true);
-    const addButtons = document.querySelectorAll(".enroll_list_specialists_item_meta_button_add");
-    Array.from(addButtons).forEach((el: any) => el.disabled = false);
+
+  const clearChoice = () => {
+    const listSpecialist = document.querySelector(".enroll_list_specialists");
+    const deleteButtons = listSpecialist!.querySelectorAll(".enroll_list_specialists_item_meta_button_delete");
+    Array.from(deleteButtons).forEach((el: any) => el.style.display = "none");
+    const addButtons = listSpecialist!.querySelectorAll(".enroll_list_specialists_item_meta_button_add");
+    Array.from(addButtons).forEach((el: any) => el.style.display = "inline-block");
   }
 
   const clearOrderDetails = () => {
@@ -53,26 +54,24 @@ export const ListSpecialists = observer(() => {
   const onClickAddService = async (e: any, specialist: ISpecialist) => {
     const button = e.target.closest(".enroll_list_specialists_item_meta_button_add");
 
-    if (!button.disabled) {
-      onlyOneDeleteButton();
-      button.disabled = true;
-      button.nextElementSibling.disabled = false;
-
-      clearOrderDetails();
-      orderDetailsStore.setOrderDetailsSpecialist(specialist);
-      // await servicesStore.getServicesListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id);
-    }
+    clearChoice();
+    button.style.display = "none";
+    button.nextElementSibling.style.display = "inline-block";
+    clearOrderDetails();
+    orderDetailsStore.setOrderDetailsSpecialist(specialist);
   }
 
   const onClickDeleteService = (e: any) => {
     const button = e.target.closest(".enroll_list_specialists_item_meta_button_delete");
 
-    if (!button.disabled) {
-      button.disabled = true;
-      button.previousElementSibling.disabled = false;
-      clearOrderDetails();
-    }
+    button.style.display = "none";
+    button.previousElementSibling.style.display = "inline-block";
+    clearOrderDetails();
+  }
 
+  const onClickClearChoice = () => {
+    orderDetailsStore.deleteOrderDetailsSpecialist();
+    clearChoice();
   }
 
 
@@ -88,8 +87,23 @@ export const ListSpecialists = observer(() => {
   return (
     <List
       itemLayout="horizontal"
-      header="Список специалистов"
-      bordered={true}
+      header={
+        <Row className="enroll_list_header">
+          <Col span={2}></Col>
+          <Col span={20}> Список специалистов </Col>
+          <Col span={2} className="enroll_list_header_buttons">
+            <Button
+              className="enroll_list_header_button"
+              onClick={onClickClearChoice}
+              shape="circle"
+            >
+              <DeleteOutlined />
+            </Button>
+          </Col>
+        </Row>
+      }
+      bordered
+      loading={Boolean(!specialistsStore.SpecialistsList.length)}
     >
       {specialistsStore.SpecialistsList.map((specialist: ISpecialist) =>
         <List.Item className="enroll_list_specialists_item" key={specialist.employee_id} data-id={specialist.employee_id}>
@@ -105,13 +119,13 @@ export const ListSpecialists = observer(() => {
                 </Col>
                 <Col className="enroll_list_specialists_item_meta_buttons">
                   <Button
-                    className="enroll_list_specialists_item_meta_button_add button--black"
+                    className="enroll_list_specialists_item_meta_button_add button_text--center button--black"
                     shape="circle"
                     onClick={(e) => onClickAddService(e, specialist)}>
                     +
                   </Button>
                   <Button
-                    className="enroll_list_specialists_item_meta_button_delete button--black"
+                    className="enroll_list_specialists_item_meta_button_delete button_text--center button--white"
                     shape="circle"
                     onClick={(e) => onClickDeleteService(e)}>
                     -

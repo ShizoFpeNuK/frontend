@@ -11,44 +11,45 @@ import orderDetailsStore from "../store/OrderDetailsStoreClass";
 export const OrderDetails = observer(() => {
 
   const selectedSpecialist = async () => {
-    await servicesStore.getServicesListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id);
-    enrollStore.setEnrollIsDisabledButtonServices(false);
     enrollStore.setSelectButtonSpecialistIsClicked(true);
-    console.log("Далее услуги");
+    enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenListServices(true);
+    await servicesStore.getServicesListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id);
   }
 
   const cancelSpecialist = () => {
     servicesStore.setServicesList([]);
-    enrollStore.setEnrollIsDisabledButtonServices(true);
     enrollStore.setSelectButtonSpecialistIsClicked(false);
-    console.log("Отмена услуги");
+    enrollStore.setIsOpenListServices(false);
+    enrollStore.setIsOpenListSpecialist(true);
   }
 
   const selectedServices = async () => {
-    await scheduleStore.getScheduleListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist!.employee_id)
-    enrollStore.setEnrollIsDisabledButtonServices(true);
-    enrollStore.setEnrollIsDisabledButtonDates(false);
     enrollStore.setSelectButtonServicesIsClicked(true);
-    console.log("Далее даты");
+    enrollStore.setIsOpenListServices(false);
+    enrollStore.setIsOpenListDate(true);
+    await scheduleStore.getScheduleListBySpecialistId({
+    employee_id: orderDetailsStore.OrderDetailsSpecialist!.employee_id,
+    services_id: orderDetailsStore.getOrderDetailServicesId(),
+    })
   }
 
   const cancelServices = () => {
-    enrollStore.setEnrollIsDisabledButtonServices(false);
-    enrollStore.setEnrollIsDisabledButtonDates(true);
     enrollStore.setSelectButtonServicesIsClicked(false);
-    console.log("Отмена даты");
+    enrollStore.setIsOpenListDate(false);
+    enrollStore.setIsOpenListServices(true);
   }
 
   const selectedDate = async () => {
-    enrollStore.setEnrollIsDisabledButtonDates(true);
     enrollStore.setSelectButtonDateIsClicked(true);
-    console.log("Далее заказ");
+    enrollStore.setIsOpenListDate(false);
+    enrollStore.setIsSubmitOrder(true);
   }
 
   const cancelDate = () => {
-    enrollStore.setEnrollIsDisabledButtonDates(false);
     enrollStore.setSelectButtonDateIsClicked(false);
-    console.log("Отмена заказа");
+    enrollStore.setIsOpenListDate(true);
+    enrollStore.setIsSubmitOrder(false);
   }
 
 
@@ -58,13 +59,16 @@ export const OrderDetails = observer(() => {
     enrollStore.setSelectButtonServicesIsClicked(false);
     enrollStore.setSelectButtonSpecialistIsClicked(false);
     orderDetailsStore.clearStore();
+    enrollStore.setIsSubmitOrder(false);
+    enrollStore.setIsOpenListSpecialist(true);
   }
 
 
   return (
     <Card title="Детали записи" style={CardForm} bodyStyle={{ textAlign: "left", ...CardBodyForm }}>
-      {Boolean(orderDetailsStore.OrderDetailsSpecialist) &&
-        <div className="enroll_order_details_specialist"> {orderDetailsStore.OrderDetailsSpecialist?.full_name} </div>
+      {Boolean(orderDetailsStore.OrderDetailsSpecialist)
+        ? <div className="enroll_order_details_specialist"> {orderDetailsStore.OrderDetailsSpecialist?.full_name} </div>
+        : <div className="enroll_order_details_message"> Ожидаем ваш заказ! </div>
       }
 
       {orderDetailsStore.OrderDetailsServices.length !== 0 &&
@@ -72,27 +76,27 @@ export const OrderDetails = observer(() => {
           {orderDetailsStore.OrderDetailsServices.map((service: IService) =>
             <Row className="enroll_order_details_service" key={service.service_id}>
               <Col className="enroll_order_details_services_info">
-                <span className="enroll_order_details_services_info_name">{service.name_service}</span>
+                <span className="enroll_order_details_services_info_name"> {service.name_service} </span>
               </Col>
               <Col className="enroll_order_details_item_meta_info">
-                <span className="enroll_order_details_services_info_cost">{service.cost}</span>
+                <span className="enroll_order_details_services_info_cost"> {service.cost} руб. </span>
               </Col>
             </Row>
           )}
         </div>
       }
 
-      {orderDetailsStore.OrderDetailsDate.length !== 0 &&
+      {orderDetailsStore.OrderDetailsDate.length !== 0 && orderDetailsStore.OrderDetailsTime.length !== 0 &&
         <Row className="enroll_order_details_datetime">
-          <Col className="enroll_order_details_date"> {orderDetailsStore.OrderDetailsDate} </Col>
-          <Col className="enroll_order_details_time"> {orderDetailsStore.OrderDetailsTime} </Col>
+          <Col className="enroll_order_details_date"> {new Date(orderDetailsStore.OrderDetailsDate).toLocaleDateString()} </Col>
+          <Col className="enroll_order_details_time"> {orderDetailsStore.OrderDetailsTime} — {orderDetailsStore.getOrderDetailsTotalTime} </Col>
         </Row>
       }
 
       {orderDetailsStore.OrderDetailsServices.length !== 0 &&
         <Row className="enroll_order_details_totalcount">
           <Col className="enroll_order_details_totalcount_text"> Стоимость </Col>
-          <Col className="enroll_order_details_totalcount_sum"> {orderDetailsStore.getOrderDetailsTotalCount} </Col>
+          <Col className="enroll_order_details_totalcount_sum"> {orderDetailsStore.getOrderDetailsTotalCount} руб. </Col>
         </Row>
       }
 
@@ -183,9 +187,6 @@ export const OrderDetails = observer(() => {
           </Button>
         </div>
       }
-
-
-
     </Card >
   )
 });

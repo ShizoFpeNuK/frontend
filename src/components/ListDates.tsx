@@ -1,28 +1,18 @@
 import { observer } from "mobx-react";
 import { ISchedule } from "../options/model/schedule.model";
-import { Button, Card } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
+import { Button, Card, Col, Row } from "antd";
 import scheduleStore from "../store/ScheduleStoreClass";
 import orderDetailsStore from "../store/OrderDetailsStoreClass";
 
 
 export const ListDates = observer(() => {
-  const [isLoader, setIsLoader] = useState<boolean>(false);
-
-
-  const loaderPage = async () => {
-    if (orderDetailsStore.OrderDetailsSpecialist) {
-      // await scheduleStore.getScheduleListBySpecialistId(orderDetailsStore.OrderDetailsSpecialist.employee_id)
-      //   .then(() => {
-      //     setIsLoader(true);
-      //   })
-    }
-  }
-
 
   const getListButtonsDate = () => {
-    const ListButtonsTime = document.querySelectorAll(".enroll_list_dates_button");
+    const listDates = document.querySelector(".enroll_list_dates");
+    const ListButtonsTime = listDates!.querySelectorAll(".enroll_list_dates_item_button");
     Array.from(ListButtonsTime).every((el: any) => {
       if (el.getAttribute("data-id") == (orderDetailsStore.OrderDetailsDate)) {
         el.classList.add("button--black");
@@ -46,23 +36,37 @@ export const ListDates = observer(() => {
   }
 
 
-  const onlyOneButtonDateDisabled = (parentOfButton: any) => {
-    const enableButtons = parentOfButton.querySelectorAll(".enroll_list_dates_button");
+  const onlyOneButtonDateDisabled = () => {
+    const listDates = document.querySelector(".enroll_list_dates_items")
+    const enableButtons = listDates!.querySelectorAll(".enroll_list_dates_item_button");
     Array.from(enableButtons).forEach((el: any) => el.classList.remove("button--black"));
   }
 
   const onlyOneButtonTimeDisabled = (parentOfButton: any) => {
-    const enableButtons = parentOfButton.querySelectorAll(".enroll_list_times_button");
-    Array.from(enableButtons).forEach((el: any) => el.classList.remove("button--black"));
+    if (parentOfButton) {
+      const enableButtons = parentOfButton.parentNode.querySelectorAll(".enroll_list_times_button");
+      Array.from(enableButtons).forEach((el: any) => el.classList.remove("button--black"));
+    }
   }
 
 
+  const onClickClearChoice = () => {
+    orderDetailsStore.deleteOrderDetailsTime();
+    const listTimes = document.querySelector(".enroll_list_times_buttons");
+    onlyOneButtonTimeDisabled(listTimes);
+
+    orderDetailsStore.deleteOrderDetailsDate();
+    onlyOneButtonDateDisabled();
+
+    orderDetailsStore.deleteOrderDetailsDateWithTimes();
+  }
+
   const onClickButtonDate = (e: any, date: string, schedule: ISchedule) => {
-    const button = e.target.closest(".enroll_list_dates_button");
+    const button = e.target.closest(".enroll_list_dates_item_button");
     const className: string = "button--black";
 
     if (!button.classList.contains(className)) {
-      onlyOneButtonDateDisabled(button.parentNode);
+      onlyOneButtonDateDisabled();
       button.classList.add(className);
 
       orderDetailsStore.setOrderDetailsDate(date);
@@ -92,34 +96,56 @@ export const ListDates = observer(() => {
 
 
   useEffect(() => {
-    if (!scheduleStore.ScheduleList.length) {
-      loaderPage();
-    } else {
-      getListButtonsTime();
-      getListButtonsDate();
-    }
-  }, [isLoader])
+    getListButtonsTime();
+    getListButtonsDate();
+  }, [])
 
 
   return (
     <Card
       className="enroll_list_dates_times"
-      title="Список дат и времени"
-      style={CardForm}
-      bodyStyle={CardBodyForm}
-    >
-
-      {scheduleStore.ScheduleList.length !== 0 &&
-        <div className="enroll_list_dates_buttons">
-          {scheduleStore.ScheduleList.map((schedule: ISchedule) =>
+      title={
+        <Row className="enroll_list_header">
+          <Col span={2}></Col>
+          <Col span={20}> Список дат и времени </Col>
+          <Col span={2} className="enroll_list_header_buttons">
             <Button
-              className="enroll_list_dates_button"
-              key={schedule.date}
-              data-id={schedule.date}
-              onClick={(e) => onClickButtonDate(e, schedule.date, schedule)}
+              className="enroll_list_header_button"
+              onClick={onClickClearChoice}
+              shape="circle"
             >
-              {schedule.date}
+              <DeleteOutlined />
             </Button>
+          </Col>
+        </Row>
+      }
+      style={CardForm}
+      bodyStyle={{paddingTop: 0, ...CardBodyForm}}
+      loading={Boolean(!scheduleStore.ScheduleList.length)}
+    >
+      {scheduleStore.ScheduleList.length !== 0 &&
+        <div className="enroll_list_dates_items">
+          {scheduleStore.ScheduleMonth.map((month: string) =>
+            <div className="enroll_list_dates_item" key={month}>
+              <div className="enroll_list_dates_item_month">
+                {month.charAt(0).toUpperCase() + month.substring(1)}
+              </div>
+              <div className="enroll_list_dates_item_buttons">
+                {scheduleStore.ScheduleList.filter((schedule: ISchedule) => {
+                  return month === new Date(schedule.date).toLocaleString('ru', { month: 'long' });
+                }).map((schedule: ISchedule) =>
+                  <Button
+                    className="enroll_list_dates_item_button"
+                    key={schedule.date}
+                    data-id={schedule.date}
+                    shape="circle"
+                    onClick={(e) => onClickButtonDate(e, schedule.date, schedule)}
+                  >
+                    {new Date(schedule.date).getDate()}
+                  </Button>
+                )}
+              </div>
+            </div>
           )}
         </div>
       }
@@ -138,6 +164,7 @@ export const ListDates = observer(() => {
           )}
         </div >
       }
+
     </Card >
   )
 });
