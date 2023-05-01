@@ -7,6 +7,10 @@
   margin-bottom: 40px;
 }
 
+.enroll_row {
+  justify-content: center;
+}
+
 .enroll_buttons {
   padding: 0 20px;
 }
@@ -19,15 +23,36 @@
   padding: 0 20px;
 }
 
-.button--black:enabled {
+.enroll_list_header_buttons {
+  text-align: right;
+}
+
+.button--black {
   background-color: black;
   color: white;
- }
+}
+
+.button--white {
+  background-color: white;
+  border-color: black;
+  color: black;
+  font-weight: 800;
+}
+
+.button_text--center span {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+}
 
 
-/* eroll_list_specialists */
+/* enroll_list_specialists */
 .enroll_list_specialists {
   padding: 0 20px;
+}
+
+.enroll_order_details_message {
+  text-align: center;
 }
 
 .enroll_list_specialists_item_meta_row {
@@ -35,12 +60,12 @@
   align-items: center;
 }
 
-.enroll_list_specialists_item_meta_button_add {
-  margin-right: 10px;
+.enroll_list_specialists_item_meta_button_delete {
+  display: none;
 }
 
 
-/* eroll_list_services */
+/* enroll_list_services */
 .enroll_list_services {
   padding: 0 20px;
 }
@@ -50,13 +75,26 @@
   align-items: center;
 }
 
-.enroll_list_services_item_meta_button_add {
-  margin-right: 10px;
+.enroll_list_services_item_meta_button_delete {
+  display: none;
 }
 
 
-/* eroll_list_dates */
-.enroll_list_dates_buttons {
+/* enroll_list_dates */
+.enroll_list_dates {
+  padding: 0 20px;
+}
+
+.enroll_list_dates_items {
+  text-align: left;
+  margin-bottom: 15px;
+}
+
+.enroll_list_dates_item_month {
+  margin-top: 10px;
+}
+
+.enroll_list_dates_item_buttons {
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -65,9 +103,14 @@
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
 
-.enroll_list_dates_button {
+.enroll_list_dates_item_buttons {
+  margin-top: 10px;
+}
+
+.enroll_list_dates_item_button {
   margin-right: 10px;
   margin-bottom: 10px;
+
 }
 
 .enroll_list_times_buttons {
@@ -128,7 +171,7 @@
 }
 
 .enroll_order_details_next_step {
-  margin-top: 20px; 
+  margin-top: 20px;
   text-align: center;
 }
 

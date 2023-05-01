@@ -7,6 +7,14 @@
 }
 
 
+/* auth_form */
+.auth_form {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
 /* auth_user_info */
 .auth_user_info {
   text-align: left;
