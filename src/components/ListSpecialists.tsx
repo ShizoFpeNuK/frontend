@@ -47,7 +47,7 @@ export const ListSpecialists = observer(() => {
   const clearOrderDetails = () => {
     servicesStore.deleteServicesList();
     scheduleStore.deleteScheduleBySpecialistList();
-    orderDetailsStore.clearStore();
+    // orderDetailsStore.clearStore();
   }
 
 

@@ -9,9 +9,13 @@ interface IServiceCard {
 }
 
 
-export const CardService = ({service}: IServiceCard) => {
+export const CardService = ({ service }: IServiceCard) => {
   return (
-    <Card title={"Услуга №" + service.service_id} headStyle={CardTitle} bodyStyle={CardBody}>
+    <Card
+      title={"Услуга №" + service.service_id}
+      headStyle={CardTitle}
+      bodyStyle={CardBody}
+      >
       <p className="services_and_price_card_name"> {service.name_service} </p>
       <p> <ClockCircleOutlined /> {service.duration} мин. </p>
       <p> <DollarCircleOutlined /> {service.cost} руб. </p>

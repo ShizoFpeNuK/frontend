@@ -2,10 +2,6 @@
   margin-bottom: 40px;
 }
 
-.auth_row {
-  justify-content: space-between;
-}
-
 
 /* auth_form */
 .auth_form {
@@ -13,24 +9,3 @@
   margin: 0 auto;
   text-align: center;
 }
-
-
-/* auth_user_info */
-.auth_user_info {
-  text-align: left;
-}
-
-.auth_user_info_title {
-  margin-bottom: 30px;
-}
-
-.auth_user_info_inner {
-  margin-bottom: 15px;
-}
-
-.auth_user_info_inner_title {
-  margin-bottom: 6px;
-}
-
-
-/* auth_user_checks */

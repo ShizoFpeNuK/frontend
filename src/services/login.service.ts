@@ -1,12 +1,13 @@
 import axios from "axios";
+import { IUser } from "../options/model/user.model";
 
 
 export default class LoginServices {
   static pathDefault: string = "/login";
 
 
-  static async login(username: string, password: string) {
-    await axios.post(this.pathDefault,
+  static async login(username: string, password: string): Promise<IUser> {
+    const user = await axios.post(this.pathDefault,
       {
         username: username,
         password: password,
@@ -17,5 +18,7 @@ export default class LoginServices {
         },
       }
     );
+
+    return user.data;
   }
 }

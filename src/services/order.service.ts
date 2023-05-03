@@ -1,12 +1,12 @@
 import axios from "axios";
-import { Order } from "../options/model/order.model";
+import { IOrder } from "../options/model/order.model";
 
 
 export default class OrderServices {
   static pathDefault: string = "/lovlu";
 
 
-  static async postOrder(order: Order): Promise<void> {
+  static async postOrder(order: IOrder): Promise<void> {
     await axios.post(this.pathDefault, order);
   }
 }

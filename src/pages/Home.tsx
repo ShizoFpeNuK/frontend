@@ -8,12 +8,6 @@ import servicesStore from "../store/ServicesStoreClass";
 
 
 export const Home = observer(() => {
-  // useEffect(() => {
-  //   if (login.isLogin) {
-  //     servicesStore.getServicesList();
-  //   }
-  // }, [login.isLogin])
-
   useEffect(() => {
     servicesStore.getServicesList();
   }, [])

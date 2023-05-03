@@ -3,11 +3,13 @@ import orderDetailsStore from "./OrderDetailsStoreClass";
 
 
 class EnrollStoreClass {
+  selectButtonClientIsClicked: boolean = false;
   selectButtonSpecialistIsClicked: boolean = false;
   selectButtonServicesIsClicked: boolean = false;
   selectButtonDateIsClicked: boolean = false;
 
-  isOpenListSpecialist: boolean = true;
+  isOpenFormFindClient: boolean = true; //new
+  isOpenListSpecialist: boolean = false; //true
   isOpenListServices: boolean = false;
   isOpenListDate: boolean = false;
   isSubmitOrder: boolean = false;
@@ -16,7 +18,11 @@ class EnrollStoreClass {
     makeAutoObservable(this);
   }
 
-  
+
+  setSelectButtonClientIsClicked(boolean: boolean) {
+    this.selectButtonClientIsClicked = boolean;
+  }
+
   setSelectButtonSpecialistIsClicked(boolean: boolean) {
     this.selectButtonSpecialistIsClicked = boolean;
   }
@@ -29,6 +35,10 @@ class EnrollStoreClass {
     this.selectButtonDateIsClicked = boolean;
   }
 
+
+  setIsOpenFormFindClient(boolean: boolean) { //new
+    this.isOpenFormFindClient = boolean;
+  }
 
   setIsOpenListSpecialist(boolean: boolean) {
     this.isOpenListSpecialist = boolean;

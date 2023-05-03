@@ -1,11 +1,11 @@
 
 
-export interface OrderBase {
+export interface IOrderBase {
   employee_id: number, 
   services_id: number[], 
 }
 
-export interface Order extends OrderBase {
+export interface IOrder extends IOrderBase {
   client_id: number,
   date: string, 
   time: string,

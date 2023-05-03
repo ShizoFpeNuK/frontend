@@ -1,7 +1,6 @@
 import '../style/css/enroll.css'
 import { Col, Row } from "antd";
 import { observer } from 'mobx-react';
-import { OrderForm } from "../components/OrderForm";
 import { ListDates } from "../components/ListDates";
 import { ListServices } from "../components/ListServices";
 import { OrderDetails } from "../components/OrderDetails";
@@ -12,7 +11,7 @@ import enrollStore from "../store/EnrollStoreClass";
 export const Enroll = observer(() => {
   return (
     <div className="enroll_page">
-      <h1 className="enroll_title"> Запись на приём </h1>
+      <h1 className="enroll_title title--border"> Запись на приём </h1>
       <Row className="enroll_row">
         {enrollStore.isSubmitOrder &&
           <Col className="enroll_list_message" span={10}> Нажмите кнопку "Записаться", чтобы создать запись в нашу парикмахерскую. </Col>
@@ -37,16 +36,9 @@ export const Enroll = observer(() => {
         }
 
         <Col className="enroll_order" span={8}>
-          {/* <Row className="enroll_order_row">
-            <Col className="enroll_order_form" span={24}>
-              <OrderForm />
-            </Col>
-          </Row>
-          <Row className="enroll_order_row"> */}
-            <Col className="enroll_order_details" span={24}>
-              <OrderDetails />
-            </Col>
-          {/* </Row> */}
+          <Col className="enroll_order_details" span={24}>
+            <OrderDetails />
+          </Col>
         </Col>
       </Row>
     </div >

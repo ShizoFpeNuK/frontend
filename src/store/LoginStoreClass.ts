@@ -1,8 +1,10 @@
+import { IUser } from "../options/model/user.model";
 import { makeAutoObservable } from "mobx";
 
 
 class LoginStoreClass {
   isLogin: boolean = false;
+  user: IUser | undefined = undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -11,6 +13,10 @@ class LoginStoreClass {
 
   setIsLogin(boolean: boolean) {
     this.isLogin = boolean;
+  }
+
+  setUser(user: IUser) {
+    this.user = user;
   }
 };
 

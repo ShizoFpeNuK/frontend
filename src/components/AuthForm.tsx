@@ -1,20 +1,26 @@
-import { IUser } from "../options/model/user.model";
 import { useForm } from "antd/es/form/Form";
+import { ILogin, IUser } from "../options/model/user.model";
+import { useNavigate } from "react-router-dom";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 import { Button, Card, Checkbox, Form, Input } from "antd";
-import LoginServices from "../services/login.service";
 import loginStore from "../store/LoginStoreClass";
+import LoginServices from "../services/login.service";
 
 
 export const AuthForm = () => {
   const [form] = useForm();
+  const navigate = useNavigate();
 
-
-  const onFinish = async (values: IUser) => {
+  
+  const onFinish = async (values: ILogin) => {
     await LoginServices.login(values.username, values.password)
-      .then(() => loginStore.setIsLogin(true))
+      .then((user: IUser) => {
+        loginStore.setIsLogin(true);
+        loginStore.setUser(user);
+        navigate("/personal_account");
+        form.resetFields();
+      })
       .catch(() => console.log("Не залогинились"));
-    form.resetFields();
   }
 
   const onFinishFailed = (errorInfo: any) => {
@@ -60,7 +66,7 @@ export const AuthForm = () => {
         </Form.Item> */}
 
         <Form.Item style={{ marginBottom: "15px" }}>
-          <Button type="primary" onClick={form.submit}> Submit </Button>
+          <Button type="primary" onClick={form.submit}> Войти </Button>
         </Form.Item>
       </Form>
     </Card>

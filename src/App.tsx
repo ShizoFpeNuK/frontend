@@ -2,12 +2,14 @@ import './style/css/App.css';
 import './style/css/header.css';
 import './style/css/footer.css';
 import './style/css/general.css';
-import { Auth } from './pages/Auth';
-import { Home } from './pages/Home';
-import { Enroll } from './pages/Enroll';
-import { Header } from './components/Headers';
-import { observer } from 'mobx-react';
+import { Auth } from "./pages/Auth";
+import { Home } from "./pages/Home";
+import { Enroll } from "./pages/Enroll";
+import { Header } from "./components/Header";
+import { NotFound } from "./pages/NotFound";
+import { observer } from "mobx-react";
 import { Route, Routes } from "react-router-dom";
+import { PersonalAccount } from "./pages/PersonalAccount";
 import { Col, Row, Image } from "antd";
 import axios from "axios";
 
@@ -17,12 +19,8 @@ axios.defaults.baseURL = "http://localhost:8000";
 
 
 const App = observer(() => {
-  // useEffect(() => {
-  //   login.login();
-  // }, [])
-
   return (
-    <div className="App">
+    <div className="App"> 
       <header className="header">
         <Header />
       </header>
@@ -32,6 +30,8 @@ const App = observer(() => {
             <Route path="/" element={<Home />} />
             <Route path="/enroll" element={<Enroll />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/personal_account" element={<PersonalAccount />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </main>

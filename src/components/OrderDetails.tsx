@@ -1,14 +1,30 @@
 import { observer } from "mobx-react";
 import { IService } from "../options/model/service.model";
-import { Card, Row, Col, Button } from "antd";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
+import { Card, Row, Col, Button, Space } from "antd";
 import enrollStore from "../store/EnrollStoreClass";
+import OrderServices from "../services/order.service";
 import scheduleStore from "../store/ScheduleStoreClass";
 import servicesStore from "../store/ServicesStoreClass";
 import orderDetailsStore from "../store/OrderDetailsStoreClass";
 
 
 export const OrderDetails = observer(() => {
+
+  //new
+  const selectedClient = async () => {
+    enrollStore.setSelectButtonClientIsClicked(true);
+    enrollStore.setIsOpenFormFindClient(false);
+    enrollStore.setIsOpenListSpecialist(true);
+  }
+
+  //new
+  const cancelClient = async () => {
+    orderDetailsStore.deleteOrderDetailsClient();
+    enrollStore.setSelectButtonClientIsClicked(false);
+    enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenFormFindClient(true);
+  }
 
   const selectedSpecialist = async () => {
     enrollStore.setSelectButtonSpecialistIsClicked(true);
@@ -29,8 +45,8 @@ export const OrderDetails = observer(() => {
     enrollStore.setIsOpenListServices(false);
     enrollStore.setIsOpenListDate(true);
     await scheduleStore.getScheduleListBySpecialistId({
-    employee_id: orderDetailsStore.OrderDetailsSpecialist!.employee_id,
-    services_id: orderDetailsStore.getOrderDetailServicesId(),
+      employee_id: orderDetailsStore.OrderDetailsSpecialist!.employee_id,
+      services_id: orderDetailsStore.getOrderDetailServicesId(),
     })
   }
 
@@ -54,32 +70,66 @@ export const OrderDetails = observer(() => {
 
 
   const onClickSubmit = async () => {
-    // await OrderServices.postOrder(orderDetailsStore.getOrderDetails());
+    await OrderServices.postOrder(orderDetailsStore.getOrderDetails());
     enrollStore.setSelectButtonDateIsClicked(false);
     enrollStore.setSelectButtonServicesIsClicked(false);
     enrollStore.setSelectButtonSpecialistIsClicked(false);
+    enrollStore.setSelectButtonClientIsClicked(false); //new
     orderDetailsStore.clearStore();
     enrollStore.setIsSubmitOrder(false);
-    enrollStore.setIsOpenListSpecialist(true);
+    // enrollStore.setIsOpenListSpecialist(true);
+    enrollStore.setIsOpenFormFindClient(true);
+  }
+
+  //new
+  const onClickClearAll = () => {
+    enrollStore.setSelectButtonDateIsClicked(false);
+    enrollStore.setSelectButtonServicesIsClicked(false);
+    enrollStore.setSelectButtonSpecialistIsClicked(false);
+    enrollStore.setSelectButtonClientIsClicked(false);
+    enrollStore.setIsOpenListDate(false);
+    enrollStore.setIsOpenListServices(false);
+    enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenFormFindClient(false);
+    orderDetailsStore.clearStore();
+    enrollStore.setIsOpenFormFindClient(true);
   }
 
 
   return (
-    <Card title="Детали записи" style={CardForm} bodyStyle={{ textAlign: "left", ...CardBodyForm }}>
-      {Boolean(orderDetailsStore.OrderDetailsSpecialist)
-        ? <div className="enroll_order_details_specialist"> {orderDetailsStore.OrderDetailsSpecialist?.full_name} </div>
+    <Card title="Детали записи" style={CardForm} bodyStyle={{ textAlign: "left", ...CardBodyForm, paddingBottom: "10px" }}>
+      {/* new */}
+      {orderDetailsStore.OrderDetailsClient
+        ? <div className="enroll_order_details_client">
+          <h3 className="enroll_order_details_client_title"> Клиент </h3>
+          <div className="enroll_order_details_client_fullname"> {orderDetailsStore.OrderDetailsClient?.full_name} </div>
+          <div className="enroll_order_details_client_telephone"> {orderDetailsStore.OrderDetailsClient?.telephone} </div>
+        </div>
         : <div className="enroll_order_details_message"> Ожидаем ваш заказ! </div>
       }
+
+      {/* new */}
+      {orderDetailsStore.OrderDetailsSpecialist &&
+        <div className="enroll_order_details_specialist">
+          <h3 className="enroll_order_details_specialist_title"> Специалист </h3>
+          <div className="enroll_order_details_specialist_fullname"> {orderDetailsStore.OrderDetailsSpecialist?.full_name} </div>
+        </div>
+      }
+
+      {/* {Boolean(orderDetailsStore.OrderDetailsSpecialist)
+        ? <div className="enroll_order_details_specialist"> {orderDetailsStore.OrderDetailsSpecialist?.full_name} </div>
+        : <div className="enroll_order_details_message"> Ожидаем ваш заказ! </div>
+      } */}
 
       {orderDetailsStore.OrderDetailsServices.length !== 0 &&
         <div className="enroll_order_details_services">
           {orderDetailsStore.OrderDetailsServices.map((service: IService) =>
-            <Row className="enroll_order_details_service" key={service.service_id}>
-              <Col className="enroll_order_details_services_info">
-                <span className="enroll_order_details_services_info_name"> {service.name_service} </span>
+            <Row wrap={false} className="enroll_order_details_service" key={service.service_id}>
+              <Col className="enroll_order_details_service_info">
+                <div className="enroll_order_details_service_info_name"> {service.name_service} </div>
               </Col>
-              <Col className="enroll_order_details_item_meta_info">
-                <span className="enroll_order_details_services_info_cost"> {service.cost} руб. </span>
+              <Col className="enroll_order_details_info">
+                <div className="enroll_order_details_info_cost"> {service.cost} руб. </div>
               </Col>
             </Row>
           )}
@@ -98,6 +148,31 @@ export const OrderDetails = observer(() => {
           <Col className="enroll_order_details_totalcount_text"> Стоимость </Col>
           <Col className="enroll_order_details_totalcount_sum"> {orderDetailsStore.getOrderDetailsTotalCount} руб. </Col>
         </Row>
+      }
+
+
+      {/* Кнопка после клиента */}
+      {orderDetailsStore.OrderDetailsClient && !enrollStore.selectButtonClientIsClicked &&
+        <div className="enroll_order_details_next_step">
+          <Button
+            className="enroll_order_details_next_step_button"
+            type="primary"
+            onClick={selectedClient}
+          >
+            Далее
+          </Button>
+        </div>
+      }
+      {enrollStore.selectButtonClientIsClicked && !orderDetailsStore.OrderDetailsSpecialist &&
+        <div className="enroll_order_details_next_step">
+          <Button
+            className="enroll_order_details_next_step_button"
+            type="primary"
+            onClick={cancelClient}
+          >
+            Назад
+          </Button>
+        </div>
       }
 
 
@@ -175,9 +250,9 @@ export const OrderDetails = observer(() => {
         </div>
       }
 
-
-      {enrollStore.selectButtonDateIsClicked &&
-        <div className="enroll_order_details_submit">
+      {/* Кнопки очистки и submit */}
+      <Space direction="vertical" className="enroll_order_details_buttons" style={{width: "100%"}}>
+        {enrollStore.selectButtonDateIsClicked &&
           <Button
             className="enroll_order_details_submit_button"
             type="primary"
@@ -185,8 +260,17 @@ export const OrderDetails = observer(() => {
           >
             Записаться
           </Button>
-        </div>
-      }
+        }
+        {orderDetailsStore.OrderDetailsSpecialist &&
+          <Button
+            className="enroll_order_details_clear_button"
+            danger
+            onClick={onClickClearAll}
+          >
+            Всё очистить
+          </Button>
+        }
+      </Space>
     </Card >
   )
 });

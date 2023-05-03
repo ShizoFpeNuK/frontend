@@ -1,12 +1,13 @@
-import { Order } from "../options/model/order.model";
+import { IOrder } from "../options/model/order.model";
 import { IService } from "../options/model/service.model";
 import { ISchedule } from "../options/model/schedule.model";
 import { ISpecialist } from "../options/model/specialist.model";
 import { makeAutoObservable } from "mobx";
+import { IClientBase } from "../options/model/client.model";
 
 
 class OrderDetailsStoreClass {
-  OrderDetailsClientId: number = 7;
+  OrderDetailsClient: IClientBase | undefined = undefined;
   OrderDetailsSpecialist: ISpecialist | undefined = undefined;
   OrderDetailsServices: IService[] = [];
   OrderDetailsDate: string = "";
@@ -20,6 +21,10 @@ class OrderDetailsStoreClass {
 
   addOrderDetailsService(service: IService) {
     this.OrderDetailsServices.push(service);
+  }
+
+  setOrderDetailsClient(client: IClientBase | undefined) {
+    this.OrderDetailsClient = client;
   }
 
   setOrderDetailsServices(services: IService[]) {
@@ -59,6 +64,10 @@ class OrderDetailsStoreClass {
     this.setOrderDetailsServices([]);
   }
 
+  deleteOrderDetailsClient() {
+    this.setOrderDetailsClient(undefined);
+  }
+
   deleteOrderDetailsSpecialist() {
     this.setOrderDetailsSpecialist(undefined);
   }
@@ -77,6 +86,7 @@ class OrderDetailsStoreClass {
 
 
   clearStore() {
+    this.deleteOrderDetailsClient();
     this.deleteOrderDetailsSpecialist();
     this.deleteOrderDetailsServices()
     this.deleteOrderDetailsDate();
@@ -92,9 +102,9 @@ class OrderDetailsStoreClass {
     return servicesId;
   }
 
-  getOrderDetails(): Order {
+  getOrderDetails(): IOrder {
     return {
-      client_id: this.OrderDetailsClientId,
+      client_id: this.OrderDetailsClient!.client_id,
       employee_id: this.OrderDetailsSpecialist!.employee_id,
       services_id: this.getOrderDetailServicesId(),
       date: this.OrderDetailsDateWithTimes!.date,

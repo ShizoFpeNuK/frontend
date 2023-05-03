@@ -48,7 +48,7 @@
 
 /* enroll_list_specialists */
 .enroll_list_specialists {
-  padding: 0 20px;
+  padding-right: 20px;
 }
 
 .enroll_order_details_message {
@@ -67,7 +67,7 @@
 
 /* enroll_list_services */
 .enroll_list_services {
-  padding: 0 20px;
+  padding-right: 20px;
 }
 
 .enroll_list_services_item_meta_row {
@@ -82,7 +82,7 @@
 
 /* enroll_list_dates */
 .enroll_list_dates {
-  padding: 0 20px;
+  padding-right: 20px;
 }
 
 .enroll_list_dates_items {
@@ -128,7 +128,7 @@
 
 /* enroll_order */
 .enroll_order {
-  padding: 0 20px;
+  padding-left: 20px;
 }
 
 .enroll_order_row {
@@ -139,8 +139,17 @@
   margin-bottom: 0;
 }
 
-.enroll_order_details_specialist {
+.enroll_order_details_client {
   padding-bottom: 12px;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.enroll_order_details_client_row {
+  justify-content: space-between;
+}
+
+.enroll_order_details_specialist {
+  padding: 12px 0;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
 }
 
@@ -156,6 +165,11 @@
   margin-top: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.enroll_order_details_service_info {
+  margin-right: 20px;
+  max-width: 70%;
 }
 
 .enroll_order_details_datetime {
@@ -175,7 +189,7 @@
   text-align: center;
 }
 
-.enroll_order_details_submit {
+.enroll_order_details_buttons {
   text-align: center;
   margin-top: 20px;
 }

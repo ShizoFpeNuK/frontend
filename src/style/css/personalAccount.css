@@ -1,0 +1,50 @@
+/* .personal_account_row {
+  justify-content: space-between;
+} */
+
+
+/* CARDBASE */
+.cardbase_inner_info {
+  margin-bottom: 15px;
+}
+
+
+/* personal_account_info */
+.personal_account_info {
+  padding-right: 20px;
+  text-align: left;
+}
+
+
+.personal_account_info_inner_button{
+  margin-top: 10px;
+}
+
+
+/* personal_account_control_buttons */
+.personal_account_control_buttons {
+  padding: 0 20px;
+}
+
+
+/* personal_account_forms */
+.personal_account_forms {
+  padding: 0 20px;
+}
+
+.personal_account_enroll_row {
+  justify-content: space-between;
+}
+
+
+/* personal_account_enroll */
+.personal_account_enroll {
+  padding-left: 20px;
+}
+
+
+/* personal_account_result */
+.personal_account_result {
+  padding-left: 20px;
+  text-align: left;
+}
