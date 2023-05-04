@@ -1,6 +1,6 @@
 import { Card } from "antd";
-import { IService } from "../options/model/service.model";
-import { CardBody, CardTitle } from "../style/typescript/card";
+import { IService } from "../../options/model/service.model";
+import { CardBody, CardTitle } from "../../style/typescript/card";
 import { ClockCircleOutlined, DollarCircleOutlined } from "@ant-design/icons";
 
 
@@ -9,7 +9,7 @@ interface IServiceCard {
 }
 
 
-export const CardService = ({ service }: IServiceCard) => {
+const CardService = ({ service }: IServiceCard) => {
   return (
     <Card
       title={"Услуга №" + service.service_id}
@@ -22,3 +22,6 @@ export const CardService = ({ service }: IServiceCard) => {
     </Card>
   )
 };
+
+
+export default CardService;

@@ -1,7 +1,6 @@
 import { IClient } from "../../options/model/client.model";
-import { CardBase } from "./CardBase";
-import { observer } from "mobx-react";
 import { ReactNode } from "react";
+import CardBase from "./CardBase";
 
 
 interface ICardClientProps {
@@ -11,7 +10,7 @@ interface ICardClientProps {
 }
 
 
-export const CardClient = observer((props: ICardClientProps) => {
+export const CardClient = (props: ICardClientProps) => {
   return (
     <CardBase
       title={props.title}
@@ -32,4 +31,7 @@ export const CardClient = observer((props: ICardClientProps) => {
       {props.children}
     </CardBase>
   )
-});
+};
+
+
+export default CardClient;

@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import { CardAuth, CardBodyAuth, CardTitleAuth } from "../style/typescript/cardAuth";
+import { CardAuth, CardBodyAuth, CardTitleAuth } from "../../style/typescript/cardAuth";
 
 
 export const CardChecks = () => {

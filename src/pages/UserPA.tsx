@@ -2,7 +2,7 @@ import '../style/css/auth.css';
 import '../style/css/main.css';
 import { observer } from "mobx-react";
 import { Navigate } from "react-router-dom";
-import { CardChecks } from "../components/CardChecks";
+import { CardChecks } from "../components/Cards/CardChecks";
 import { Card, Col, Row } from "antd";
 import { CardAuth, CardBodyAuth, CardTitleAuth } from "../style/typescript/cardAuth";
 import loginStore from "../store/LoginStoreClass";

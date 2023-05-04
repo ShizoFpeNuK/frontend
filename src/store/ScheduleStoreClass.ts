@@ -5,7 +5,7 @@ import ScheduleServices from "../services/schedule.service";
 
 
 class ScheduleStoreClass {
-  ScheduleList: ISchedule[] = [];
+  ScheduleListBySpecialist: ISchedule[] = [];
   ScheduleMonth: string[] = [];
 
 
@@ -37,11 +37,11 @@ class ScheduleStoreClass {
       }
     })
 
-    this.setScheduleList(schedules);
+    this.setScheduleListBySpecialist(schedules);
   }
 
-  setScheduleList(schedules: ISchedule[]) {
-    this.ScheduleList = schedules;
+  setScheduleListBySpecialist(schedules: ISchedule[]) {
+    this.ScheduleListBySpecialist = schedules;
   }
 
   setScheduleMonth(months: string[]) {
@@ -52,8 +52,8 @@ class ScheduleStoreClass {
     this.ScheduleMonth.push(month);
   }
 
-  deleteScheduleBySpecialistList() {
-    this.setScheduleList([]);
+  deleteScheduleListBySpecialist() {
+    this.setScheduleListBySpecialist([]);
   }
 
   deleteScheduleMonth() {

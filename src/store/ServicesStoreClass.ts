@@ -4,12 +4,18 @@ import ServicesServices from "../services/services.service";
 
 
 class ServicesStoreClass {
+  ServicesListHome: IService[] = [];
   ServicesList: IService[] = [];
 
   constructor() {
     makeAutoObservable(this);
   }
 
+  
+  async getServicesListHome(): Promise<void> {
+    const services: IService[] = await ServicesServices.getAll();
+    this.setServicesListHome(services);
+  }
 
   async getServicesList(): Promise<void> {
     const services: IService[] = await ServicesServices.getAll();
@@ -21,13 +27,16 @@ class ServicesStoreClass {
     this.setServicesList(services);
   }
 
-  deleteServicesList() {
-    this.setServicesList([]);
+  setServicesListHome(services: IService[]) {
+    this.ServicesListHome = services;
   }
-
 
   setServicesList(services: IService[]) {
     this.ServicesList = services;
+  }
+
+  deleteServicesList() {
+    this.setServicesList([]);
   }
 }
 

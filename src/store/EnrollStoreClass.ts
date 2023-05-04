@@ -56,6 +56,18 @@ class EnrollStoreClass {
     this.isSubmitOrder = boolean;
   }
 
+  clearStore() {
+    enrollStore.setSelectButtonDateIsClicked(false);
+    enrollStore.setSelectButtonServicesIsClicked(false);
+    enrollStore.setSelectButtonSpecialistIsClicked(false);
+    enrollStore.setSelectButtonClientIsClicked(false);
+    enrollStore.setIsSubmitOrder(false);
+    enrollStore.setIsOpenListDate(false);
+    enrollStore.setIsOpenListServices(false);
+    enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenFormFindClient(true);
+  }
+
 
   get IsNextServices(): boolean {
     if (orderDetailsStore.OrderDetailsServices.length) {

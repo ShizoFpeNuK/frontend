@@ -12,10 +12,24 @@ interface ICardBaseProps {
 }
 
 
-export const CardBase = (props: ICardBaseProps) => {
+const CardBase = (props: ICardBaseProps) => {
   return (
-    <Card title={props.title} style={CardAuth} headStyle={CardTitleAuth} bodyStyle={CardBodyAuth}>
-      <div className="cardbase_inner_info">
+    <Card
+      title={props.title}
+      style={CardAuth}
+      headStyle={CardTitleAuth}
+      bodyStyle={CardBodyAuth}
+    >
+      <style type="text/css">
+        {`
+          .cardbase_inner_info {
+            margin-bottom: 15px;
+            text-align: left;
+          }
+
+        `}
+      </style>
+      <div className="cardbase_inner_info" >
         <h3 className="cardbase_inner_info_title"> ФИО </h3>
         <p className="cardbase_inner_info_fullname"> {props.info.full_name} </p>
       </div>
@@ -31,3 +45,6 @@ export const CardBase = (props: ICardBaseProps) => {
     </Card>
   )
 }
+
+
+export default CardBase;

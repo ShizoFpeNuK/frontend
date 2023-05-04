@@ -1,24 +1,10 @@
-.main {
-  margin-top: 100px;
-  margin-bottom: auto;
-}
-
-.main_wrapper {
-  margin-bottom: 50px;
-}
-
-
 /* ------------- SERVICES AND PRICE ------------- */
 .services_and_price {
   margin-bottom: 50px;
 }
 
-.services_and_price_header {
+.services_and_price_title {
   margin-bottom: 40px;
-}
-
-.services_and_price_row {
-  justify-content: center;
 }
 
 .services_and_price_card {

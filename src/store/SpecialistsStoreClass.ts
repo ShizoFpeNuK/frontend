@@ -20,6 +20,10 @@ class SpecialistsStoreClass {
   setSpecialistsList(specialists: ISpecialist[]) {
     this.SpecialistsList = specialists;
   }
+
+  deleteSpecialistsList() {
+    this.setSpecialistsList([]);
+  }
 }
 
 

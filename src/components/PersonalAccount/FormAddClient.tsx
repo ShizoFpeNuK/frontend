@@ -5,7 +5,7 @@ import { Button, Card, Form, Input } from "antd";
 import ClientServices from "../../services/client.service";
 
 
-export const AddClientForm = () => {
+const FormAddClient = () => {
   const [form] = useForm();
 
 
@@ -70,3 +70,6 @@ export const AddClientForm = () => {
     </Card>
   )
 }
+
+
+export default FormAddClient;

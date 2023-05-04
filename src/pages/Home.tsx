@@ -1,24 +1,26 @@
-import '../style/css/main.css';
+import '../style/css/main/home.css';
 import { observer } from "mobx-react";
 import { Col, Row } from "antd";
 import { IService } from "../options/model/service.model";
 import { useEffect } from "react";
-import { CardService } from "../components/CardService";
+import CardService from "../components/Cards/CardService";
 import servicesStore from "../store/ServicesStoreClass";
 
 
-export const Home = observer(() => {
+const Home = observer(() => {
   useEffect(() => {
-    servicesStore.getServicesList();
+    if (!servicesStore.ServicesListHome.length) {
+      servicesStore.getServicesListHome();
+    }
   }, [])
 
 
   return (
     <div className="home_page">
-      <div className="services_and_price" id="services-and-price">
-        <h1 className="services_and_price_header title--border"> Услуги и цены </h1>
-        <Row className="services_and_price_row">
-          {servicesStore.ServicesList.map((service: IService) =>
+      <div className="services_and_price">
+        <h1 className="services_and_price_title title--border"> Услуги и цены </h1>
+        <Row justify={'center'} className="services_and_price_row"> 
+          {servicesStore.ServicesListHome.map((service: IService) =>
             <Col className="services_and_price_card" key={service.service_id} span={4}>
               <CardService service={service} />
             </Col>
@@ -26,7 +28,7 @@ export const Home = observer(() => {
         </Row>
       </div>
 
-      <div className="about_us" id="about-us">
+      <div className="about_us">
         <h1 className="about_us_header title--border "> О нас </h1>
         <h3 className="about_us_subtitle"> BarberShop В МОСКВЕ - ЭТО МОЙ БАРБЕРШОП! </h3>
         <p className="about_us_text">
@@ -36,7 +38,7 @@ export const Home = observer(() => {
         </p>
       </div>
 
-      <div className="contacts" id="contacts">
+      <div className="contacts">
         <h1 className="contacts_header title--border"> Контакты </h1>
         <div className="contacts_info">
           <div className="contacts_info_address">
@@ -55,3 +57,6 @@ export const Home = observer(() => {
     </div>
   )
 });
+
+
+export default Home;

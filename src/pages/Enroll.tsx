@@ -1,14 +1,14 @@
 import '../style/css/enroll.css'
 import { Col, Row } from "antd";
 import { observer } from 'mobx-react';
-import { ListDates } from "../components/ListDates";
-import { ListServices } from "../components/ListServices";
-import { OrderDetails } from "../components/OrderDetails";
-import { ListSpecialists } from "../components/ListSpecialists";
+import ListDates from "../components/OrderComponents/ListDates";
 import enrollStore from "../store/EnrollStoreClass";
+import OrderDetails from "../components/OrderComponents/OrderDetails";
+import ListServices from "../components/OrderComponents/ListServices";
+import ListSpecialists from "../components/OrderComponents/ListSpecialists";
 
 
-export const Enroll = observer(() => {
+const Enroll = observer(() => {
   return (
     <div className="enroll_page">
       <h1 className="enroll_title title--border"> Запись на приём </h1>
@@ -44,3 +44,6 @@ export const Enroll = observer(() => {
     </div >
   )
 });
+
+
+export default Enroll;

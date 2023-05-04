@@ -1,22 +1,12 @@
-.header {
-  margin-top: 40px;
-}
-
-.header_row {
-  display: flex;
-  justify-content: center;
+.header_logo {
+  max-width: 200px;
+  min-width: 100px;
+  margin-right: 20px;
 }
 
 .navigation {
   margin: auto 0;
-}
-
-:where(.css-dev-only-do-not-override-1fviqcj).ant-anchor-wrapper-horizontal::before {
-  border-bottom: 0;
-}
-
-:where(.css-dev-only-do-not-override-1fviqcj).ant-anchor-wrapper-horizontal.navigation_left .ant-anchor {
-  justify-content: flex-end;
+  min-width: 450px;
 }
 
 :where(.css-dev-only-do-not-override-1fviqcj).ant-menu-horizontal {

@@ -1,6 +1,6 @@
 import { useForm } from "antd/es/form/Form";
-import { ILogin, IUser } from "../options/model/user.model";
 import { useNavigate } from "react-router-dom";
+import { ILogin, IUser } from "../options/model/user.model";
 import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import loginStore from "../store/LoginStoreClass";

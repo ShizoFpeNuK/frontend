@@ -1,8 +1,9 @@
+import '../../style/css/header/header.css';
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
-import { Col, Row, Image, MenuProps, Menu } from "antd";
+import { Row, Image, MenuProps, Menu, Col } from "antd";
 import { FormOutlined, HomeOutlined, LoginOutlined } from "@ant-design/icons";
-import loginStore from "../store/LoginStoreClass";
+import loginStore from "../../store/LoginStoreClass";
 
 
 const itemsBase: MenuProps['items'] = [
@@ -37,13 +38,20 @@ const itemsBaseWithPersAccount: MenuProps['items'] = [
 ];
 
 
-export const Header = observer(() => {
+const Header = observer(() => {
   return (
-    <Row className="header_row">
-      <Col span={4}>
-        <Image src={require('../options/logo/logo1.png')} width="200px" preview={false} />
+    <Row
+      justify={'center'}
+      wrap={false}
+      className="header_row"
+    >
+      <Col className="header_logo">
+        <Image
+          src={require('../../options/images/logo/logo.png')}
+          preview={false}
+        />
       </Col>
-      <Col span={6} className="navigation">
+      <Col className="navigation">
         {loginStore.isLogin
           ? <Menu mode="horizontal" items={itemsBaseWithPersAccount} />
           : <Menu mode="horizontal" items={itemsBaseWithAuth} />
@@ -52,3 +60,6 @@ export const Header = observer(() => {
     </Row>
   );
 });
+
+
+export default Header;

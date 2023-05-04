@@ -12,7 +12,7 @@ interface FindClientForm {
 }
 
 
-export const FindClientForm = (isOrder: FindClientForm) => {
+const FormFindClient = ({isOrder}: FindClientForm) => {
   const [form] = useForm();
 
 
@@ -76,3 +76,6 @@ export const FindClientForm = (isOrder: FindClientForm) => {
     </Card>
   )
 }
+
+
+export default FormFindClient;
