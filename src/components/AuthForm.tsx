@@ -1,7 +1,7 @@
 import { useForm } from "antd/es/form/Form";
+import { CardForm } from "../style/typescript/cardForm";
 import { useNavigate } from "react-router-dom";
 import { ILogin, IUser } from "../options/model/user.model";
-import { CardBodyForm, CardForm } from "../style/typescript/cardForm";
 import { Button, Card, Checkbox, Form, Input } from "antd";
 import loginStore from "../store/LoginStoreClass";
 import LoginServices from "../services/login.service";
@@ -29,7 +29,7 @@ export const AuthForm = () => {
 
 
   return (
-    <Card style={CardForm} bodyStyle={CardBodyForm}>
+    <Card style={CardForm}>
       <Form layout="vertical" form={form}
         initialValues={{ remember: true }}
         onFinish={onFinish}
@@ -65,7 +65,7 @@ export const AuthForm = () => {
           <Checkbox>Remember me</Checkbox>
         </Form.Item> */}
 
-        <Form.Item style={{ marginBottom: "15px" }}>
+        <Form.Item style={{marginBottom: 0}}>
           <Button type="primary" onClick={form.submit}> Войти </Button>
         </Form.Item>
       </Form>

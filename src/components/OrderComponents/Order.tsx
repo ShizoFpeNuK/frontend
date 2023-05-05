@@ -18,7 +18,7 @@ const Order = observer(() => {
     >
       {enrollStore.isOpenFormFindClient
         ? <Col className="order_form" span={6}>
-          <FindClientForm isOrder={true} />
+          <FindClientForm notifications={false} isOrder={true} />
         </Col>
         : <Col className="order_lists" span={16}>
           {enrollStore.isOpenListSpecialist &&

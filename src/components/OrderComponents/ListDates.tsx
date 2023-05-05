@@ -1,8 +1,8 @@
 import '../../style/css/order/listDates.css';
 import { observer } from "mobx-react";
+import { CardForm } from "../../style/typescript/cardForm";
 import { ISchedule } from "../../options/model/schedule.model";
 import { DeleteOutlined } from "@ant-design/icons";
-import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
 import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Row, Space } from "antd";
 import scheduleStore from "../../store/ScheduleStoreClass";
@@ -146,7 +146,6 @@ const ListDates = observer(() => {
         </Row>
       }
       style={CardForm}
-      bodyStyle={{ ...CardBodyForm, paddingBottom: "10px" }}
       loading={Boolean(!scheduleStore.ScheduleListBySpecialist.length)}
     >
       {scheduleStore.ScheduleListBySpecialist.length !== 0 &&

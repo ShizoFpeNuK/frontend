@@ -2,12 +2,12 @@ import '../style/css/auth.css';
 import '../style/css/main.css';
 import { observer } from "mobx-react";
 import { Navigate } from "react-router-dom";
-import { CardChecks } from "../components/Cards/CardChecks";
 import { Card, Col, Row } from "antd";
-import { CardAuth, CardBodyAuth, CardTitleAuth } from "../style/typescript/cardAuth";
+import CardCheck from "../components/PersonalAccount/CardCheck";
 import loginStore from "../store/LoginStoreClass";
 
-//В разработке
+
+//НА ПЕРЕДЕЛКЕ
 export const UserPA = observer(() => {
 
   if (!loginStore.isLogin) {
@@ -20,7 +20,7 @@ export const UserPA = observer(() => {
       <h1 className="auth_header"> Личный кабинет </h1>
       <Row className="auth_row">
         <Col className="auth_user_info" span={4}>
-          <Card title="Ваши сведения" style={CardAuth} headStyle={CardTitleAuth} bodyStyle={CardBodyAuth}>
+          <Card title="Ваши сведения">
             <div className="auth_user_info_fullname auth_user_info_inner">
               <h3 className="auth_user_info_fullname_title auth_user_info_inner_title"> ФИО </h3>
               <p className="auth_user_info_fullname_name"> Сильняков Сергей Евгеньевич </p>
@@ -43,7 +43,7 @@ export const UserPA = observer(() => {
           <h2 className="auth_user_checks_title title--border"> Ваши последние заказы </h2>
           <Row className="auth_user_checks_info">
             <Col className="auth_user_checks_cards" span={4}>
-              <CardChecks />
+              {/* <CardCheck /> */}
             </Col>
           </Row>
         </Col>

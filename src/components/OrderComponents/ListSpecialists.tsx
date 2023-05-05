@@ -129,7 +129,7 @@ const ListSpecialists = observer(() => {
                 align={'middle'}
                 className="enroll_list_specialists_item_meta_row">
                 <Col className="enroll_list_specialists_item_meta_info">
-                  <p className="enroll_list_specialists_item_meta_info_position"> {specialist.position} </p>
+                  <p className="enroll_list_specialists_item_meta_info_position"> {specialist.post} </p>
                   <Rate className="enroll_list_specialists_item_meta_info_raring" allowHalf disabled value={specialist.rating} />
                 </Col>
                 <Col className="enroll_list_specialists_item_meta_buttons">

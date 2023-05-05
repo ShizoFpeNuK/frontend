@@ -10,19 +10,13 @@
   margin-top: 20px;
 }
 
-.personal_account_forms {
-  padding-left: 20px;
-}
-
-.personal_account_forms_form {
+.personal_account_client_forms,
+.personal_account_order_form {
   padding-right: 20px;
 }
 
-.personal_account_result {
-  padding-left: 20px;
-  text-align: left;
-}
-
-.personal_account_order {
+.personal_account_result,
+.personal_account_order,
+.personal_account_client {
   padding-left: 20px;
 }

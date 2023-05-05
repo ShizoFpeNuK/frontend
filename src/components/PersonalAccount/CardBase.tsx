@@ -1,8 +1,9 @@
+import '../../style/css/cards/cardBase.css';
 import { Card } from "antd";
 import { IUser } from "../../options/model/user.model";
 import { IClient } from "../../options/model/client.model";
 import { ReactNode } from "react";
-import { CardAuth, CardBodyAuth, CardTitleAuth } from "../../style/typescript/cardAuth";
+import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
 
 
 interface ICardBaseProps {
@@ -15,33 +16,29 @@ interface ICardBaseProps {
 const CardBase = (props: ICardBaseProps) => {
   return (
     <Card
+      className="cardbase"
       title={props.title}
-      style={CardAuth}
-      headStyle={CardTitleAuth}
-      bodyStyle={CardBodyAuth}
+      style={CardForm}
+      bodyStyle={CardBodyForm}
     >
-      <style type="text/css">
-        {`
-          .cardbase_inner_info {
-            margin-bottom: 15px;
-            text-align: left;
+      <div className="cardbase_info">
+        <div className="cardbase_info_inner" >
+          <h3 className="cardbase_info_inner_title"> ФИО </h3>
+          <p className="cardbase_info_inner_fullname"> {props.info.full_name} </p>
+        </div>
+        <div className="cardbase_info_inner">
+          <h3 className="cardbase_info_inner_title"> Номер телефона </h3>
+          <p className="cardbase_info_inner_telephone"> {props.info.telephone} </p>
+        </div>
+        <div className="cardbase_info_inner">
+          <h3 className="cardbase_info_inner_title"> Почта </h3>
+          {props.info.email
+            ? <p className="cardbase_info_inner_email"> {props.info.email} </p>
+            : <p className="cardbase_info_inner_email"> Отсутствует </p>
           }
-
-        `}
-      </style>
-      <div className="cardbase_inner_info" >
-        <h3 className="cardbase_inner_info_title"> ФИО </h3>
-        <p className="cardbase_inner_info_fullname"> {props.info.full_name} </p>
+        </div>
+        {props.children}
       </div>
-      <div className="cardbase_inner_info">
-        <h3 className="cardbase_inner_info_title"> Номер телефона </h3>
-        <p className="cardbase_inner_info_telephone"> {props.info.telephone} </p>
-      </div>
-      <div className="cardbase_inner_info">
-        <h3 className="cardbase_inner_info_title"> Почта </h3>
-        <p className="cardbase_inner_info_email"> {props.info.email} </p>
-      </div>
-      {props.children}
     </Card>
   )
 }

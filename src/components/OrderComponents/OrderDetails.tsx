@@ -8,8 +8,8 @@ import enrollStore from "../../store/EnrollStoreClass";
 import OrderServices from "../../services/order.service";
 import scheduleStore from "../../store/ScheduleStoreClass";
 import servicesStore from "../../store/ServicesStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
 import specialistsStore from "../../store/SpecialistsStoreClass";
+import orderDetailsStore from "../../store/OrderDetailsStoreClass";
 
 
 const OrderDetails = observer(() => {
@@ -93,7 +93,7 @@ const OrderDetails = observer(() => {
       className="order_check_details"
       title="Детали записи"
       style={CardForm}
-      bodyStyle={{ textAlign: "left", ...CardBodyForm, paddingBottom: "10px" }}
+      bodyStyle={CardBodyForm}
     >
       {orderDetailsStore.OrderDetailsClient
         ? <div className="order_check_details_client">

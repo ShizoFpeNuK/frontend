@@ -6,5 +6,5 @@ export const CardForm: CSS.Properties = {
 }
 
 export const CardBodyForm: CSS.Properties = {
-  padding: "10px 30px 0 30px",
+  textAlign: "left",
 }

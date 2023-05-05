@@ -34,3 +34,7 @@
   border: 1px solid rgb(217, 217, 217);
   border-radius: 8px;
 }
+
+.ant-form-item-explain-error:last-child {
+  margin-bottom: 10px;
+}

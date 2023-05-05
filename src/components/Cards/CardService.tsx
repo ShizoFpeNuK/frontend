@@ -1,6 +1,6 @@
 import { Card } from "antd";
 import { IService } from "../../options/model/service.model";
-import { CardBody, CardTitle } from "../../style/typescript/card";
+import { CardBody, CardTitle } from "../../style/typescript/cardService";
 import { ClockCircleOutlined, DollarCircleOutlined } from "@ant-design/icons";
 
 
