@@ -39,7 +39,7 @@ const Enroll = observer(() => {
 
         <Col className="enroll_order" span={8}>
           <Col className="enroll_order_details" span={24}>
-            <OrderDetails />
+            {/* <OrderDetails /> */}
           </Col>
         </Col>
       </Row>

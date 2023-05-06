@@ -12,6 +12,10 @@ export default class CheckServices {
     return checks.data;
   }
 
+  static async deleteCheck(clientId: number, checkId: number): Promise<void> {
+    await axios.delete(this.pathDefault + "/" + clientId + "/" + checkId); //??
+  }
+
   static async getCheckDetails(checkId: number): Promise<ICheckDetails> {
     const details = await axios.get(this.pathDefault + "/" + checkId);
 

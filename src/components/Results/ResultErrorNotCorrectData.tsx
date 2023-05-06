@@ -11,7 +11,7 @@ const ResultErrorNotCorrectData = ({title}: ResultNotCorrectDataProps) => {
     <Result
       status="error"
       title={title}
-      subTitle="Пожалуйста, проверьте, чтобы вы ввели корректные данные. 
+      subTitle="Пожалуйста, проверьте, что вы ввели корректные данные, пишите ФИО с заглавных букв и в нужном порядке!
       Также возможно, что это ошибка сервера."
     />
   )

@@ -1,54 +1,65 @@
 import { useForm } from "antd/es/form/Form";
+import { observer } from "mobx-react";
 import { CardForm } from "../../style/typescript/cardForm";
 import { IClient, IClientBase } from "../../options/model/client.model";
 import { Button, Card, Form, Input } from "antd";
-import clientStore from "../../store/ClientStoreClass";
 import ClientServices from "../../services/client.service";
+import notificationsStore from "../../store/NotificationsStoreClass";
+import clientStore from "../../store/ClientStoreClass";
 import orderDetailsStore from "../../store/OrderDetailsStoreClass";
 
 
 interface FindClientForm {
   notifications: boolean,
   isOrder: boolean,
+  getClient: (client: IClient) => void,
+  deleteClient: () => void,
 }
 
 
-const FormFindClient = ({ isOrder, notifications }: FindClientForm) => {
+const FormClientFind = observer((props: FindClientForm) => {
   const [form] = useForm();
 
 
   const clearNotifications = () => {
-    clientStore.deleteIsNotFindClient();
-    clientStore.deleteIsDeleteClient();
+    notificationsStore.deleteNotificationsClient();
+    notificationsStore.deleteIsSubmitOrder();
   }
 
 
   const onFinish = async (client: IClientBase) => {
-    clientStore.deleteClient();
-    if (notifications) {
+    // if (props.isOrder) {
+    //   orderDetailsStore.deleteOrderDetailsClient();
+    // } else {
+    //   clientStore.deleteClient();
+    // }
+
+    props.deleteClient();
+
+    if (props.notifications) {
       clearNotifications();
     }
+
     await ClientServices.getClient(client)
       .then((client: IClient) => {
-        if (isOrder) {
-          orderDetailsStore.setOrderDetailsClient(client);
+        if (props.isOrder) {
+          props.getClient(client);
+          // orderDetailsStore.setOrderDetailsClient(client);
         } else {
-          clientStore.setClient(client);
+          props.getClient(client);
+          // clientStore.setClient(client);
         }
         form.resetFields();
       })
       .catch(() => {
-        if (notifications) {
-          if (!isOrder) {
-            clientStore.setIsNotFindClient(true);
-          }
+        if (props.notifications) {
+          notificationsStore.setIsNotFindClient(true);
         }
       })
   }
 
   const onFinishFailed = (errorInfo: any) => {
-    clientStore.deleteClient();
-    if (notifications) {
+    if (props.notifications) {
       clearNotifications();
     }
     console.log("Failed:", errorInfo);
@@ -70,9 +81,13 @@ const FormFindClient = ({ isOrder, notifications }: FindClientForm) => {
               required: true,
               message: "Это поле является обязательным!",
             },
+            {
+              pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+              message: "Только русские буквы, пробелы и дефисы"
+            }
           ]}
         >
-          <Input defaultValue="Дьякова Ольга Александровна" placeholder="Введите имя клиента" />
+          <Input defaultValue="Дьякова Ольга Александровна" placeholder="Например, Иванов Иван Иваныч" />
         </Form.Item>
         <Form.Item
           label="Номер телефона"
@@ -88,7 +103,7 @@ const FormFindClient = ({ isOrder, notifications }: FindClientForm) => {
             }
           ]}
         >
-          <Input defaultValue="+7 (916) 419-52-28" placeholder="Введите номер телефона клиента" />
+          <Input defaultValue="+7 (916) 419-52-28" placeholder="Например, +7 (999) 999-99-99" />
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 0 }}>
@@ -97,7 +112,7 @@ const FormFindClient = ({ isOrder, notifications }: FindClientForm) => {
       </Form>
     </Card>
   )
-}
+});
 
 
-export default FormFindClient;
+export default FormClientFind;

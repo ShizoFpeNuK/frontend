@@ -3,8 +3,8 @@ import { CardForm } from "../../style/typescript/cardForm";
 import { AxiosError } from "axios";
 import { IClientAdd } from "../../options/model/client.model";
 import { Button, Card, Form, Input } from "antd";
-import clientStore from "../../store/ClientStoreClass";
 import ClientServices from "../../services/client.service";
+import notificationsStore from "../../store/NotificationsStoreClass";
 
 
 interface FormAddClientProps {
@@ -12,13 +12,12 @@ interface FormAddClientProps {
 }
 
 
-const FormAddClient = ({ notifications }: FormAddClientProps) => {
+const FormClientAdd = ({ notifications }: FormAddClientProps) => {
   const [form] = useForm();
 
 
   const clearNotifications = () => {
-    clientStore.deleteIsCreateClient();
-    clientStore.deleteIsConflictClient();
+    notificationsStore.deleteNotificationsClient();
   }
 
 
@@ -26,17 +25,18 @@ const FormAddClient = ({ notifications }: FormAddClientProps) => {
     if (notifications) {
       clearNotifications();
     }
+    
     await ClientServices.postClient(client)
       .then(() => {
         if (notifications) {
-          clientStore.setIsCreateClient(true);
+          notificationsStore.setIsCreateClient(true);
         }
         form.resetFields();
       })
       .catch((err: AxiosError) => {
         if (notifications) {
           if (err.response!.status === 409) {
-            clientStore.setIsConflictClient(true);
+            notificationsStore.setIsConflictClient(true);
           }
         }
       })
@@ -65,9 +65,13 @@ const FormAddClient = ({ notifications }: FormAddClientProps) => {
               required: true,
               message: "Это поле является обязательным!",
             },
+            {
+              pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
+              message: "Только русские буквы, пробелы между словами и дефисы"
+            }
           ]}
         >
-          <Input placeholder="Введите имя клиента" />
+          <Input placeholder="Например, Иванов Иван Иваныч" />
         </Form.Item>
         <Form.Item
           label="Номер телефона"
@@ -83,13 +87,19 @@ const FormAddClient = ({ notifications }: FormAddClientProps) => {
             }
           ]}
         >
-          <Input placeholder="Введите номер телефона клиента" />
+          <Input placeholder="Например, +7 (999) 999-99-99" />
         </Form.Item>
         <Form.Item
           label="Электронная почта"
           name="email"
+          rules={[
+            {
+              pattern: new RegExp(/^[a-zA-Z\d]+\@[a-z]+\.[a-z]+$/),
+              message: "Неправильный вид почты"
+            }
+          ]}
         >
-          <Input placeholder="Введите элеткронную почту клиента" />
+          <Input placeholder="Например, barbershop@gmail.com" />
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 0 }}>
@@ -101,4 +111,4 @@ const FormAddClient = ({ notifications }: FormAddClientProps) => {
 }
 
 
-export default FormAddClient;
+export default FormClientAdd;

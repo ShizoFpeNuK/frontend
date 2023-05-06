@@ -1,6 +1,7 @@
-import '../../style/css/order/orderDetails.css'
+import '../../style/css/order/orderDetails.css';
 import { observer } from "mobx-react";
 import { IService } from "../../options/model/service.model";
+import { IClient, IClientBase } from "../../options/model/client.model";
 import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
 import { Card, Row, Col, Button, Space } from "antd";
 import ButtonStep from "../Buttons/ButtonStep";
@@ -10,9 +11,17 @@ import scheduleStore from "../../store/ScheduleStoreClass";
 import servicesStore from "../../store/ServicesStoreClass";
 import specialistsStore from "../../store/SpecialistsStoreClass";
 import orderDetailsStore from "../../store/OrderDetailsStoreClass";
+import notificationsStore from "../../store/NotificationsStoreClass";
 
 
-const OrderDetails = observer(() => {
+interface OrderDetailsProps {
+  notifications?: boolean,
+  client: IClientBase | IClient,
+  deleteClient: () => void,
+}
+
+
+const OrderDetails = observer((props: OrderDetailsProps) => {
 
   const clearOrderComponent = () => {
     enrollStore.clearStore();
@@ -25,13 +34,14 @@ const OrderDetails = observer(() => {
 
 
   const selectedClient = async () => {
+    orderDetailsStore.setOrderDetailsClient(props.client);
     enrollStore.setSelectButtonClientIsClicked(true);
     enrollStore.setIsOpenFormFindClient(false);
     enrollStore.setIsOpenListSpecialist(true);
   }
 
   const cancelClient = () => {
-    orderDetailsStore.deleteOrderDetailsClient();
+    // orderDetailsStore.deleteOrderDetailsClient();
     enrollStore.setSelectButtonClientIsClicked(false);
     enrollStore.setIsOpenListSpecialist(false);
     enrollStore.setIsOpenFormFindClient(true);
@@ -80,6 +90,10 @@ const OrderDetails = observer(() => {
 
   const onClickSubmit = async () => {
     await OrderServices.postOrder(orderDetailsStore.getOrderDetails());
+    props.deleteClient();
+    if (props.notifications) {
+      notificationsStore.setIsSubmitOrder(true);
+    }
     clearOrderComponent();
   }
 
@@ -95,11 +109,14 @@ const OrderDetails = observer(() => {
       style={CardForm}
       bodyStyle={CardBodyForm}
     >
-      {orderDetailsStore.OrderDetailsClient
+      {/* {orderDetailsStore.OrderDetailsClient */}
+      {props.client
         ? <div className="order_check_details_client">
           <h3 className="order_check_details_client_title"> Клиент </h3>
-          <div className="order_check_details_client_fullname"> {orderDetailsStore.OrderDetailsClient?.full_name} </div>
-          <div className="order_check_details_client_telephone"> {orderDetailsStore.OrderDetailsClient?.telephone} </div>
+          {/* <div className="order_check_details_client_fullname"> {orderDetailsStore.OrderDetailsClient?.full_name} </div>
+          <div className="order_check_details_client_telephone"> {orderDetailsStore.OrderDetailsClient?.telephone} </div> */}
+          <div className="order_check_details_client_fullname"> {props.client.full_name} </div>
+          <div className="order_check_details_client_telephone"> {props.client.telephone} </div>
         </div>
         : <div className="order_check_details_message"> Ожидаем ваш заказ! </div>
       }
@@ -147,7 +164,8 @@ const OrderDetails = observer(() => {
 
       <div className="order_check_details_buttons_step">
         {/* Кнопка после клиента */}
-        {orderDetailsStore.OrderDetailsClient && !enrollStore.selectButtonClientIsClicked &&
+        {/* {orderDetailsStore.OrderDetailsClient && !enrollStore.selectButtonClientIsClicked && */}
+        {props.client && !enrollStore.selectButtonClientIsClicked &&
           <ButtonStep onClick={selectedClient}> Далее </ButtonStep>
         }
         {enrollStore.selectButtonClientIsClicked && !orderDetailsStore.OrderDetailsSpecialist &&
@@ -181,19 +199,9 @@ const OrderDetails = observer(() => {
 
       {/* Кнопки очистки и submit */}
       <Space
-        direction="vertical"
         className="order_check_details_buttons"
-        style={{ width: "100%" }}
+        style={{ width: "100%", justifyContent: "center" }}
       >
-        {enrollStore.selectButtonDateIsClicked &&
-          <Button
-            className="order_check_details_submit_button"
-            type="primary"
-            onClick={onClickSubmit}
-          >
-            Записаться
-          </Button>
-        }
         {orderDetailsStore.OrderDetailsSpecialist &&
           <Button
             className="order_check_details_clear_button"
@@ -201,6 +209,15 @@ const OrderDetails = observer(() => {
             onClick={onClickClearAll}
           >
             Всё очистить
+          </Button>
+        }
+        {enrollStore.selectButtonDateIsClicked &&
+          <Button
+            className="order_check_details_submit_button"
+            type="primary"
+            onClick={onClickSubmit}
+          >
+            Записаться
           </Button>
         }
       </Space>
