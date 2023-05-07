@@ -96,7 +96,7 @@ const ListDates = observer(() => {
 
     const returnChoice = () => {
       Array.from(useListDateButtons.current!).every((el: any) => {
-        if (el.getAttribute("data-id") == (orderDetailsStore.OrderDetailsDate)) {
+        if (el.getAttribute("data-id") == orderDetailsStore.OrderDetailsDate) {
           el.classList.add(blackButton);
           return false;
         }
@@ -114,7 +114,7 @@ const ListDates = observer(() => {
       });
     }
 
-    if (!scheduleStore.ScheduleListBySpecialist.length) {
+    if (!isLoader) {
       loadingPage();
     } else {
       getLists();
@@ -126,12 +126,14 @@ const ListDates = observer(() => {
   return (
     <Card
       className="enroll_list_dates_times"
+      style={CardForm}
+      loading={!scheduleStore.ScheduleListBySpecialist.length}
       title={
         <Row
-          justify={'space-between'}
+        justify={'space-between'}
           wrap={false}
           className="enroll_list_dates_times_header"
-        >
+          >
           <Col></Col>
           <Col className="enroll_list_dates_times_header_title"> Список дат и времени </Col>
           <Col className="enroll_list_dates_times_header_buttons">
@@ -145,8 +147,6 @@ const ListDates = observer(() => {
           </Col>
         </Row>
       }
-      style={CardForm}
-      loading={Boolean(!scheduleStore.ScheduleListBySpecialist.length)}
     >
       {scheduleStore.ScheduleListBySpecialist.length !== 0 &&
         <div className="enroll_list_dates_items">

@@ -14,29 +14,3 @@
 .enroll_buttons {
   padding: 0 20px;
 }
-
-:where(.css-dev-only-do-not-override-1fviqcj).ant-list .ant-list-item .ant-list-item-meta .ant-list-item-meta-content {
-  text-align: left;
-}
-
-.enroll_list_header_buttons {
-  text-align: right;
-}
-
-.button--black {
-  background-color: black;
-  color: white;
-}
-
-.button--white {
-  background-color: white;
-  border-color: black;
-  color: black;
-  font-weight: 800;
-}
-
-.button_text--center span {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-}

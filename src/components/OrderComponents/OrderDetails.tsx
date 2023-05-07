@@ -6,7 +6,7 @@ import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
 import { Card, Row, Col, Button, Space } from "antd";
 import ButtonStep from "../Buttons/ButtonStep";
 import enrollStore from "../../store/EnrollStoreClass";
-import OrderServices from "../../services/order.service";
+import CheckServices from "../../services/check.service";
 import scheduleStore from "../../store/ScheduleStoreClass";
 import servicesStore from "../../store/ServicesStoreClass";
 import specialistsStore from "../../store/SpecialistsStoreClass";
@@ -55,6 +55,9 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
   }
 
   const cancelSpecialist = () => {
+    //new
+    specialistsStore.deleteSpecialistsList();
+
     servicesStore.setServicesList([]);
     enrollStore.setSelectButtonSpecialistIsClicked(false);
     enrollStore.setIsOpenListServices(false);
@@ -69,6 +72,9 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
   }
 
   const cancelServices = () => {
+    //new
+    servicesStore.deleteServicesList()
+
     enrollStore.setSelectButtonServicesIsClicked(false);
     enrollStore.setIsOpenListDate(false);
     enrollStore.setIsOpenListServices(true);
@@ -82,6 +88,9 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
   }
 
   const cancelDate = () => {
+    //new
+    scheduleStore.deleteScheduleListBySpecialist();
+
     enrollStore.setSelectButtonDateIsClicked(false);
     enrollStore.setIsOpenListDate(true);
     enrollStore.setIsSubmitOrder(false);
@@ -89,7 +98,7 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
 
 
   const onClickSubmit = async () => {
-    await OrderServices.postOrder(orderDetailsStore.getOrderDetails());
+    await CheckServices.postCheck(orderDetailsStore.getOrderDetails());
     props.deleteClient();
     if (props.notifications) {
       notificationsStore.setIsSubmitOrder(true);

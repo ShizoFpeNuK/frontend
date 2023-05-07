@@ -12,11 +12,11 @@ const itemsBase: MenuProps['items'] = [
     key: "home",
     icon: <HomeOutlined />,
   },
-  {
-    label: <Link to="/enroll"> Записаться </Link>,
-    key: "enroll",
-    icon: <FormOutlined />,
-  },
+  // {
+  //   label: <Link to="/enroll"> Записаться </Link>,
+  //   key: "enroll",
+  //   icon: <FormOutlined />,
+  // },
 ]
 
 const itemsBaseWithAuth: MenuProps['items'] = [

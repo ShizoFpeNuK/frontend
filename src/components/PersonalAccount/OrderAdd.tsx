@@ -12,7 +12,6 @@ import FindClientForm from "./FormClientFind";
 import ListSpecialists from "../OrderComponents/ListSpecialists";
 import notificationsStore from "../../store/NotificationsStoreClass";
 import ResultErrorNotCorrectData from "../Results/ResultErrorNotCorrectData";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
 
 
 interface OrderAddProps {
@@ -43,7 +42,12 @@ const OrderAdd = observer(({ notifications }: OrderAddProps) => {
       >
         {enrollStore.isOpenFormFindClient
           ? <Col className="order_form" span={6}>
-            <FindClientForm notifications={notifications ?? false} isOrder={true} getClient={getClient} deleteClient={deleteClient}/>
+            <FindClientForm
+              notifications={notifications ?? false}
+              isOrder={true}
+              getClient={getClient}
+              deleteClient={deleteClient}
+            />
           </Col>
           : <Col className="order_lists" span={16}>
             {enrollStore.isOpenListSpecialist &&
@@ -64,9 +68,8 @@ const OrderAdd = observer(({ notifications }: OrderAddProps) => {
         }
 
         <Col className="order_check" span={8}>
-          {/* {orderDetailsStore.OrderDetailsClient && */}
           {client &&
-            <OrderDetails notifications={notifications ?? false} client={client} deleteClient={deleteClient}/>
+            <OrderDetails notifications={notifications ?? false} client={client} deleteClient={deleteClient} />
           }
           {notificationsStore.isNotFindClient &&
             <ResultErrorNotCorrectData title="Клиент не был найден" />

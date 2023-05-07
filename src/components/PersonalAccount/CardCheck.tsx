@@ -1,45 +1,145 @@
 import '../../style/css/cards/cardCheck.css';
-import { useState } from "react";
-import { IService } from "../../options/model/service.model";
-import { ICheck, ICheckDetails } from "../../options/model/check.model";
+import { ICheck } from "../../options/model/check.model";
+import { useForm } from "antd/es/form/Form";
+import { ColumnsType } from "antd/es/table";
 import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
-import { Button, Card, Col, Modal, Row, Space } from "antd";
+import { IServiceWithStartAndEndTime } from "../../options/model/service.model";
+import { Button, Card, Form, InputNumber, Modal, Rate, Space, Table } from "antd";
 import CheckServices from "../../services/check.service";
-import checkStore from '../../store/CheckStoreClass';
 
 
 interface CardCheckProps {
   check: ICheck,
+  bonus: number,
   clientId: number,
-  getChecks: (checks: ICheck[]) => void,
+  setDeleteCheckFlag: (boolean: boolean) => void,
+  setPaidCheckFlag: (boolean: boolean) => void,
 }
+
+interface IPaid {
+  grade: number,
+  paid_bonus: number,
+}
+
+interface DataType {
+  key: number,
+  name_service: string,
+  duration: string,
+  cost: number,
+}
+
+const columns: ColumnsType<DataType> = [
+  {
+    title: "Название услуги",
+    dataIndex: "name_service",
+    key: "name_service",
+  },
+  {
+    title: "Длительность",
+    dataIndex: "duration",
+    key: "duration",
+  },
+  {
+    title: "Стоимость",
+    dataIndex: "cost",
+    key: "cost",
+  },
+];
 
 
 const CardCheck = (props: CardCheckProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [checkDetails, setCheckDetails] = useState<ICheckDetails | null>()
+  const [form] = useForm();
+  let data: DataType[] = [];
 
 
-  const showModal = async () => {
-    const details: ICheckDetails = await CheckServices.getCheckDetails(props.check.check_id);
-    setCheckDetails(details);
-    setIsModalOpen(true);
+  const showModalDetails = async () => {
+    await CheckServices.getCheckDetails(props.check.check_id)
+      .then((services: IServiceWithStartAndEndTime[]) => {
+        data = [];
+        services.forEach((service: IServiceWithStartAndEndTime) => {
+          data.push({
+            key: service.service_id,
+            name_service: service.name_service,
+            duration: `${service.start_order} —  ${service.end_order}`,
+            cost: service.cost
+          })
+        })
+        Modal.info({
+          className: "modal_details",
+          title: <h3>Чек №{props.check.check_id}</h3>,
+          icon: null,
+          centered: true,
+          width: "700px",
+          content: (
+            <div className="modal_details_services">
+              <Table
+                pagination={false}
+                columns={columns}
+                dataSource={data}
+              />
+            </div>
+          )
+        });
+      })
   };
 
-  const handleOk = () => {
-    setIsModalOpen(false);
+
+  const onFinish = async (values: IPaid) => {
+    await CheckServices.updateCheckGrade(values.grade, values.paid_bonus, props.check.check_id);
+    props.setPaidCheckFlag(true);
+  }
+
+  const showModalPaid = () => {
+    Modal.confirm({
+      className: "modal_paid",
+      title: <h3>Чек №{props.check.check_id}</h3>,
+      icon: null,
+      centered: true,
+      okText: "Оплатить",
+      cancelText: "Назад",
+      content: (
+        <Form
+          layout="vertical"
+          preserve={false}
+          form={form}
+          initialValues={{ remember: false }}
+          onFinish={onFinish}
+        >
+          <Form.Item
+            style={{ fontWeight: 600 }}
+            label="Оценка"
+            name="grade"
+          >
+            <Rate
+              allowHalf
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ fontWeight: 600 }}
+            label="Бонусы"
+            name="paid_bonus"
+          >
+            <InputNumber
+              min={0}
+              max={props.bonus}
+              defaultValue={0}
+              onPressEnter={(e) => e.preventDefault()}
+            />
+          </Form.Item>
+        </Form>
+      ),
+      async onOk() {
+        form.submit();
+      }
+    });
   };
 
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
 
-  const onClickDeleteButton = async () => { //??
-    await CheckServices.deleteCheck(props.clientId, props.check.check_id);
-    // checkStore.checks = await CheckServices.getChecks(clientId);
-    const checks = await CheckServices.getChecks(props.clientId);
-    props.getChecks(checks);
+  const onClickDeleteButton = async () => {
+    await CheckServices.deleteCheck(props.check.check_id);
+    props.setDeleteCheckFlag(true);
   }
 
 
@@ -52,29 +152,29 @@ const CardCheck = (props: CardCheckProps) => {
     >
       <div className="client_check_card_info">
         <div className="client_check_card_inner">
-          <h3 className="client_check_card_inner_title"> Адресс заведения </h3>
-          <p className="client_check_card_inner_establishment"> {props.check.address_establishment} </p>
+          <h3 className="client_check_card_title"> Адресс заведения </h3>
+          <p className="client_check_card_establishment"> {props.check.address_establishment} </p>
         </div>
         <div className="client_check_card_inner" >
-          <h3 className="client_check_card_inner_title"> Специалист </h3>
-          <p className="client_check_card_inner_fullname"> {props.check.full_name} </p>
-          <p className="client_check_card_inner_position"> {props.check.post} </p>
+          <h3 className="client_check_card_title"> Специалист </h3>
+          <p className="client_check_card_fullname"> {props.check.full_name} </p>
+          <p className="client_check_card_position"> {props.check.post} </p>
         </div>
         <div className="client_check_card_inner" >
-          <h3 className="client_check_card_inner_title"> Оплачено </h3>
+          <h3 className="client_check_card_title"> Оплачено </h3>
           {props.check.paid
-            ? <p className="client_check_card_inner_paid"> Да </p>
-            : <p className="client_check_card_inner_paid"> Нет </p>
+            ? <p className="client_check_card_paid"> Да </p>
+            : <p className="client_check_card_paid"> Нет </p>
           }
         </div>
         <div className="client_check_card_inner">
-          <h3 className="client_check_card_inner_title"> Дата и время </h3>
-          <p className="client_check_card_inner_date"> {new Date(props.check.date_check).toLocaleDateString()} </p>
-          <p className="client_check_card_inner_time"> {props.check.start_time} — {props.check.end_time} </p>
+          <h3 className="client_check_card_title"> Дата и время </h3>
+          <p className="client_check_card_date"> {new Date(props.check.date_check).toLocaleDateString()} </p>
+          <p className="client_check_card_time"> {props.check.start_time} — {props.check.end_time} </p>
         </div>
         <div className="client_check_card_inner" >
-          <h3 className="client_check_card_inner_title"> Стоимость услуг </h3>
-          <p className="client_check_card_inner_totalcost"> {props.check.total_cost} руб. </p>
+          <h3 className="client_check_card_title"> Стоимость услуг </h3>
+          <p className="client_check_card_totalcost"> {props.check.total_cost} руб. </p>
         </div>
       </div>
       <Space
@@ -82,34 +182,12 @@ const CardCheck = (props: CardCheckProps) => {
         direction="vertical"
         style={{ width: "100%" }}
       >
-        <Button block onClick={showModal}> Подробнее </Button>
+        <Button block onClick={showModalDetails}> Подробнее </Button>
         <Button block onClick={onClickDeleteButton}> Удалить </Button>
+        {!props.check.paid &&
+          <Button block onClick={showModalPaid}> Оплатить </Button>
+        }
       </Space>
-
-      <Modal
-        className="client_check_card_details"
-        title={"Чек №" + props.check.check_id}
-        centered
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        {checkDetails?.services.map((service: IService) =>
-          <Row
-            justify={'space-between'}
-            wrap={false}
-            className="client_check_card_details_inner"
-            key={service.service_id}
-          >
-            <Col className="client_check_card_details_service_info">
-              <p className="client_check_card_details_service_info_name"> {service.name_service} </p>
-            </Col>
-            <Col className="client_check_card_details_service_info">
-              <p className="client_check_card_details_service_info_cost"> {service.cost} руб. </p>
-            </Col>
-          </Row>
-        )}
-      </Modal>
     </Card >
   )
 };

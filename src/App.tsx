@@ -25,7 +25,7 @@ const App = observer(() => {
         <div className="main_wrapper">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/enroll" element={<Enroll />} />
+            {/* <Route path="/enroll" element={<Enroll />} /> */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/personal_account" element={<PersonalAccount />} />
             <Route path="*" element={<NotFound />} />

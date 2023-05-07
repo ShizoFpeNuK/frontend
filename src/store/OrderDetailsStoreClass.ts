@@ -48,9 +48,9 @@ class OrderDetailsStoreClass {
   }
 
 
-  deleteOrderDetailsService(service: IService) {
+  deleteOrderDetailsService(serviceId: number) {
     this.OrderDetailsServices.every(el => {
-      if (el.service_id === service.service_id) {
+      if (el.service_id === serviceId) {
         const findIndex = this.OrderDetailsServices.indexOf(el)
         this.OrderDetailsServices.splice(findIndex, 1);
         return false;

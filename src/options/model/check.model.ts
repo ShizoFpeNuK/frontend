@@ -1,4 +1,3 @@
-import { IService } from "./service.model";
 
 
 export interface ICheck {
@@ -13,6 +12,6 @@ export interface ICheck {
   address_establishment: string,
 }
 
-export interface ICheckDetails {
-  services: IService[],
+export interface ICheckFind {
+  date: string,
 }

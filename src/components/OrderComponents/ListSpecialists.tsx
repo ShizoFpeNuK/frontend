@@ -80,8 +80,7 @@ const ListSpecialists = observer(() => {
       });
     }
 
-
-    if (!specialistsStore.SpecialistsList.length) {
+    if (!isLoader) {
       loadingPage();
     } else {
       getLists();
@@ -94,6 +93,8 @@ const ListSpecialists = observer(() => {
     <List
       className="enroll_list_specialists"
       itemLayout="horizontal"
+      bordered
+      loading={!specialistsStore.SpecialistsList.length}
       header={
         <Row
           justify={'space-between'}
@@ -113,11 +114,13 @@ const ListSpecialists = observer(() => {
           </Col>
         </Row>
       }
-      bordered
-      loading={Boolean(!specialistsStore.SpecialistsList.length)}
     >
       {specialistsStore.SpecialistsList.map((specialist: ISpecialist) =>
-        <List.Item className="enroll_list_specialists_item" key={specialist.employee_id} data-id={specialist.employee_id}>
+        <List.Item
+          className="enroll_list_specialists_item"
+          key={specialist.employee_id}
+          data-id={specialist.employee_id}
+        >
           <List.Item.Meta
             className="enroll_list_specialists_item_meta"
             avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${specialist.employee_id}`} />}

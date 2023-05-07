@@ -1,16 +1,16 @@
 import { ICheck } from "../../options/model/check.model";
 import { IClient } from "../../options/model/client.model";
 import { observer } from "mobx-react";
-import { useState } from "react";
 import { Col, Row, Space } from "antd";
+import { useEffect, useState } from "react";
 import CardCheck from "./CardCheck";
+import CheckServices from "../../services/check.service";
 import FormOrderFind from "./FormOrderFind";
+import ClientServices from "../../services/client.service";
 import FormClientFind from "./FormClientFind";
 import notificationsStore from "../../store/NotificationsStoreClass";
 import ResultSuccessNoData from "../Results/ResultSuccessNoData";
 import ResultErrorNotCorrectData from "../Results/ResultErrorNotCorrectData";
-import checkStore from "../../store/CheckStoreClass";
-import clientStore from "../../store/ClientStoreClass";
 
 
 interface OrderFindProps {
@@ -19,8 +19,21 @@ interface OrderFindProps {
 
 
 const OrderFind = observer(({ notifications }: OrderFindProps) => {
-  const [client, setClient] = useState<IClient | null>(null);
   const [checks, setChecks] = useState<ICheck[]>([]);
+  const [client, setClient] = useState<IClient | null>(null);
+  const [isDeleteCheck, setIsDeleteCheck] = useState<boolean>(false);
+  const [isPaidCheck, setIsPaidCheck] = useState<boolean>(false);
+
+
+  const getChecksAfterDelete = () => {
+    CheckServices.getChecks(client!.client_id)
+      .then((checks: ICheck[]) => {
+        if (notifications && !checks.length) {
+          notificationsStore.setIsEmptyChecks(true);
+        }
+        setChecks(checks);
+      });
+  }
 
   const getClient = (client: IClient) => {
     setClient(client);
@@ -34,6 +47,28 @@ const OrderFind = observer(({ notifications }: OrderFindProps) => {
     setChecks(checks);
   }
 
+  const handlerDeleteCheck = (boolean: boolean) => {
+    setIsDeleteCheck(boolean);
+  }
+
+  const handlerPaidCheck = (boolean: boolean) => {
+    setIsPaidCheck(boolean);
+  }
+
+  useEffect(() => {
+    if (isDeleteCheck) {
+      getChecksAfterDelete();
+      setIsDeleteCheck(false);
+    }
+    if (isPaidCheck) {
+      getChecksAfterDelete();
+      ClientServices.getClientById(client!.client_id)
+      .then((client: IClient) => {
+        setClient(client);
+        setIsPaidCheck(false);
+      })
+    }
+  }, [isPaidCheck, isDeleteCheck, checks])
 
   return (
     <div className="personal_account_forms_order">
@@ -43,7 +78,6 @@ const OrderFind = observer(({ notifications }: OrderFindProps) => {
         justify={'space-between'}
         wrap={false}>
         <Col className="personal_account_order_form" span={6}>
-          {/* {!clientStore.client */}
           {!client
             ? <FormClientFind
               notifications={notifications ?? false}
@@ -63,12 +97,19 @@ const OrderFind = observer(({ notifications }: OrderFindProps) => {
           <Space
             wrap={true}
             direction="horizontal"
+            align="start"
             size={[20, 20]}
             style={{ width: "100%" }}
           >
-            {/* {checkStore.checks.map((check: ICheck) => */}
             {checks.map((check: ICheck) =>
-              <CardCheck check={check} clientId={client!.client_id} key={check.check_id} getChecks={getChecks}/>
+              <CardCheck
+                check={check}
+                bonus={client!.bonus}
+                clientId={client!.client_id}
+                key={check.check_id}
+                setDeleteCheckFlag={handlerDeleteCheck}
+                setPaidCheckFlag={handlerPaidCheck}
+              />
             )}
           </Space>
 

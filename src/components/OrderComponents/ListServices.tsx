@@ -50,7 +50,7 @@ const ListServices = observer(() => {
 
     button.style.display = "none";
     button.previousElementSibling.style.display = "inline-block";
-    orderDetailsStore.deleteOrderDetailsService(service);
+    orderDetailsStore.deleteOrderDetailsService(service.service_id);
   }
 
 
@@ -79,7 +79,7 @@ const ListServices = observer(() => {
       });
     }
 
-    if (!servicesStore.ServicesList.length) {
+    if (!isLoader) {
       loadingPage();
     } else {
       getLists();
@@ -92,6 +92,8 @@ const ListServices = observer(() => {
     <List
       className="enroll_list_services"
       itemLayout="horizontal"
+      bordered
+      loading={!servicesStore.ServicesList.length}
       header={
         <Row
           justify={'space-between'}
@@ -111,11 +113,12 @@ const ListServices = observer(() => {
           </Col>
         </Row>
       }
-      bordered
-      loading={Boolean(!servicesStore.ServicesList.length)}
     >
       {servicesStore.ServicesList.map((service: IService) =>
-        <List.Item className="enroll_list_services_item" key={service.service_id} data-id={service.service_id}>
+        <List.Item
+          className="enroll_list_services_item"
+          key={service.service_id}
+          data-id={service.service_id}>
           <List.Item.Meta
             className="enroll_list_services_item_meta"
             title={service.name_service}

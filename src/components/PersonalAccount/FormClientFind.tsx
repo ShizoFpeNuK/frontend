@@ -5,8 +5,6 @@ import { IClient, IClientBase } from "../../options/model/client.model";
 import { Button, Card, Form, Input } from "antd";
 import ClientServices from "../../services/client.service";
 import notificationsStore from "../../store/NotificationsStoreClass";
-import clientStore from "../../store/ClientStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
 
 
 interface FindClientForm {
@@ -28,12 +26,6 @@ const FormClientFind = observer((props: FindClientForm) => {
 
 
   const onFinish = async (client: IClientBase) => {
-    // if (props.isOrder) {
-    //   orderDetailsStore.deleteOrderDetailsClient();
-    // } else {
-    //   clientStore.deleteClient();
-    // }
-
     props.deleteClient();
 
     if (props.notifications) {
@@ -44,10 +36,8 @@ const FormClientFind = observer((props: FindClientForm) => {
       .then((client: IClient) => {
         if (props.isOrder) {
           props.getClient(client);
-          // orderDetailsStore.setOrderDetailsClient(client);
         } else {
           props.getClient(client);
-          // clientStore.setClient(client);
         }
         form.resetFields();
       })
@@ -68,7 +58,9 @@ const FormClientFind = observer((props: FindClientForm) => {
 
   return (
     <Card title="Найти клиента" style={CardForm}>
-      <Form layout="vertical" form={form}
+      <Form
+        layout="vertical"
+        form={form}
         initialValues={{ remember: false }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
