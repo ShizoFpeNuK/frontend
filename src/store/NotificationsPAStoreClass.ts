@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 
-class NotificationsStoreClass {
+class NotificationsPAStoreClass {
   isNotFindChecks: boolean = false;
   isEmptyChecks: boolean = false;
 
@@ -88,5 +88,4 @@ class NotificationsStoreClass {
 }
 
 
-const notificationsStore = new NotificationsStoreClass();
-export default notificationsStore;
+export default NotificationsPAStoreClass;

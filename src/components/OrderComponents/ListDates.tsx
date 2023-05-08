@@ -24,6 +24,7 @@ const ListDates = observer(() => {
 
   const loadingPage = async () => {
     await scheduleStore.getScheduleListBySpecialistId({
+      establishment_id: orderDetailsStore.OrderDetailsEstablishment!.establishment_id,
       employee_id: orderDetailsStore.OrderDetailsSpecialist!.employee_id,
       services_id: orderDetailsStore.getOrderDetailServicesId(),
     })

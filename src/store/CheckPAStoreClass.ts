@@ -1,8 +1,8 @@
-import { makeAutoObservable } from "mobx";
 import { ICheck } from "../options/model/check.model";
+import { makeAutoObservable } from "mobx";
 
 
-class CheckStoreClass {
+class CheckPAStoreClass {
   checks: ICheck[] = [];
 
   constructor() {
@@ -20,5 +20,4 @@ class CheckStoreClass {
 };
 
 
-const checkStore = new CheckStoreClass();
-export default checkStore;
+export default CheckPAStoreClass;

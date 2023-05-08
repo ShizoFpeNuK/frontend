@@ -2,12 +2,14 @@ import { IOrder } from "../options/model/order.model";
 import { IService } from "../options/model/service.model";
 import { ISchedule } from "../options/model/schedule.model";
 import { ISpecialist } from "../options/model/specialist.model";
-import { makeAutoObservable } from "mobx";
 import { IClientBase } from "../options/model/client.model";
+import { IEstablishment } from "../options/model/establishment.model";
+import { makeAutoObservable } from "mobx";
 
 
 class OrderDetailsStoreClass {
   OrderDetailsClient: IClientBase | undefined = undefined;
+  OrderDetailsEstablishment: IEstablishment | undefined = undefined;
   OrderDetailsSpecialist: ISpecialist | undefined = undefined;
   OrderDetailsServices: IService[] = [];
   OrderDetailsDate: string = "";
@@ -23,16 +25,20 @@ class OrderDetailsStoreClass {
     this.OrderDetailsServices.push(service);
   }
 
+  setOrderDetailsEstablishment(establishments: IEstablishment | undefined) {
+    this.OrderDetailsEstablishment = establishments;
+  }
+
   setOrderDetailsClient(client: IClientBase | undefined) {
     this.OrderDetailsClient = client;
   }
 
-  setOrderDetailsServices(services: IService[]) {
-    this.OrderDetailsServices = services;
-  }
-
   setOrderDetailsSpecialist(specialist: ISpecialist | undefined) {
     this.OrderDetailsSpecialist = specialist;
+  }
+
+  setOrderDetailsServices(services: IService[]) {
+    this.OrderDetailsServices = services;
   }
 
   setOrderDetailsDate(date: string) {
@@ -68,6 +74,10 @@ class OrderDetailsStoreClass {
     this.setOrderDetailsClient(undefined);
   }
 
+  deleteOrderDetailsEstablishment() {
+    this.setOrderDetailsEstablishment(undefined);
+  }
+
   deleteOrderDetailsSpecialist() {
     this.setOrderDetailsSpecialist(undefined);
   }
@@ -87,6 +97,7 @@ class OrderDetailsStoreClass {
 
   clearStore() {
     this.deleteOrderDetailsClient();
+    this.deleteOrderDetailsEstablishment();
     this.deleteOrderDetailsSpecialist();
     this.deleteOrderDetailsServices()
     this.deleteOrderDetailsDate();
@@ -107,6 +118,7 @@ class OrderDetailsStoreClass {
       client_id: this.OrderDetailsClient!.client_id,
       employee_id: this.OrderDetailsSpecialist!.employee_id,
       services_id: this.getOrderDetailServicesId(),
+      establishment_id: this.OrderDetailsEstablishment!.establishment_id,
       date: this.OrderDetailsDateWithTimes!.date,
       time: this.OrderDetailsTime
     }

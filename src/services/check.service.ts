@@ -1,7 +1,7 @@
-import axios from "axios";
 import { IOrder } from "../options/model/order.model";
 import { ICheck, ICheckFind } from "../options/model/check.model";
 import { IServiceWithStartAndEndTime } from "../options/model/service.model";
+import axios from "axios";
 
 
 export default class CheckServices {
@@ -9,7 +9,7 @@ export default class CheckServices {
 
 
   static async getChecks(clientId: number, check?: ICheckFind): Promise<ICheck[]> {
-    const checks = await axios.get(this.pathDefault + "/clients" + "/" + clientId,
+    const checks = await axios.get(this.pathDefault + "/clients/" + clientId,
       {
         params: {
           check_date: check?.date,
@@ -19,7 +19,7 @@ export default class CheckServices {
     return checks.data;
   }
 
-  static async postCheck(order: IOrder): Promise<void> {
+  static async createCheck(order: IOrder): Promise<void> {
     await axios.post(this.pathDefault, order);
   }
 

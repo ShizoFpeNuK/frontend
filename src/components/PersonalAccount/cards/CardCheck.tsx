@@ -1,11 +1,11 @@
-import '../../style/css/cards/cardCheck.css';
-import { ICheck } from "../../options/model/check.model";
+import '../../../style/css/cards/cardCheck.css';
+import { ICheck } from "../../../options/model/check.model";
 import { useForm } from "antd/es/form/Form";
 import { ColumnsType } from "antd/es/table";
-import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
-import { IServiceWithStartAndEndTime } from "../../options/model/service.model";
+import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
+import { IServiceWithStartAndEndTime } from "../../../options/model/service.model";
 import { Button, Card, Form, InputNumber, Modal, Rate, Space, Table } from "antd";
-import CheckServices from "../../services/check.service";
+import CheckServices from "../../../services/check.service";
 
 
 interface CardCheckProps {
@@ -134,7 +134,6 @@ const CardCheck = (props: CardCheckProps) => {
       }
     });
   };
-
 
 
   const onClickDeleteButton = async () => {

@@ -1,5 +1,5 @@
-import axios from "axios";
 import { IUser } from "../options/model/user.model";
+import axios from "axios";
 
 
 export default class LoginServices {

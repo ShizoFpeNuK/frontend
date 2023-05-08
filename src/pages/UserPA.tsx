@@ -3,7 +3,7 @@ import '../style/css/main.css';
 import { observer } from "mobx-react";
 import { Navigate } from "react-router-dom";
 import { Card, Col, Row } from "antd";
-import CardCheck from "../components/PersonalAccount/CardCheck";
+import CardCheck from "../components/PersonalAccount/cards/CardCheck";
 import loginStore from "../store/LoginStoreClass";
 
 

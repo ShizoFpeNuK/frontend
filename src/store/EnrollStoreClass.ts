@@ -4,12 +4,14 @@ import orderDetailsStore from "./OrderDetailsStoreClass";
 
 class EnrollStoreClass {
   selectButtonClientIsClicked: boolean = false;
+  selectButtonEstablishmentIsClicked: boolean = false;
   selectButtonSpecialistIsClicked: boolean = false;
   selectButtonServicesIsClicked: boolean = false;
   selectButtonDateIsClicked: boolean = false;
 
-  isOpenFormFindClient: boolean = true; //new
-  isOpenListSpecialist: boolean = false; //true
+  isOpenFormFindClient: boolean = true;
+  isOpenListEstablishment: boolean = true;
+  isOpenListSpecialist: boolean = false;
   isOpenListServices: boolean = false;
   isOpenListDate: boolean = false;
   isSubmitOrder: boolean = false;
@@ -21,6 +23,10 @@ class EnrollStoreClass {
 
   setSelectButtonClientIsClicked(boolean: boolean) {
     this.selectButtonClientIsClicked = boolean;
+  }
+  
+  setSelectButtonEstablishmentIsClicked(boolean: boolean) {
+    this.selectButtonEstablishmentIsClicked = boolean;
   }
 
   setSelectButtonSpecialistIsClicked(boolean: boolean) {
@@ -36,8 +42,12 @@ class EnrollStoreClass {
   }
 
 
-  setIsOpenFormFindClient(boolean: boolean) { //new
+  setIsOpenFormFindClient(boolean: boolean) {
     this.isOpenFormFindClient = boolean;
+  }
+
+  setIsOpenListEstablishment(boolean: boolean) {
+    this.isOpenListEstablishment = boolean;
   }
 
   setIsOpenListSpecialist(boolean: boolean) {
@@ -61,10 +71,12 @@ class EnrollStoreClass {
     enrollStore.setSelectButtonServicesIsClicked(false);
     enrollStore.setSelectButtonSpecialistIsClicked(false);
     enrollStore.setSelectButtonClientIsClicked(false);
+    enrollStore.setSelectButtonEstablishmentIsClicked(false);
     enrollStore.setIsSubmitOrder(false);
     enrollStore.setIsOpenListDate(false);
     enrollStore.setIsOpenListServices(false);
     enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenListEstablishment(false);
     enrollStore.setIsOpenFormFindClient(true);
   }
 

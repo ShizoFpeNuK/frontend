@@ -1,19 +1,19 @@
-import '../../style/css/cards/cardBase.css';
+import '../../../style/css/cards/cardBase.css';
 import { Card } from "antd";
-import { IUser } from "../../options/model/user.model";
-import { IClient } from "../../options/model/client.model";
+import { IUser } from "../../../options/model/user.model";
+import { IClient } from "../../../options/model/client.model";
 import { ReactNode } from "react";
-import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
+import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 
 
-interface ICardBaseProps {
+interface ICardPABaseProps {
   title?: string,
   info: IUser | IClient,
   children?: ReactNode,
 }
 
 
-const CardBase = (props: ICardBaseProps) => {
+const CardPABase = (props: ICardPABaseProps) => {
   return (
     <Card
       className="cardbase"
@@ -44,4 +44,4 @@ const CardBase = (props: ICardBaseProps) => {
 }
 
 
-export default CardBase;
+export default CardPABase;

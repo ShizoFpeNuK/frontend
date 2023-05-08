@@ -1,37 +1,26 @@
 import '../../style/css/order/order.css';
-import { IClient } from "../../options/model/client.model";
-import { Col, Row } from "antd";
 import { observer } from "mobx-react";
-import { useState } from "react";
+import { Col, Row } from "antd";
 import ListDates from "../OrderComponents/ListDates";
 import enrollStore from "../../store/EnrollStoreClass";
 import OrderDetails from "../OrderComponents/OrderDetails";
 import ListServices from "../OrderComponents/ListServices";
 import ResultSuccess from "../Results/ResultSuccess";
-import FindClientForm from "./FormClientFind";
+import FindClientForm from "./forms/FormClientFind";
 import ListSpecialists from "../OrderComponents/ListSpecialists";
-import notificationsStore from "../../store/NotificationsStoreClass";
+import ClientPAStoreClass from "../../store/ClientPAStoreClass";
+import ListEstablishments from "../OrderComponents/ListEstablishments";
 import ResultErrorNotCorrectData from "../Results/ResultErrorNotCorrectData";
+import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
 
 
 interface OrderAddProps {
-  notifications?: boolean,
+  clientStore: ClientPAStoreClass,
+  notificationsStore?: NotificationsPAStoreClass,
 }
 
 
-const OrderAdd = observer(({ notifications }: OrderAddProps) => {
-  const [client, setClient] = useState<IClient | null>(null);
-
-
-  const getClient = (client: IClient) => {
-    setClient(client);
-  }
-
-  const deleteClient = () => {
-    setClient(null);
-  }
-
-
+const OrderAdd = observer(({ clientStore, notificationsStore }: OrderAddProps) => {
   return (
     <div className="personal_account_forms_order">
       <h2 className="personal_account_forms_order_title title--border"> Добавить заказ </h2>
@@ -43,13 +32,14 @@ const OrderAdd = observer(({ notifications }: OrderAddProps) => {
         {enrollStore.isOpenFormFindClient
           ? <Col className="order_form" span={6}>
             <FindClientForm
-              notifications={notifications ?? false}
-              isOrder={true}
-              getClient={getClient}
-              deleteClient={deleteClient}
+              notificationsStore={notificationsStore}
+              clientStore={clientStore}
             />
           </Col>
           : <Col className="order_lists" span={16}>
+            {enrollStore.isOpenListEstablishment &&
+              <ListEstablishments />
+            }
             {enrollStore.isOpenListSpecialist &&
               <ListSpecialists />
             }
@@ -68,13 +58,16 @@ const OrderAdd = observer(({ notifications }: OrderAddProps) => {
         }
 
         <Col className="order_check" span={8}>
-          {client &&
-            <OrderDetails notifications={notifications ?? false} client={client} deleteClient={deleteClient} />
+          {clientStore.client &&
+            <OrderDetails
+              clientStore={clientStore}
+              notificationsStore={notificationsStore}
+            />
           }
-          {notificationsStore.isNotFindClient &&
+          {notificationsStore?.isNotFindClient &&
             <ResultErrorNotCorrectData title="Клиент не был найден" />
           }
-          {notificationsStore.isSubmitOrder &&
+          {notificationsStore?.isSubmitOrder &&
             <ResultSuccess title="Запись успешно произведена" />
           }
         </Col>

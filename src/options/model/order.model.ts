@@ -2,6 +2,7 @@
 
 export interface IOrderBase {
   employee_id: number, 
+  establishment_id: number,
   services_id: number[], 
 }
 

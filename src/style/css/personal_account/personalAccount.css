@@ -1,12 +1,8 @@
-.personal_account_info {
+.personal_account_manager_info {
   padding-right: 20px;
 }
 
-.personal_account_info_inner_button {
-  margin-top: 10px;
-}
-
-.personal_account_control_buttons {
+.personal_account_manager_control_buttons {
   margin-top: 20px;
 }
 
@@ -17,6 +13,6 @@
 
 .personal_account_client_result,
 .personal_account_order_result,
-.personal_account_forms {
+.personal_account_manager_forms {
   padding-left: 20px;
 }

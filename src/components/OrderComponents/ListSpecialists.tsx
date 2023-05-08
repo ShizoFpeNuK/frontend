@@ -21,7 +21,7 @@ const ListSpecialists = observer(() => {
 
 
   const loadingPage = async () => {
-    await specialistsStore.getSpecialistsList()
+    await specialistsStore.getSpecialistListByEstablishmentId(orderDetailsStore.OrderDetailsEstablishment!.establishment_id)
       .then(() => {
         setIsLoader(true);
       })

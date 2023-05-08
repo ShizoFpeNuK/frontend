@@ -1,7 +1,6 @@
 import '../../style/css/order/orderDetails.css';
 import { observer } from "mobx-react";
 import { IService } from "../../options/model/service.model";
-import { IClient, IClientBase } from "../../options/model/client.model";
 import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
 import { Card, Row, Col, Button, Space } from "antd";
 import ButtonStep from "../Buttons/ButtonStep";
@@ -11,13 +10,17 @@ import scheduleStore from "../../store/ScheduleStoreClass";
 import servicesStore from "../../store/ServicesStoreClass";
 import specialistsStore from "../../store/SpecialistsStoreClass";
 import orderDetailsStore from "../../store/OrderDetailsStoreClass";
-import notificationsStore from "../../store/NotificationsStoreClass";
+import ClientPAStoreClass from "../../store/ClientPAStoreClass";
+import establishmentStore from "../../store/EstablishmentsStoreClass";
+import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
 
 
 interface OrderDetailsProps {
-  notifications?: boolean,
-  client: IClientBase | IClient,
-  deleteClient: () => void,
+  clientStore?: ClientPAStoreClass,
+  notificationsStore?: NotificationsPAStoreClass,
+  // notifications?: boolean,
+  // client?: IClientBase | IClient,
+  // deleteClient?: () => void,
 }
 
 
@@ -27,6 +30,7 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
     enrollStore.clearStore();
     orderDetailsStore.clearStore();
 
+    establishmentStore.deleteEstablishmentsList();
     specialistsStore.deleteSpecialistsList();
     servicesStore.deleteServicesList();
     scheduleStore.deleteScheduleListBySpecialist();
@@ -34,17 +38,34 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
 
 
   const selectedClient = async () => {
-    orderDetailsStore.setOrderDetailsClient(props.client);
+    orderDetailsStore.setOrderDetailsClient(props.clientStore?.client);
     enrollStore.setSelectButtonClientIsClicked(true);
     enrollStore.setIsOpenFormFindClient(false);
-    enrollStore.setIsOpenListSpecialist(true);
+    enrollStore.setIsOpenListEstablishment(true);
   }
 
   const cancelClient = () => {
     // orderDetailsStore.deleteOrderDetailsClient();
     enrollStore.setSelectButtonClientIsClicked(false);
-    enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenListEstablishment(false);
     enrollStore.setIsOpenFormFindClient(true);
+    establishmentStore.deleteEstablishmentsList();
+  }
+
+  //new
+  const selectedEstablishment = async () => {
+    enrollStore.setSelectButtonEstablishmentIsClicked(true);
+    enrollStore.setIsOpenListEstablishment(false);
+    enrollStore.setIsOpenListSpecialist(true);
+  }
+
+  //new
+  const cancelEstablishment = () => {
+    establishmentStore.deleteEstablishmentsList();
+
+    enrollStore.setSelectButtonEstablishmentIsClicked(false);
+    enrollStore.setIsOpenListSpecialist(false);
+    enrollStore.setIsOpenListEstablishment(true);
     specialistsStore.deleteSpecialistsList();
   }
 
@@ -55,10 +76,8 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
   }
 
   const cancelSpecialist = () => {
-    //new
     specialistsStore.deleteSpecialistsList();
 
-    servicesStore.setServicesList([]);
     enrollStore.setSelectButtonSpecialistIsClicked(false);
     enrollStore.setIsOpenListServices(false);
     enrollStore.setIsOpenListSpecialist(true);
@@ -72,7 +91,6 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
   }
 
   const cancelServices = () => {
-    //new
     servicesStore.deleteServicesList()
 
     enrollStore.setSelectButtonServicesIsClicked(false);
@@ -88,7 +106,6 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
   }
 
   const cancelDate = () => {
-    //new
     scheduleStore.deleteScheduleListBySpecialist();
 
     enrollStore.setSelectButtonDateIsClicked(false);
@@ -98,11 +115,11 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
 
 
   const onClickSubmit = async () => {
-    await CheckServices.postCheck(orderDetailsStore.getOrderDetails());
-    props.deleteClient();
-    if (props.notifications) {
-      notificationsStore.setIsSubmitOrder(true);
-    }
+    await CheckServices.createCheck(orderDetailsStore.getOrderDetails());
+    props.clientStore?.deleteClient();
+    // if (props.notifications) {
+    props.notificationsStore?.setIsSubmitOrder(true);
+    // }
     clearOrderComponent();
   }
 
@@ -118,16 +135,20 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
       style={CardForm}
       bodyStyle={CardBodyForm}
     >
-      {/* {orderDetailsStore.OrderDetailsClient */}
-      {props.client
+      {props.clientStore?.client
         ? <div className="order_check_details_client">
           <h3 className="order_check_details_client_title"> Клиент </h3>
-          {/* <div className="order_check_details_client_fullname"> {orderDetailsStore.OrderDetailsClient?.full_name} </div>
-          <div className="order_check_details_client_telephone"> {orderDetailsStore.OrderDetailsClient?.telephone} </div> */}
-          <div className="order_check_details_client_fullname"> {props.client.full_name} </div>
-          <div className="order_check_details_client_telephone"> {props.client.telephone} </div>
+          <div className="order_check_details_client_fullname"> {props.clientStore.client.full_name} </div>
+          <div className="order_check_details_client_telephone"> {props.clientStore.client.telephone} </div>
         </div>
         : <div className="order_check_details_message"> Ожидаем ваш заказ! </div>
+      }
+
+      {orderDetailsStore.OrderDetailsEstablishment &&
+        <div className="order_check_details_establishment">
+          <h3 className="order_check_details_establishment_title"> Адрес </h3>
+          <div className="order_check_details_establishment_address"> {orderDetailsStore.OrderDetailsEstablishment?.address_establishment} </div>
+        </div>
       }
 
       {orderDetailsStore.OrderDetailsSpecialist &&
@@ -173,12 +194,19 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
 
       <div className="order_check_details_buttons_step">
         {/* Кнопка после клиента */}
-        {/* {orderDetailsStore.OrderDetailsClient && !enrollStore.selectButtonClientIsClicked && */}
-        {props.client && !enrollStore.selectButtonClientIsClicked &&
+        {props.clientStore?.client && !enrollStore.selectButtonClientIsClicked &&
           <ButtonStep onClick={selectedClient}> Далее </ButtonStep>
         }
-        {enrollStore.selectButtonClientIsClicked && !orderDetailsStore.OrderDetailsSpecialist &&
+        {enrollStore.selectButtonClientIsClicked && !orderDetailsStore.OrderDetailsEstablishment &&
           <ButtonStep onClick={cancelClient}> Назад </ButtonStep>
+        }
+
+         {/* Кнопка после заведения */}
+         {orderDetailsStore.OrderDetailsEstablishment && !enrollStore.selectButtonEstablishmentIsClicked &&
+          <ButtonStep onClick={selectedEstablishment}> Далее </ButtonStep>
+        }
+        {enrollStore.selectButtonEstablishmentIsClicked && !orderDetailsStore.OrderDetailsSpecialist &&
+          <ButtonStep onClick={cancelEstablishment}> Назад </ButtonStep>
         }
 
         {/* Кнопка после специалиста */}
@@ -211,7 +239,7 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
         className="order_check_details_buttons"
         style={{ width: "100%", justifyContent: "center" }}
       >
-        {orderDetailsStore.OrderDetailsSpecialist &&
+        {orderDetailsStore.OrderDetailsEstablishment &&
           <Button
             className="order_check_details_clear_button"
             danger

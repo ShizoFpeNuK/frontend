@@ -1,8 +1,8 @@
-import { makeAutoObservable } from "mobx";
 import { IClient } from "../options/model/client.model";
+import { makeAutoObservable } from "mobx";
 
 
-class ClientStoreClass {
+class ClientPAStoreClass {
   client: IClient | undefined = undefined;
 
   constructor() {
@@ -20,5 +20,4 @@ class ClientStoreClass {
 };
 
 
-const clientStore = new ClientStoreClass();
-export default clientStore;
+export default ClientPAStoreClass;

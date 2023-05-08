@@ -1,6 +1,7 @@
 import { ISpecialist } from "../options/model/specialist.model";
 import { makeAutoObservable } from "mobx";
 import SpecialistsServices from "../services/specialists.service";
+import EstablishmentServices from "../services/establishment.service";
 
 
 class SpecialistsStoreClass {
@@ -16,6 +17,10 @@ class SpecialistsStoreClass {
     this.setSpecialistsList(specialists);
   }
 
+  async getSpecialistListByEstablishmentId(establishmentId: number) {
+    const specialists = await EstablishmentServices.getSpecialistsByEstablishmentId(establishmentId);
+    this.setSpecialistsList(specialists);
+  }
 
   setSpecialistsList(specialists: ISpecialist[]) {
     this.SpecialistsList = specialists;
