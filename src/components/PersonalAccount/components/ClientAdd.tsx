@@ -1,9 +1,9 @@
 import { observer } from "mobx-react";
 import { Col, Row } from "antd";
-import FormClientAdd from "./forms/FormClientAdd";
-import ResultSuccess from "../Results/ResultSuccess";
-import ResultErrorConflict from "../Results/ResultErrorConflict";
-import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
+import FormClientAdd from "../forms/FormClientAdd";
+import ResultSuccess from "../../Results/ResultSuccess";
+import ResultErrorConflict from "../../Results/ResultErrorConflict";
+import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
 
 
 interface ClientAddProps {

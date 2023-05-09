@@ -4,7 +4,7 @@ import { useForm } from "antd/es/form/Form";
 import { ColumnsType } from "antd/es/table";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import { IServiceWithStartAndEndTime } from "../../../options/model/service.model";
-import { Button, Card, Form, InputNumber, Modal, Rate, Space, Table } from "antd";
+import { Button, Card, Col, Form, InputNumber, Modal, Rate, Row, Space, Table } from "antd";
 import CheckServices from "../../../services/check.service";
 
 
@@ -92,7 +92,7 @@ const CardCheck = (props: CardCheckProps) => {
   const showModalPaid = () => {
     Modal.confirm({
       className: "modal_paid",
-      title: <h3>Чек №{props.check.check_id}</h3>,
+      title: <h3> Чек №{props.check.check_id} </h3>,
       icon: null,
       centered: true,
       okText: "Оплатить",
@@ -102,7 +102,6 @@ const CardCheck = (props: CardCheckProps) => {
           layout="vertical"
           preserve={false}
           form={form}
-          initialValues={{ remember: false }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -115,19 +114,29 @@ const CardCheck = (props: CardCheckProps) => {
               allowClear
             />
           </Form.Item>
-          <Form.Item
-            style={{ fontWeight: 600 }}
-            label="Бонусы"
-            name="paid_bonus"
+          <Row
+            justify={'space-between'}
+            wrap={false}
+            align={'middle'}
           >
-            <InputNumber
-              min={0}
-              max={props.bonus}
-              defaultValue={0}
-              onPressEnter={(e) => e.preventDefault()}
-            />
-          </Form.Item>
-        </Form>
+            <Col>
+              <Form.Item
+                style={{ fontWeight: 600 }}
+                label="Потратить бонусы"
+                name="paid_bonus"
+              >
+                <InputNumber
+                  min={0}
+                  max={props.bonus}
+                  onPressEnter={(e) => e.preventDefault()}
+                />
+              </Form.Item>
+            </Col>
+            <Col>
+              <p style={{ fontWeight: 400 }}> Имеется бонусов: {props.bonus} </p>
+            </Col>
+          </Row>
+        </Form >
       ),
       async onOk() {
         form.submit();

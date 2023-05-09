@@ -1,19 +1,11 @@
-import '../../style/css/personal_account/paManager.css';
-import { observer } from "mobx-react";
-import { useState } from "react";
+import '../../style/css/personal_account/paControl.css';
+import { useEffect, useState } from "react";
 import { Button, Col, Row, Space } from "antd";
-import { FileAddOutlined, SearchOutlined, UserAddOutlined } from "@ant-design/icons";
-import OrderAdd from "../../components/PersonalAccount/components/OrderAdd";
+import { SearchOutlined, UserAddOutlined } from "@ant-design/icons";
 import ClientAdd from "../../components/PersonalAccount/components/ClientAdd";
-import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
-import enrollStore from "../../store/EnrollStoreClass";
-import scheduleStore from "../../store/ScheduleStoreClass";
-import servicesStore from "../../store/ServicesStoreClass";
-import specialistsStore from "../../store/SpecialistsStoreClass";
 import CheckPAStoreClass from "../../store/CheckPAStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
 import ClientPAStoreClass from "../../store/ClientPAStoreClass";
 import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
 
@@ -23,11 +15,23 @@ const checkStore = new CheckPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
 
-const PAManager = observer(() => {
+const PAControl = () => {
+  const [isLoader, setIsLoader] = useState<boolean>(false);
   const [isOpenFindClientForm, setIsOpenFindClientForm] = useState<boolean>(false);
   const [isOpenAddClientForm, setIsOpenAddClientForm] = useState<boolean>(false);
+  const [isOpenFindEmployeeForm, setIsOpenFindEmployeeForm] = useState<boolean>(false);
+
   const [isOpenFindOrderForm, setIsOpenFindOrderClientForm] = useState<boolean>(false);
   const [isOpenAddOrderForm, setIsOpenAddOrderClientForm] = useState<boolean>(false);
+
+
+  const loadingPage = async () => {
+    // await ScheduleServices.getScheduleByEmployeeId(14)
+    //   .then(() => {
+    setIsLoader(true);
+    // })
+    //Обработка ошибки
+  }
 
 
   const clearAll = () => {
@@ -35,31 +39,42 @@ const PAManager = observer(() => {
     notificationsStore.deleteNotificationsClient();
     notificationsStore.deleteIsSubmitOrder();
 
-    checkStore.deleteChecks();
     clientStore.deleteClient();
-    enrollStore.clearStore();
-    orderDetailsStore.clearStore();
+    // checkStore.deleteChecks();
+    // enrollStore.clearStore();
+    // orderDetailsStore.clearStore();
 
-    specialistsStore.deleteSpecialistsList();
-    servicesStore.deleteServicesList();
-    scheduleStore.deleteScheduleListBySpecialist();
+    // specialistsStore.deleteSpecialistsList();
+    // servicesStore.deleteServicesList();
+    // scheduleStore.deleteScheduleListBySpecialist();
   }
 
 
   const onClickFoundClientButton = () => {
     clearAll();
     setIsOpenAddClientForm(false);
-    setIsOpenAddOrderClientForm(false);
-    setIsOpenFindOrderClientForm(false);
+    setIsOpenFindEmployeeForm(false);
+    // setIsOpenAddOrderClientForm(false);
+    // setIsOpenFindOrderClientForm(false);
     setIsOpenFindClientForm(!isOpenFindClientForm);
   }
 
   const onClickAddClientButton = () => {
     clearAll();
     setIsOpenFindClientForm(false);
-    setIsOpenAddOrderClientForm(false);
-    setIsOpenFindOrderClientForm(false);
+    setIsOpenFindEmployeeForm(false);
+    // setIsOpenAddOrderClientForm(false);
+    // setIsOpenFindOrderClientForm(false);
     setIsOpenAddClientForm(!isOpenAddClientForm);
+  }
+
+  const onClickFoundEmployeeButton = () => {
+    clearAll();
+    setIsOpenAddClientForm(false);
+    setIsOpenFindClientForm(false);
+    // setIsOpenAddOrderClientForm(false);
+    // setIsOpenFindOrderClientForm(false);
+    setIsOpenFindEmployeeForm(!isOpenFindEmployeeForm);
   }
 
   const onClickAddOrderButton = () => {
@@ -79,11 +94,18 @@ const PAManager = observer(() => {
   }
 
 
+  useEffect(() => {
+    if (!isLoader) {
+      // loadingPage();
+    }
+  }, [isLoader])
+
+
   return (
-    <div className="personal_account_manager_page">
-      <h1 className="personal_account_manager_title title--border"> Личный кабинет </h1>
-      <Row className="personal_account_manager_row">
-        <Col className="personal_account_manager_info" span={4}>
+    <div className="personal_account_control_page">
+      <h1 className="personal_account_control_title title--border"> Личный кабинет </h1>
+      <Row className="personal_account_control_row">
+        <Col className="personal_account_control_info" span={4}>
           <CardPAUser />
           <Space
             className="personal_account_manager_control_buttons"
@@ -91,25 +113,29 @@ const PAManager = observer(() => {
             style={{ width: "100%" }}>
             <Button block onClick={onClickFoundClientButton}> <SearchOutlined /> Найти клиента </Button>
             <Button block onClick={onClickAddClientButton}> <UserAddOutlined /> Добавить клиента </Button>
-            <Button block onClick={onClickFindOrderButton}> <SearchOutlined /> Найти заказ </Button>
-            <Button block onClick={onClickAddOrderButton}> <FileAddOutlined /> Добавить заказ </Button>
+            <Button block onClick={onClickFoundEmployeeButton}> <SearchOutlined /> Найти сотрудника </Button>
+            {/* <Button block onClick={onClickAddEmployeeButton}> <UserAddOutlined /> Добавить сотрудника </Button> */}
           </Space>
         </Col>
 
         <Col
-          className="personal_account_manager_forms"
+          className="personal_account_control_forms"
           span={20}
         >
           {isOpenFindClientForm &&
             <ClientFind
               notificationsStore={notificationsStore}
               clientStore={clientStore}
+              isUpdateClient={true}
             />
           }
           {isOpenAddClientForm &&
             <ClientAdd notificationsStore={notificationsStore} />
           }
-          {isOpenFindOrderForm &&
+          {isOpenFindEmployeeForm &&
+            <ClientAdd notificationsStore={notificationsStore} />
+          }
+          {/* {isOpenFindOrderForm &&
             <OrderFind
               notificationsStore={notificationsStore}
               clientStore={clientStore}
@@ -121,12 +147,12 @@ const PAManager = observer(() => {
               notificationsStore={notificationsStore}
               clientStore={clientStore}
             />
-          }
+          } */}
         </Col>
       </Row>
     </div>
   )
-});
+}
 
 
-export default PAManager;
+export default PAControl;

@@ -1,18 +1,18 @@
-import { ICheck } from "../../options/model/check.model";
-import { IClient } from "../../options/model/client.model";
+import { ICheck } from "../../../options/model/check.model";
+import { IClient } from "../../../options/model/client.model";
 import { observer } from "mobx-react";
 import { Col, Row, Space } from "antd";
 import { useEffect, useState } from "react";
-import CardCheck from "./cards/CardCheck";
-import CheckServices from "../../services/check.service";
-import FormOrderFind from "./forms/FormOrderFind";
-import ClientServices from "../../services/client.service";
-import FormClientFind from "./forms/FormClientFind";
-import CheckPAStoreClass from "../../store/CheckPAStoreClass";
-import ClientPAStoreClass from "../../store/ClientPAStoreClass";
-import ResultSuccessNoData from "../Results/ResultSuccessNoData";
-import ResultErrorNotCorrectData from "../Results/ResultErrorNotCorrectData";
-import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
+import CardCheck from "../cards/CardCheck";
+import CheckServices from "../../../services/check.service";
+import FormOrderFind from "../forms/FormOrderFind";
+import ClientServices from "../../../services/client.service";
+import FormClientFind from "../forms/FormClientFind";
+import CheckPAStoreClass from "../../../store/CheckPAStoreClass";
+import ClientPAStoreClass from "../../../store/ClientPAStoreClass";
+import ResultSuccessNoData from "../../Results/ResultSuccessNoData";
+import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
+import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
 
 
 interface OrderFindProps {
@@ -28,7 +28,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
 
 
   const getChecksAfterDelete = () => {
-    CheckServices.getChecks(clientStore.client!.client_id)
+    CheckServices.getChecksByClientId(clientStore.client!.client_id)
       .then((checks: ICheck[]) => {
         if (!checks.length) {
           notificationsStore?.setIsEmptyChecks(true);
@@ -61,7 +61,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
     }
   }, [isPaidCheck, isDeleteCheck])
 
-  
+
   return (
     <div className="personal_account_forms_order">
       <h2 className="personal_account_forms_order_title title--border"> Найти заказ </h2>
@@ -75,14 +75,15 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
               clientStore={clientStore}
               notificationsStore={notificationsStore}
             />
-            : <FormOrderFind
+            :
+            <FormOrderFind
               clientStore={clientStore}
               checkStore={checkStore}
               notificationsStore={notificationsStore}
             />
           }
         </Col>
-        <Col className="personal_account_order_result">
+        <Col className="personal_account_order_result" span={18}>
           <Space
             wrap={true}
             direction="horizontal"
@@ -101,6 +102,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
               />
             )}
           </Space>
+
 
           {notificationsStore?.isNotFindClient &&
             <ResultErrorNotCorrectData title="Клиент не был найден" />

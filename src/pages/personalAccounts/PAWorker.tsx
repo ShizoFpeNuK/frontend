@@ -2,11 +2,10 @@ import '../../style/css/personal_account/paWorker.css';
 import { observer } from "mobx-react";
 import { SearchOutlined } from "@ant-design/icons";
 import { IScheduleWorker } from "../../options/model/schedule.model";
-import { Button, Col, Row } from "antd";
 import { useEffect, useState } from "react";
+import { Button, Col, Row, Space } from "antd";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
 import CardSchedule from "../../components/PersonalAccount/cards/CardSchedule";
-import ScheduleServices from "../../services/schedule.service";
 import SchedulePAStoreClass from "../../store/SchedulePAStoreClass";
 
 
@@ -17,26 +16,26 @@ interface PAWorkerProps {
 }
 
 
-const PAWorker = observer(({workerId}: PAWorkerProps) => {
+const PAWorker = observer(({ workerId }: PAWorkerProps) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
 
 
   const loadingPage = async () => {
-    await ScheduleServices.getScheduleByEmployeeId(14) //workerId
+    await scheduleStore.getScheduleByEmployeeId(2) //workerId
       .then(() => {
         setIsLoader(true);
       })
     //Обработка ошибки
   }
 
-  const onClickFoundScheduleButton = () => {
-
+  const onClickFoundScheduleButton = async () => {
+    await scheduleStore.getScheduleByEmployeeId(2); //workerId
   }
 
 
   useEffect(() => {
     if (!isLoader) {
-      // loadingPage();
+      loadingPage();
     }
   }, [isLoader])
 
@@ -60,9 +59,17 @@ const PAWorker = observer(({workerId}: PAWorkerProps) => {
           className="personal_account_worker_schedule"
           span={20}
         >
-          {scheduleStore.schedule.map((schedule: IScheduleWorker) =>
-            <CardSchedule schedule={schedule} />
-          )}
+          <Space
+            wrap={true}
+            direction="horizontal"
+            align="start"
+            size={[20, 20]}
+            style={{ width: "100%" }}
+          >
+            {scheduleStore.schedule.map((schedule: IScheduleWorker) =>
+              <CardSchedule schedule={schedule} />
+            )}
+          </Space>
         </Col>
       </Row>
     </div>

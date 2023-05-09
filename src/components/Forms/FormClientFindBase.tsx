@@ -1,5 +1,5 @@
 import { CardForm } from "../../style/typescript/cardForm";
-import { FormBaseProps } from "../../options/model/components/formBase.model";
+import { FormBaseProps } from "../../options/model/props/formBaseProps.model";
 import { Button, Card, Form, Input } from "antd";
 
 
@@ -9,7 +9,6 @@ const FormClientFindBase = (props: FormBaseProps) => {
       <Form
         layout="vertical"
         form={props.form}
-        // initialValues={{ remember: false }}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
       >

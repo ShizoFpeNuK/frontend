@@ -1,7 +1,7 @@
 import { ISchedule } from "../options/model/schedule.model";
 import { IOrderBase } from "../options/model/order.model";
 import { makeAutoObservable } from "mobx";
-import SpecialistsServices from "../services/specialists.service";
+import ScheduleServices from "../services/schedule.service";
 
 
 class ScheduleStoreClass {
@@ -15,7 +15,7 @@ class ScheduleStoreClass {
 
 
   async getScheduleListBySpecialistId(orderBase: IOrderBase) {
-    const schedules = await SpecialistsServices.getScheduleBySpecialistId(orderBase);
+    const schedules = await ScheduleServices.getScheduleBySpecialistId(orderBase);
     this.deleteScheduleMonth();
 
     schedules.forEach((schedule: ISchedule) => {

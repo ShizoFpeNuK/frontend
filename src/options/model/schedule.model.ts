@@ -6,6 +6,7 @@ export interface ISchedule {
 }
 
 export interface IScheduleWorker {
+  schedule_id: number,
   date_work: string,
   start_work: string,
   end_work: string,

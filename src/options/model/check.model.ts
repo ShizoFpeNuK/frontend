@@ -1,5 +1,6 @@
 
 
+
 export interface ICheck {
   check_id: number,
   date_check: string,
@@ -14,4 +15,5 @@ export interface ICheck {
 
 export interface ICheckFind {
   date: string,
+  paid: boolean | undefined,
 }

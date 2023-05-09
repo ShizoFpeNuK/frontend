@@ -19,11 +19,11 @@ const CardSchedule = ({ schedule }: CardScheduleProps) => {
       <div className="card_schedule_info">
         <div className="card_schedule_info_inner" >
           <h3 className="card_schedule_info_inner_title"> Дата работы </h3>
-          <p className="card_schedule_info_inner_date"> {schedule.date_work} </p>
+          <p className="card_schedule_info_inner_date"> {new Date(schedule.date_work).toLocaleDateString()} </p>
         </div>
         <div className="card_schedule_info_inner">
           <h3 className="card_schedule_info_inner_title"> Рабочий день </h3>
-          <p className="card_schedule_info_inner_duration_day"> {schedule.date_work} — {schedule.end_work}</p>
+          <p className="card_schedule_info_inner_duration_day"> {schedule.start_work} — {schedule.end_work}</p>
         </div>
         <div className="card_schedule_info_inner">
           <h3 className="card_schedule_info_inner_title"> Адрес работы </h3>

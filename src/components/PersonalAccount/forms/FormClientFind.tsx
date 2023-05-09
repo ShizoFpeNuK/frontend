@@ -30,7 +30,7 @@ const FormClientFind = observer(({ clientStore, notificationsStore }: FindClient
       clearNotifications();
     }
 
-    await ClientServices.getClient(client)
+    await ClientServices.getClientByTelephone(client)
       .then((client: IClient) => {
         clientStore.setClient(client);
         form.resetFields();

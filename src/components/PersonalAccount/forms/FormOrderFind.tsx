@@ -1,7 +1,6 @@
 import '../../../style/css/forms/formFindOrder.css';
 import { useForm } from "antd/es/form/Form";
 import { useState } from "react";
-import { DatePickerProps } from "antd";
 import { ICheck, ICheckFind } from "../../../options/model/check.model";
 import ButtonStep from "../../Buttons/ButtonStep";
 import CheckServices from "../../../services/check.service";
@@ -9,7 +8,13 @@ import FormOrderFindBase from "../../Forms/FormOrderFindBase";
 import CheckPAStoreClass from "../../../store/CheckPAStoreClass";
 import ClientPAStoreClass from "../../../store/ClientPAStoreClass";
 import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
+import dayjs from "dayjs";
 
+
+interface fieldValue {
+  date: dayjs.Dayjs,
+  paid: boolean | undefined
+}
 
 interface FormFindOrderProps {
   checkStore: CheckPAStoreClass,
@@ -19,38 +24,39 @@ interface FormFindOrderProps {
 
 
 const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFindOrderProps) => {
-  const [date, setDate] = useState<string | null>(null);
   const [form] = useForm();
 
 
   const cancelClient = async () => {
     checkStore.deleteChecks();
+    checkStore.deleteChecksChoiceDate();
+    checkStore.deleteChecksRadioPaid();
     clientStore.deleteClient();
     notificationsStore?.deleteNotificationsChecks();
   }
 
-  const onClickDate: DatePickerProps['onChange'] = (date, dateString) => {
-    setDate(date?.format("YYYY-MM-DD") ?? null);
-  };
 
-
-  const onFinish = async (values: ICheckFind) => {
+  const onFinish = async (values: fieldValue) => {
     checkStore.deleteChecks();
-    notificationsStore?.deleteNotificationsChecks();
-
-    if (date) {
-      values.date = date;
-      setDate(null);
+    const correctValues: ICheckFind = {
+      ...values,
+      "paid": values["paid"] === undefined ? undefined : values["paid"],
+      "date": values["date"]?.format("YYYY-MM-DD"),
     }
 
-    await CheckServices.getChecks(clientStore.client!.client_id, values)
+    checkStore.setChecksChoiceDate(correctValues.date);
+    checkStore.setChecksRadioIsPaid(correctValues.paid);
+    notificationsStore?.deleteNotificationsChecks();
+
+
+    await CheckServices.getChecksByClientId(clientStore.client!.client_id, correctValues)
       .then((checks: ICheck[]) => {
         if (checks.length) {
           checkStore.setChecks(checks);
         } else {
           notificationsStore?.setIsEmptyChecks(true);
         }
-        form.resetFields();
+        // form.resetFields();
       })
       .catch(() => {
         notificationsStore?.setIsNotFindChecks(true);
@@ -69,7 +75,6 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
       form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      onChangeFormatDate={onClickDate}
       buttons={<ButtonStep onClick={cancelClient}> Назад </ButtonStep>}
     >
       <div className="client_info" style={{ textAlign: "left" }}>
@@ -88,7 +93,7 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
       </div>
     </FormOrderFindBase>
   )
-}
+};
 
 
 export default FormOrderFind;

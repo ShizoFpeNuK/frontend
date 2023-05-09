@@ -1,6 +1,6 @@
 import { useForm } from "antd/es/form/Form";
 import { AxiosError } from "axios";
-import { IClientAdd } from "../../../options/model/client.model";
+import { IClientCreate } from "../../../options/model/client.model";
 import ClientServices from "../../../services/client.service";
 import FormClientAddBase from "../../Forms/FormClientAddBase";
 import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
@@ -15,10 +15,10 @@ const FormClientAdd = ({ notificationsStore }: FormAddClientProps) => {
   const [form] = useForm();
 
 
-  const onFinish = async (client: IClientAdd) => {
+  const onFinish = async (client: IClientCreate) => {
     notificationsStore?.deleteNotificationsClient();
 
-    await ClientServices.postClient(client)
+    await ClientServices.createClient(client)
       .then(() => {
         notificationsStore?.setIsCreateClient(true);
         form.resetFields();

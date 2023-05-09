@@ -1,17 +1,17 @@
 import '../../style/css/order/order.css';
 import { observer } from "mobx-react";
 import { Col, Row } from "antd";
-import ListDates from "../OrderComponents/ListDates";
-import enrollStore from "../../store/EnrollStoreClass";
-import OrderDetails from "../OrderComponents/OrderDetails";
-import ListServices from "../OrderComponents/ListServices";
-import ResultSuccess from "../Results/ResultSuccess";
-import FindClientForm from "./forms/FormClientFind";
-import ListSpecialists from "../OrderComponents/ListSpecialists";
-import ClientPAStoreClass from "../../store/ClientPAStoreClass";
-import ListEstablishments from "../OrderComponents/ListEstablishments";
-import ResultErrorNotCorrectData from "../Results/ResultErrorNotCorrectData";
-import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
+import ListDates from "../../OrderComponents/ListDates";
+import enrollStore from "../../../store/EnrollStoreClass";
+import OrderDetails from "../../OrderComponents/OrderDetails";
+import ListServices from "../../OrderComponents/ListServices";
+import ResultSuccess from "../../Results/ResultSuccess";
+import FindClientForm from "../forms/FormClientFind";
+import ListSpecialists from "../../OrderComponents/ListSpecialists";
+import ClientPAStoreClass from "../../../store/ClientPAStoreClass";
+import ListEstablishments from "../../OrderComponents/ListEstablishments";
+import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
+import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
 
 
 interface OrderAddProps {

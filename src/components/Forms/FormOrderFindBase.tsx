@@ -1,7 +1,7 @@
 import { CardForm } from "../../style/typescript/cardForm";
 import { ReactNode } from "react";
-import { FormBaseProps } from "../../options/model/components/formBase.model";
-import { Button, Card, DatePicker, DatePickerProps, Form, Space } from "antd";
+import { FormBaseProps } from "../../options/model/props/formBaseProps.model";
+import { Button, Card, DatePicker, Form, Radio, Space } from "antd";
 
 import "dayjs/locale/ru";
 import locale from "antd/es/date-picker/locale/ru_RU";
@@ -11,17 +11,25 @@ const dateFormat = "DD.MM.YYYY";
 
 interface FormOrderFindBaseProps extends FormBaseProps {
   buttons?: ReactNode,
-  onChangeFormatDate?: DatePickerProps['onChange'],
 }
 
 
 const FormOrderFindBase = (props: FormOrderFindBaseProps) => {
+
+  const clearFieldValues = () => {
+    props.form.resetFields();
+  }
+
   return (
-    <Card className="client_form" title="Найти заказ" style={CardForm}>
+    <Card
+      className="client_form"
+      title="Найти заказ"
+      style={CardForm}
+    >
       {props.children}
 
-      <Form layout="vertical" form={props.form}
-        initialValues={{ remember: false }}
+      <Form layout="vertical"
+        form={props.form}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
       >
@@ -30,19 +38,32 @@ const FormOrderFindBase = (props: FormOrderFindBaseProps) => {
           name="date"
         >
           <DatePicker
-            onChange={props.onChangeFormatDate}
             format={dateFormat}
             style={{ width: "100%" }}
             placeholder="Выберите дату"
             locale={locale}
           />
         </Form.Item>
+        <Form.Item
+          label="Тип чека"
+          name="paid"
+          style={{ textAlign: "left" }}
+        >
+          <Radio.Group defaultValue={undefined}>
+            <Space direction="vertical">
+              <Radio value={undefined}> Все </Radio>
+              <Radio value={true}> Оплаченные </Radio>
+              <Radio value={false}> Неоплаченные </Radio>
+            </Space>
+          </Radio.Group>
+        </Form.Item>
 
         <Form.Item style={{ marginBottom: 0 }}>
-          <Space style={{ width: "100%", justifyContent: "center" }}>
-            {props.buttons}
+          <Space style={{ width: "100%", justifyContent: "center", marginBottom: "10px" }}>
+            <Button danger onClick={clearFieldValues}> Очистить </Button>
             <Button type="primary" onClick={props.form.submit}> Найти </Button>
           </Space>
+          {props.buttons}
         </Form.Item>
       </Form>
     </Card>

@@ -5,7 +5,7 @@
 }
 
 .card_schedule_info_inner:last-of-type {
-  margin-bottom: 15px;
+  margin-bottom: 0;
   padding-bottom: 0;
   border-bottom: none;
 }

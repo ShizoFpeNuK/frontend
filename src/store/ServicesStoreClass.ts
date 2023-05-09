@@ -1,7 +1,6 @@
 import { IService } from "../options/model/service.model";
 import { makeAutoObservable } from "mobx";
 import ServicesServices from "../services/services.service";
-import SpecialistsServices from "../services/specialists.service";
 
 
 class ServicesStoreClass {
@@ -24,7 +23,7 @@ class ServicesStoreClass {
   }
 
   async getServicesListBySpecialistId(specialistId: number): Promise<void> {
-    const services: IService[] = await SpecialistsServices.getAllServicesBySpecialistId(specialistId);
+    const services: IService[] = await ServicesServices.getServicesBySpecialistId(specialistId);
     this.setServicesList(services);
   }
 
