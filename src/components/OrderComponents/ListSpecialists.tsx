@@ -4,16 +4,22 @@ import { ISpecialist } from "../../options/model/specialist.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { Avatar, List, Row, Col, Button, Rate } from "antd";
-import specialistsStore from "../../store/SpecialistsStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
+import orderDetailsStore from "../../store/enrollStore/OrderDetailsStoreClass";
+import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
 
 
 const selectorListSpecialists: string = ".enroll_list_specialists";
 const selectorDeleteButton: string = ".enroll_list_specialists_item_meta_button_delete";
 const selectorAddButton: string = ".enroll_list_specialists_item_meta_button_add";
 
+interface ListServicesProps {
+  specialistsStore: SpecialistsPAStoreClass,
+  orderDetailsStore: OrderDetailsStoreClass,
+}
 
-const ListSpecialists = observer(() => {
+
+const ListSpecialists = observer(({specialistsStore, orderDetailsStore}: ListServicesProps) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const useListSpecialists = useRef<Element | null>(null);
   const useListDeleteButtons = useRef<NodeListOf<Element> | null>(null);

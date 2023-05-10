@@ -10,7 +10,10 @@ const Footer = () => {
       className="footer_row"
     >
       <Col className="footer_logo">
-        <Image src={require("../../options/images/logo/logo.png")} preview={false} />
+        <Image
+          src={require("../../options/images/logo/logo.png")}
+          preview={false}
+        />
       </Col>
       <Col className="footer_address">
         <span> Адрес головного заведения </span>

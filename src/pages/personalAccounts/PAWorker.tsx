@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Button, Col, Row, Space } from "antd";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
 import CardSchedule from "../../components/PersonalAccount/cards/CardSchedule";
-import SchedulePAStoreClass from "../../store/SchedulePAStoreClass";
+import SchedulePAStoreClass from "../../store/paStore/SchedulePAStoreClass";
 
 
 const scheduleStore = new SchedulePAStoreClass();

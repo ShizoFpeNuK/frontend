@@ -41,5 +41,4 @@ class ServicesStoreClass {
 }
 
 
-const servicesStore = new ServicesStoreClass();
-export default servicesStore;
+export default ServicesStoreClass;

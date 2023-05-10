@@ -4,7 +4,10 @@ import { Col, Row } from "antd";
 import { IService } from "../options/model/service.model";
 import { useEffect } from "react";
 import CardService from "../components/Cards/CardService";
-import servicesStore from "../store/ServicesStoreClass";
+import ServicesStoreClass from "../store/ServicesStoreClass";
+
+
+const servicesStore =  new ServicesStoreClass();
 
 
 const Home = observer(() => {

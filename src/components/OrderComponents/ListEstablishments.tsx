@@ -3,16 +3,21 @@ import { IEstablishment } from "../../options/model/establishment.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Col, List, Row } from "antd"
 import { useEffect, useRef, useState } from "react";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
-import establishmentStore from "../../store/EstablishmentsStoreClass";
+import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
+import OrderDetailsStoreClass from '../../store/enrollStore/OrderDetailsStoreClass';
 
 
 const selectorListEstablishments: string = ".enroll_list_establishments";
 const selectorDeleteButton: string = ".enroll_list_establishments_item_meta_button_delete";
 const selectorAddButton: string = ".enroll_list_establishments_item_meta_button_add";
 
+interface ListEstablishmentsProps {
+  orderDetailsStore: OrderDetailsStoreClass,
+  establishmentStore: EstablishmentPAStoreClass,
+}
 
-const ListEstablishments = () => {
+
+const ListEstablishments = ({ establishmentStore, orderDetailsStore }: ListEstablishmentsProps) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const useListEstablishments = useRef<Element | null>(null);
   const useListDeleteButtons = useRef<NodeListOf<Element> | null>(null);

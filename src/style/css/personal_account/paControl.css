@@ -13,3 +13,7 @@
 :where(.css-dev-only-do-not-override-1fviqcj).modal_update_client .ant-modal-confirm-body {
   display: block;
 }
+
+:where(.css-dev-only-do-not-override-1fviqcj).modal_update_employee .ant-modal-confirm-body {
+  display: block;
+}

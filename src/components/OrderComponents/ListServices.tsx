@@ -4,16 +4,22 @@ import { IService } from "../../options/model/service.model";
 import { List, Button, Row, Col } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { ClockCircleOutlined, DeleteOutlined, DollarCircleOutlined } from "@ant-design/icons";
-import servicesStore from "../../store/ServicesStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
+import orderDetailsStore from "../../store/enrollStore/OrderDetailsStoreClass";
+import ServicesStoreClass from "../../store/ServicesStoreClass";
+import OrderDetailsStoreClass from '../../store/enrollStore/OrderDetailsStoreClass';
 
 
 const selectorListServices: string = ".enroll_list_services";
 const selectorDeleteButton: string = ".enroll_list_services_item_meta_button_delete";
 const selectorAddButton: string = ".enroll_list_services_item_meta_button_add";
 
+interface ListServicesProps {
+  servicesStore: ServicesStoreClass,
+  orderDetailsStore: OrderDetailsStoreClass,
+}
 
-const ListServices = observer(() => {
+
+const ListServices = observer(({ servicesStore, orderDetailsStore }: ListServicesProps) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const useListServices = useRef<Element | null>(null);
   const useListDeleteButtons = useRef<NodeListOf<Element> | null>(null);

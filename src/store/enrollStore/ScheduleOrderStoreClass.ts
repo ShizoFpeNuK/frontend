@@ -1,20 +1,19 @@
-import { ISchedule } from "../options/model/schedule.model";
-import { IOrderBase } from "../options/model/order.model";
+import { ISchedule } from "../../options/model/schedule.model";
+import { IOrderBase } from "../../options/model/order.model";
 import { makeAutoObservable } from "mobx";
-import ScheduleServices from "../services/schedule.service";
+import ScheduleServices from "../../services/schedule.service";
 
 
-class ScheduleStoreClass {
-  ScheduleListBySpecialist: ISchedule[] = [];
+class ScheduleOrderStoreClass {
+  ScheduleList: ISchedule[] = [];
   ScheduleMonth: string[] = [];
-
 
   constructor() {
     makeAutoObservable(this);
   }
 
 
-  async getScheduleListBySpecialistId(orderBase: IOrderBase) {
+  async getScheduleList(orderBase: IOrderBase) {
     const schedules = await ScheduleServices.getScheduleBySpecialistId(orderBase);
     this.deleteScheduleMonth();
 
@@ -37,11 +36,11 @@ class ScheduleStoreClass {
       }
     })
 
-    this.setScheduleListBySpecialist(schedules);
+    this.setScheduleList(schedules);
   }
 
-  setScheduleListBySpecialist(schedules: ISchedule[]) {
-    this.ScheduleListBySpecialist = schedules;
+  setScheduleList(schedules: ISchedule[]) {
+    this.ScheduleList = schedules;
   }
 
   setScheduleMonth(months: string[]) {
@@ -52,8 +51,8 @@ class ScheduleStoreClass {
     this.ScheduleMonth.push(month);
   }
 
-  deleteScheduleListBySpecialist() {
-    this.setScheduleListBySpecialist([]);
+  deleteScheduleList() {
+    this.setScheduleList([]);
   }
 
   deleteScheduleMonth() {
@@ -62,5 +61,4 @@ class ScheduleStoreClass {
 }
 
 
-const scheduleStore = new ScheduleStoreClass();
-export default scheduleStore;
+export default ScheduleOrderStoreClass;

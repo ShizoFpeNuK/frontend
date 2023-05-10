@@ -1,14 +1,15 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
-import { ClientUpdate } from "../../../options/model/client.model";
-import { Button, Col, Form, Input, Modal, Row } from "antd";
+import { IClientUpdate } from "../../../options/model/client.model";
+import { Button, Col, Modal, Row } from "antd";
 import CardPAClient from "../cards/CardPAClient";
 import ResultSuccess from "../../Results/ResultSuccess";
 import ClientServices from "../../../services/client.service";
 import FormClientFind from "../forms/FormClientFind";
-import ClientPAStoreClass from "../../../store/ClientPAStoreClass";
+import ClientPAStoreClass from "../../../store/paStore/ClientPAStoreClass";
 import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
-import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
+import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
+import FormPeopleUpdateBase from "../../Forms/FormPeopleUpdateBase";
 
 
 interface ClientFindProps {
@@ -21,18 +22,19 @@ interface ClientFindProps {
 const ClientFind = observer(({ notificationsStore, clientStore, ...props }: ClientFindProps) => {
   const [form] = useForm();
 
-  const onFinish = async (values: ClientUpdate) => {
-    const correctValue: ClientUpdate = {
+
+  const onFinish = async (values: IClientUpdate) => {
+    const correctValue: IClientUpdate = {
       ...values,
-      "full_name": values["full_name"] ?? clientStore.client!.full_name,
-      "telephone": values["telephone"] ?? clientStore.client!.telephone,
-      "email": values["email"] ?? clientStore.client!.email,
+      "full_name": values["full_name"]?.length ? values["full_name"] : clientStore.client!.full_name,
+      "telephone": values["telephone"]?.length ? values["telephone"] : clientStore.client!.telephone,
+      "email": values["email"]?.length ? values["email"] : values["email"] !== undefined ? undefined : clientStore.client!.email,
     }
 
     await ClientServices.updateClient(clientStore.client!.client_id, correctValue)
       .then(async () => {
-        const client = await ClientServices.getClientById(clientStore.client!.client_id)
-        clientStore.setClient(client)
+        const client = await ClientServices.getClient(clientStore.client!.client_id);
+        clientStore.setClient(client);
       })
   }
 
@@ -44,58 +46,11 @@ const ClientFind = observer(({ notificationsStore, clientStore, ...props }: Clie
       okText: "Изменить",
       cancelText: "Назад",
       content: (
-        <Form layout="vertical"
+        <FormPeopleUpdateBase
           form={form}
-          preserve={false}
-          style={{ width: "100%" }}
+          defaultPeopleInfo={clientStore.client!}
           onFinish={onFinish}
-        >
-          <Form.Item
-            label="ФИО клиента"
-            name="full_name"
-            rules={[
-              {
-                pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
-                message: "Только русские буквы, пробелы между словами и дефисы"
-              }
-            ]}
-          >
-            <Input
-              defaultValue={clientStore.client!.full_name}
-              placeholder="Например, Иванов Иван Иваныч"
-            />
-          </Form.Item>
-          <Form.Item
-            label="Номер телефона"
-            name="telephone"
-            rules={[
-              {
-                pattern: new RegExp(/^\+7\s[\(]9\d{2}[\)]\s\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}$/),
-                message: "Пример ввода: +7 (916) 419-52-28"
-              }
-            ]}
-          >
-            <Input
-              defaultValue={clientStore.client!.telephone}
-              placeholder="Например, +7 (999) 999-99-99"
-            />
-          </Form.Item>
-          <Form.Item
-            label="Электронная почта"
-            name="email"
-            rules={[
-              {
-                pattern: new RegExp(/^[a-zA-Z\d]+\@[a-z]+\.[a-z]+$/),
-                message: "Неправильный вид почты"
-              }
-            ]}
-          >
-            <Input
-              defaultValue={clientStore.client!.email}
-              placeholder="Например, barbershop@gmail.com"
-            />
-          </Form.Item>
-        </Form>
+        />
       ),
       async onOk() {
         form.submit();
@@ -133,7 +88,10 @@ const ClientFind = observer(({ notificationsStore, clientStore, ...props }: Clie
           style={{ paddingLeft: "20px" }}
         >
           {clientStore.client &&
-            <CardPAClient title="Клиент" client={clientStore.client}>
+            <CardPAClient
+              title="Клиент"
+              client={clientStore.client}
+            >
               {props.isUpdateClient &&
                 <Button
                   block

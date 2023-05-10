@@ -8,14 +8,13 @@ export default class ScheduleServices {
 
 
   static async getScheduleByEmployeeId(employeeId: number): Promise<IScheduleWorker[]> {
-    const schedule = await axios.get("/employees/" + employeeId + this.pathDefault);
+    const schedule = await axios.get(`/employees/${employeeId}/${this.pathDefault}`);
 
     return schedule.data;
   }
 
   static async getScheduleBySpecialistId(orderBase: IOrderBase): Promise<ISchedule[]> {
-    const schedule = await axios.post("/specialists/" + orderBase.employee_id + "/period",
-      {
+    const schedule = await axios.post(`/specialists/${orderBase.employee_id}/period`, {
         establishment_id: orderBase.establishment_id,
         services_id: orderBase.services_id
       });

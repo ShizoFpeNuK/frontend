@@ -8,18 +8,25 @@ import ClientAdd from "../../components/PersonalAccount/components/ClientAdd";
 import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
-import enrollStore from "../../store/EnrollStoreClass";
-import scheduleStore from "../../store/ScheduleStoreClass";
-import servicesStore from "../../store/ServicesStoreClass";
-import specialistsStore from "../../store/SpecialistsStoreClass";
-import CheckPAStoreClass from "../../store/CheckPAStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
-import ClientPAStoreClass from "../../store/ClientPAStoreClass";
-import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
+import EnrollStoreClass from "../../store/enrollStore/EnrollStoreClass";
+import CheckPAStoreClass from "../../store/paStore/CheckPAStoreClass";
+import ClientPAStoreClass from "../../store/paStore/ClientPAStoreClass";
+import ServicesStoreClass from "../../store/ServicesStoreClass";
+import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
+import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
+import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
+import NotificationsPAStoreClass from "../../store/paStore/NotificationsPAStoreClass";
 
 
-const clientStore = new ClientPAStoreClass();
 const checkStore = new CheckPAStoreClass();
+const enrollStore = new EnrollStoreClass();
+const clientStore = new ClientPAStoreClass();
+const servicesStore = new ServicesStoreClass();
+const scheduleStore = new ScheduleOrderStoreClass();
+const specialistsStore = new SpecialistsPAStoreClass();
+const orderDetailsStore = new OrderDetailsStoreClass();
+const establishmentStore = new EstablishmentPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
 
@@ -37,12 +44,14 @@ const PAManager = observer(() => {
 
     checkStore.deleteChecks();
     clientStore.deleteClient();
+
+    //Закоментить
     enrollStore.clearStore();
     orderDetailsStore.clearStore();
 
     specialistsStore.deleteSpecialistsList();
     servicesStore.deleteServicesList();
-    scheduleStore.deleteScheduleListBySpecialist();
+    scheduleStore.deleteScheduleList();
   }
 
 
@@ -118,8 +127,14 @@ const PAManager = observer(() => {
           }
           {isOpenAddOrderForm &&
             <OrderAdd
-              notificationsStore={notificationsStore}
+              enrollStore={enrollStore}
               clientStore={clientStore}
+              servicesStore={servicesStore}
+              scheduleStore={scheduleStore}
+              specialistsStore={specialistsStore}
+              orderDetailsStore={orderDetailsStore}
+              establishmentStore={establishmentStore}
+              notificationsStore={notificationsStore}
             />
           }
         </Col>

@@ -1,6 +1,6 @@
-import { IScheduleWorker } from "../options/model/schedule.model";
+import { IScheduleWorker } from "../../options/model/schedule.model";
 import { makeAutoObservable } from "mobx";
-import ScheduleServices from "../services/schedule.service";
+import ScheduleServices from "../../services/schedule.service";
 
 
 class SchedulePAStoreClass {

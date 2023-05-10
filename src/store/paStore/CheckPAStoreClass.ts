@@ -1,4 +1,4 @@
-import { ICheck } from "../options/model/check.model";
+import { ICheck } from "../../options/model/check.model";
 import { makeAutoObservable } from "mobx";
 
 

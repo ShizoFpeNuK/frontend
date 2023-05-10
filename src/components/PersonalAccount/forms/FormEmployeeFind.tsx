@@ -1,43 +1,43 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
-import { IClient, IClientBase } from "../../../options/model/client.model";
-import ClientServices from "../../../services/client.service";
-import ClientPAStoreClass from "../../../store/paStore/ClientPAStoreClass";
+import { IEmployee, IEmployeeBase } from "../../../options/model/employee.model";
+import EmployeeServices from "../../../services/employee.service";
 import FormPeopleFindBase from "../../Forms/FormPeopleFindBase";
+import EmployeePAStoreClass from "../../../store/paStore/EmployeePAStoreClass";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
-interface FindClientFormProps {
-  clientStore: ClientPAStoreClass,
+interface FindEmployeeFormProps {
+  employeeStore: EmployeePAStoreClass,
   notificationsStore?: NotificationsPAStoreClass,
 }
 
 
-const FormClientFind = observer(({ clientStore, notificationsStore }: FindClientFormProps) => {
+const FormClientFind = observer(({ employeeStore, notificationsStore }: FindEmployeeFormProps) => {
   const [form] = useForm();
 
 
   const clearNotifications = () => {
-    notificationsStore!.deleteNotificationsClient();
-    notificationsStore!.deleteIsSubmitOrder();
+    notificationsStore!.deleteNotificationsEmployee();
   }
 
 
-  const onFinish = async (client: IClientBase) => {
-    clientStore.deleteClient();
+  const onFinish = async (employee: IEmployeeBase) => {
+    employeeStore.deleteEmployee();
+    employeeStore.deleteEmployees();
 
     if (notificationsStore) {
       clearNotifications();
     }
 
-    await ClientServices.getClientByTelephone(client)
-      .then((client: IClient) => {
-        clientStore.setClient(client);
+    await EmployeeServices.getEmployeeByTelephone(employee)
+      .then((employee: IEmployee) => {
+        employeeStore.setEmployee(employee);
         form.resetFields();
       })
       .catch(() => {
         if (notificationsStore) {
-          notificationsStore.setIsNotFindClient(true);
+          notificationsStore.setIsNotFindEmployee(true);
         }
       })
   }
@@ -53,7 +53,7 @@ const FormClientFind = observer(({ clientStore, notificationsStore }: FindClient
   return (
     <FormPeopleFindBase
       form={form}
-      title="Найти клиента"
+      title="Найти сотрудника"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     />

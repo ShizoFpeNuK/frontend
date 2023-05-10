@@ -4,122 +4,120 @@ import { IService } from "../../options/model/service.model";
 import { CardBodyForm, CardForm } from "../../style/typescript/cardForm";
 import { Card, Row, Col, Button, Space } from "antd";
 import ButtonStep from "../Buttons/ButtonStep";
-import enrollStore from "../../store/EnrollStoreClass";
 import CheckServices from "../../services/check.service";
-import scheduleStore from "../../store/ScheduleStoreClass";
-import servicesStore from "../../store/ServicesStoreClass";
-import specialistsStore from "../../store/SpecialistsStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
-import ClientPAStoreClass from "../../store/ClientPAStoreClass";
-import establishmentStore from "../../store/EstablishmentsStoreClass";
-import NotificationsPAStoreClass from "../../store/NotificationsPAStoreClass";
+import EnrollStoreClass from "../../store/enrollStore/EnrollStoreClass";
+import ClientPAStoreClass from "../../store/paStore/ClientPAStoreClass";
+import ServicesStoreClass from "../../store/ServicesStoreClass";
+import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
+import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
+import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
+import NotificationsPAStoreClass from "../../store/paStore/NotificationsPAStoreClass";
+import OrderDetailsStoreClass from '../../store/enrollStore/OrderDetailsStoreClass';
 
 
 interface OrderDetailsProps {
-  clientStore?: ClientPAStoreClass,
+  enrollStore: EnrollStoreClass;
+  clientStore: ClientPAStoreClass,
+  servicesStore: ServicesStoreClass,
+  scheduleStore: ScheduleOrderStoreClass,
+  specialistsStore: SpecialistsPAStoreClass,
+  orderDetailsStore: OrderDetailsStoreClass,
+  establishmentStore: EstablishmentPAStoreClass,
   notificationsStore?: NotificationsPAStoreClass,
-  // notifications?: boolean,
-  // client?: IClientBase | IClient,
-  // deleteClient?: () => void,
 }
 
 
 const OrderDetails = observer((props: OrderDetailsProps) => {
 
   const clearOrderComponent = () => {
-    enrollStore.clearStore();
-    orderDetailsStore.clearStore();
+    props.enrollStore.clearStore();
+    props.orderDetailsStore.clearStore();
 
-    establishmentStore.deleteEstablishmentsList();
-    specialistsStore.deleteSpecialistsList();
-    servicesStore.deleteServicesList();
-    scheduleStore.deleteScheduleListBySpecialist();
+    props.establishmentStore.deleteEstablishmentsList();
+    props.specialistsStore.deleteSpecialistsList();
+    props.servicesStore.deleteServicesList();
+    props.scheduleStore.deleteScheduleList();
   }
 
 
   const selectedClient = async () => {
-    orderDetailsStore.setOrderDetailsClient(props.clientStore?.client);
-    enrollStore.setSelectButtonClientIsClicked(true);
-    enrollStore.setIsOpenFormFindClient(false);
-    enrollStore.setIsOpenListEstablishment(true);
+    props.orderDetailsStore.setOrderDetailsClient(props.clientStore?.client);
+    props.enrollStore.setSelectButtonClientIsClicked(true);
+    props.enrollStore.setIsOpenFormFindClient(false);
+    props.enrollStore.setIsOpenListEstablishment(true);
   }
 
   const cancelClient = () => {
-    // orderDetailsStore.deleteOrderDetailsClient();
-    enrollStore.setSelectButtonClientIsClicked(false);
-    enrollStore.setIsOpenListEstablishment(false);
-    enrollStore.setIsOpenFormFindClient(true);
-    establishmentStore.deleteEstablishmentsList();
+    props.enrollStore.setSelectButtonClientIsClicked(false);
+    props.enrollStore.setIsOpenListEstablishment(false);
+    props.enrollStore.setIsOpenFormFindClient(true);
+    props.establishmentStore.deleteEstablishmentsList();
   }
 
-  //new
   const selectedEstablishment = async () => {
-    enrollStore.setSelectButtonEstablishmentIsClicked(true);
-    enrollStore.setIsOpenListEstablishment(false);
-    enrollStore.setIsOpenListSpecialist(true);
+    props.enrollStore.setSelectButtonEstablishmentIsClicked(true);
+    props.enrollStore.setIsOpenListEstablishment(false);
+    props.enrollStore.setIsOpenListSpecialist(true);
   }
 
-  //new
   const cancelEstablishment = () => {
-    establishmentStore.deleteEstablishmentsList();
+    props.establishmentStore.deleteEstablishmentsList();
 
-    enrollStore.setSelectButtonEstablishmentIsClicked(false);
-    enrollStore.setIsOpenListSpecialist(false);
-    enrollStore.setIsOpenListEstablishment(true);
-    specialistsStore.deleteSpecialistsList();
+    props.enrollStore.setSelectButtonEstablishmentIsClicked(false);
+    props.enrollStore.setIsOpenListSpecialist(false);
+    props.enrollStore.setIsOpenListEstablishment(true);
+    props.specialistsStore.deleteSpecialistsList();
   }
 
   const selectedSpecialist = async () => {
-    enrollStore.setSelectButtonSpecialistIsClicked(true);
-    enrollStore.setIsOpenListSpecialist(false);
-    enrollStore.setIsOpenListServices(true);
+    props.enrollStore.setSelectButtonSpecialistIsClicked(true);
+    props.enrollStore.setIsOpenListSpecialist(false);
+    props.enrollStore.setIsOpenListServices(true);
   }
 
   const cancelSpecialist = () => {
-    specialistsStore.deleteSpecialistsList();
+    props.specialistsStore.deleteSpecialistsList();
 
-    enrollStore.setSelectButtonSpecialistIsClicked(false);
-    enrollStore.setIsOpenListServices(false);
-    enrollStore.setIsOpenListSpecialist(true);
-    servicesStore.deleteServicesList();
+    props.enrollStore.setSelectButtonSpecialistIsClicked(false);
+    props.enrollStore.setIsOpenListServices(false);
+    props.enrollStore.setIsOpenListSpecialist(true);
+    props.servicesStore.deleteServicesList();
   }
 
   const selectedServices = async () => {
-    enrollStore.setSelectButtonServicesIsClicked(true);
-    enrollStore.setIsOpenListServices(false);
-    enrollStore.setIsOpenListDate(true);
+    props.enrollStore.setSelectButtonServicesIsClicked(true);
+    props.enrollStore.setIsOpenListServices(false);
+    props.enrollStore.setIsOpenListDate(true);
   }
 
   const cancelServices = () => {
-    servicesStore.deleteServicesList()
+    props.servicesStore.deleteServicesList()
 
-    enrollStore.setSelectButtonServicesIsClicked(false);
-    enrollStore.setIsOpenListDate(false);
-    enrollStore.setIsOpenListServices(true);
-    scheduleStore.deleteScheduleListBySpecialist();
+    props.enrollStore.setSelectButtonServicesIsClicked(false);
+    props.enrollStore.setIsOpenListDate(false);
+    props.enrollStore.setIsOpenListServices(true);
+    props.scheduleStore.deleteScheduleList();
   }
 
   const selectedDate = async () => {
-    enrollStore.setSelectButtonDateIsClicked(true);
-    enrollStore.setIsOpenListDate(false);
-    enrollStore.setIsSubmitOrder(true);
+    props.enrollStore.setSelectButtonDateIsClicked(true);
+    props.enrollStore.setIsOpenListDate(false);
+    props.enrollStore.setIsSubmitOrder(true);
   }
 
   const cancelDate = () => {
-    scheduleStore.deleteScheduleListBySpecialist();
+    props.scheduleStore.deleteScheduleList();
 
-    enrollStore.setSelectButtonDateIsClicked(false);
-    enrollStore.setIsOpenListDate(true);
-    enrollStore.setIsSubmitOrder(false);
+    props.enrollStore.setSelectButtonDateIsClicked(false);
+    props.enrollStore.setIsOpenListDate(true);
+    props.enrollStore.setIsSubmitOrder(false);
   }
 
 
   const onClickSubmit = async () => {
-    await CheckServices.createCheck(orderDetailsStore.getOrderDetails());
+    await CheckServices.createCheck(props.orderDetailsStore.getOrderDetails());
     props.clientStore?.deleteClient();
-    // if (props.notifications) {
     props.notificationsStore?.setIsSubmitOrder(true);
-    // }
     clearOrderComponent();
   }
 
@@ -144,23 +142,27 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
         : <div className="order_check_details_message"> Ожидаем ваш заказ! </div>
       }
 
-      {orderDetailsStore.OrderDetailsEstablishment &&
+      {props.orderDetailsStore.OrderDetailsEstablishment &&
         <div className="order_check_details_establishment">
           <h3 className="order_check_details_establishment_title"> Адрес </h3>
-          <div className="order_check_details_establishment_address"> {orderDetailsStore.OrderDetailsEstablishment?.address_establishment} </div>
+          <div className="order_check_details_establishment_address">
+            {props.orderDetailsStore.OrderDetailsEstablishment?.address_establishment}
+          </div>
         </div>
       }
 
-      {orderDetailsStore.OrderDetailsSpecialist &&
+      {props.orderDetailsStore.OrderDetailsSpecialist &&
         <div className="order_check_details_specialist">
           <h3 className="order_check_details_specialist_title"> Специалист </h3>
-          <div className="order_check_details_specialist_fullname"> {orderDetailsStore.OrderDetailsSpecialist?.full_name} </div>
+          <div className="order_check_details_specialist_fullname">
+            {props.orderDetailsStore.OrderDetailsSpecialist?.full_name}
+          </div>
         </div>
       }
 
-      {orderDetailsStore.OrderDetailsServices.length !== 0 &&
+      {props.orderDetailsStore.OrderDetailsServices.length !== 0 &&
         <div className="order_check_details_services">
-          {orderDetailsStore.OrderDetailsServices.map((service: IService) =>
+          {props.orderDetailsStore.OrderDetailsServices.map((service: IService) =>
             <Row
               justify={'space-between'}
               wrap={false}
@@ -178,58 +180,64 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
         </div>
       }
 
-      {orderDetailsStore.OrderDetailsDate.length !== 0 && orderDetailsStore.OrderDetailsTime.length !== 0 &&
+      {props.orderDetailsStore.OrderDetailsDate && props.orderDetailsStore.OrderDetailsTime &&
         <Row justify={'space-between'} className="order_check_details_datetime">
-          <Col className="order_check_details_date"> {new Date(orderDetailsStore.OrderDetailsDate).toLocaleDateString()} </Col>
-          <Col className="order_check_details_time"> {orderDetailsStore.OrderDetailsTime} — {orderDetailsStore.getOrderDetailsTotalTime} </Col>
+          <Col className="order_check_details_date">
+            {new Date(props.orderDetailsStore.OrderDetailsDate).toLocaleDateString()}
+          </Col>
+          <Col className="order_check_details_time">
+            {props.orderDetailsStore.OrderDetailsTime} — {props.orderDetailsStore.getOrderDetailsTotalTime}
+          </Col>
         </Row>
       }
 
-      {orderDetailsStore.OrderDetailsServices.length !== 0 &&
+      {props.orderDetailsStore.OrderDetailsServices.length !== 0 &&
         <Row justify={'space-between'} className="order_check_details_totalcount">
           <Col className="order_check_details_totalcount_text"> Стоимость </Col>
-          <Col className="order_check_details_totalcount_sum"> {orderDetailsStore.getOrderDetailsTotalCount} руб. </Col>
+          <Col className="order_check_details_totalcount_sum">
+            {props.orderDetailsStore.getOrderDetailsTotalCount} руб.
+          </Col>
         </Row>
       }
 
       <div className="order_check_details_buttons_step">
         {/* Кнопка после клиента */}
-        {props.clientStore?.client && !enrollStore.selectButtonClientIsClicked &&
+        {props.clientStore?.client && !props.enrollStore.selectButtonClientIsClicked &&
           <ButtonStep onClick={selectedClient}> Далее </ButtonStep>
         }
-        {enrollStore.selectButtonClientIsClicked && !orderDetailsStore.OrderDetailsEstablishment &&
+        {props.enrollStore.selectButtonClientIsClicked && !props.orderDetailsStore.OrderDetailsEstablishment &&
           <ButtonStep onClick={cancelClient}> Назад </ButtonStep>
         }
 
-         {/* Кнопка после заведения */}
-         {orderDetailsStore.OrderDetailsEstablishment && !enrollStore.selectButtonEstablishmentIsClicked &&
+        {/* Кнопка после заведения */}
+        {props.orderDetailsStore.OrderDetailsEstablishment && !props.enrollStore.selectButtonEstablishmentIsClicked &&
           <ButtonStep onClick={selectedEstablishment}> Далее </ButtonStep>
         }
-        {enrollStore.selectButtonEstablishmentIsClicked && !orderDetailsStore.OrderDetailsSpecialist &&
+        {props.enrollStore.selectButtonEstablishmentIsClicked && !props.orderDetailsStore.OrderDetailsSpecialist &&
           <ButtonStep onClick={cancelEstablishment}> Назад </ButtonStep>
         }
 
         {/* Кнопка после специалиста */}
-        {orderDetailsStore.OrderDetailsSpecialist && !enrollStore.selectButtonSpecialistIsClicked &&
+        {props.orderDetailsStore.OrderDetailsSpecialist && !props.enrollStore.selectButtonSpecialistIsClicked &&
           <ButtonStep onClick={selectedSpecialist}> Далее </ButtonStep>
         }
-        {enrollStore.selectButtonSpecialistIsClicked && orderDetailsStore.OrderDetailsServices.length === 0 &&
+        {props.enrollStore.selectButtonSpecialistIsClicked && props.orderDetailsStore.OrderDetailsServices.length === 0 &&
           <ButtonStep onClick={cancelSpecialist}> Назад </ButtonStep>
         }
 
         {/* Кнопка после услуг */}
-        {enrollStore.IsNextServices && !enrollStore.selectButtonServicesIsClicked &&
+        {props.orderDetailsStore.OrderDetailsServices.length !== 0 && !props.enrollStore.selectButtonServicesIsClicked &&
           <ButtonStep onClick={selectedServices}> Далее </ButtonStep>
         }
-        {enrollStore.selectButtonServicesIsClicked && orderDetailsStore.OrderDetailsDate.length === 0 &&
+        {props.enrollStore.selectButtonServicesIsClicked && !props.orderDetailsStore.OrderDetailsDate &&
           <ButtonStep onClick={cancelServices}> Назад </ButtonStep>
         }
 
         {/* Кнопка после даты */}
-        {enrollStore.IsNextDates && !enrollStore.selectButtonDateIsClicked &&
+        {props.orderDetailsStore.OrderDetailsDate && !props.enrollStore.selectButtonDateIsClicked &&
           <ButtonStep onClick={selectedDate}> Далее </ButtonStep>
         }
-        {enrollStore.selectButtonDateIsClicked &&
+        {props.enrollStore.selectButtonDateIsClicked &&
           <ButtonStep onClick={cancelDate}> Назад </ButtonStep>
         }
       </div>
@@ -239,7 +247,7 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
         className="order_check_details_buttons"
         style={{ width: "100%", justifyContent: "center" }}
       >
-        {orderDetailsStore.OrderDetailsEstablishment &&
+        {props.orderDetailsStore.OrderDetailsEstablishment &&
           <Button
             className="order_check_details_clear_button"
             danger
@@ -248,7 +256,7 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
             Всё очистить
           </Button>
         }
-        {enrollStore.selectButtonDateIsClicked &&
+        {props.enrollStore.selectButtonDateIsClicked &&
           <Button
             className="order_check_details_submit_button"
             type="primary"

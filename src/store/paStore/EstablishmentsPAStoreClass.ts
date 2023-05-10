@@ -1,9 +1,9 @@
-import { IEstablishment } from "../options/model/establishment.model";
+import { IEstablishment } from "../../options/model/establishment.model";
 import { makeAutoObservable } from "mobx";
-import EstablishmentServices from "../services/establishment.service";
+import EstablishmentServices from "../../services/establishment.service";
 
 
-class EstablishmentStoreClass {
+class EstablishmentPAStoreClass {
   EstablishmentsList: IEstablishment[] = [];
 
   constructor() {
@@ -27,5 +27,4 @@ class EstablishmentStoreClass {
 }
 
 
-const establishmentStore = new EstablishmentStoreClass();
-export default establishmentStore;
+export default EstablishmentPAStoreClass;

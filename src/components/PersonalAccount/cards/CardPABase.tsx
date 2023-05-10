@@ -2,14 +2,16 @@ import '../../../style/css/cards/cardBase.css';
 import { Card } from "antd";
 import { IUser } from "../../../options/model/user.model";
 import { IClient } from "../../../options/model/client.model";
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
+import { IEmployee } from "../../../options/model/employee.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 
 
 interface ICardPABaseProps {
   title?: string,
-  info: IUser | IClient,
+  info: IUser | IClient | IEmployee,
   children?: ReactNode,
+  style?: CSSProperties | undefined,
 }
 
 
@@ -18,7 +20,7 @@ const CardPABase = (props: ICardPABaseProps) => {
     <Card
       className="cardbase"
       title={props.title}
-      style={CardForm}
+      style={{...props.style, ...CardForm}}
       bodyStyle={CardBodyForm}
     >
       <div className="cardbase_info">

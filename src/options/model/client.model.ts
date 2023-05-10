@@ -16,8 +16,8 @@ export interface IClient extends IClientCreate {
   estate: string,
 }
 
-export interface ClientUpdate {
+export interface IClientUpdate {
   full_name: string,
   telephone: string,
-  email: string,
+  email: string | undefined,
 }

@@ -1,4 +1,4 @@
-import { IClient, IClientCreate, IClientBase, ClientUpdate } from "../options/model/client.model";
+import { IClient, IClientCreate, IClientBase, IClientUpdate } from "../options/model/client.model";
 import axios from "axios";
 
 
@@ -7,13 +7,13 @@ export default class ClientServices {
 
 
   static async getClientByTelephone(clientBase: IClientBase): Promise<IClient> {
-    const client = await axios.post(this.pathDefault + "/info", clientBase);
-    
+    const client = await axios.post(`${this.pathDefault}/info`, clientBase);
+
     return client.data;
   }
 
-  static async getClientById(clientId: number): Promise<IClient> {
-    const client = await axios.get(this.pathDefault + "/" + clientId);
+  static async getClient(clientId: number): Promise<IClient> {
+    const client = await axios.get(`${this.pathDefault}/${clientId}`);
 
     return client.data;
   }
@@ -22,15 +22,11 @@ export default class ClientServices {
     await axios.post(this.pathDefault, clientAdd);
   }
 
-  static async updateClient(clientId: number, clientUpdate: ClientUpdate): Promise<void> {
-    await axios.patch(this.pathDefault + "/" + clientId, {
-      full_name: clientUpdate.full_name,
-      telephone: clientUpdate.telephone,
-      email: clientUpdate.email,
-    });
+  static async updateClient(clientId: number, clientUpdate: IClientUpdate): Promise<void> {
+    await axios.patch(`${this.pathDefault}/${clientId}`, clientUpdate);
   }
 
   static async deleteClient(clientId: number): Promise<void> {
-    await axios.delete(this.pathDefault + "/" + clientId);
+    await axios.delete(`${this.pathDefault}/${clientId}`);
   }
 }

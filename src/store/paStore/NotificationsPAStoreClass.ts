@@ -10,6 +10,12 @@ class NotificationsPAStoreClass {
   isConflictClient: boolean = false;
   isDeleteClient: boolean = false;
 
+  isNotFindEmployee: boolean = false;
+  isCreateEmployee: boolean = false;
+  isConflictEmployee: boolean = false;
+  isDeleteEmployee: boolean = false;
+  
+
   isSubmitOrder: boolean = false;
 
   constructor() {
@@ -75,6 +81,46 @@ class NotificationsPAStoreClass {
     this.deleteIsCreateClient();
     this.deleteIsConflictClient();
     this.deleteIsDeleteClient();
+  }
+
+
+  setIsNotFindEmployee(boolean: boolean) {
+    this.isNotFindEmployee = boolean;
+  }
+
+  setIsCreateEmployee(boolean: boolean) {
+    this.isCreateEmployee = boolean;
+  }
+
+  setIsConflictEmployee(boolean: boolean) {
+    this.isConflictEmployee = boolean;
+  }
+
+  setIsDeleteEmployee(boolean: boolean) {
+    this.isDeleteEmployee = boolean;
+  }
+
+  deleteIsNotFindEmployee() {
+    this.setIsNotFindEmployee(false);
+  }
+
+  deleteIsCreateEmployee() {
+    this.setIsCreateEmployee(false);
+  }
+
+  deleteIsConflictEmployee() {
+    this.setIsConflictEmployee(false);
+  }
+
+  deleteIsDeleteEmployee() {
+    this.setIsDeleteEmployee(false);
+  }
+
+  deleteNotificationsEmployee() {
+    this.deleteIsNotFindEmployee();
+    this.deleteIsCreateEmployee();
+    this.deleteIsConflictEmployee();
+    this.deleteIsDeleteEmployee();
   }
 
 

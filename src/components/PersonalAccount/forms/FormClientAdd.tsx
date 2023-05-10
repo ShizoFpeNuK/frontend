@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { IClientCreate } from "../../../options/model/client.model";
 import ClientServices from "../../../services/client.service";
 import FormClientAddBase from "../../Forms/FormClientAddBase";
-import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
+import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
 interface FormAddClientProps {

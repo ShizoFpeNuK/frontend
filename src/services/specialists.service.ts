@@ -13,7 +13,7 @@ export default class SpecialistsServices {
   }
 
   static async getSpecialistsByEstablishmentId(establishmentId: number): Promise<ISpecialist[]> {
-    const schedule = await axios.get( "/establishments/" + establishmentId + "/specialists");
+    const schedule = await axios.get( `/establishments/${establishmentId}/specialists`);
 
     return schedule.data;
   }

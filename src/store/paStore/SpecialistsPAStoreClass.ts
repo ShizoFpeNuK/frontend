@@ -1,9 +1,9 @@
-import { ISpecialist } from "../options/model/specialist.model";
+import { ISpecialist } from "../../options/model/specialist.model";
 import { makeAutoObservable } from "mobx";
-import SpecialistsServices from "../services/specialists.service";
+import SpecialistsServices from "../../services/specialists.service";
 
 
-class SpecialistsStoreClass {
+class SpecialistsPAStoreClass {
   SpecialistsList: ISpecialist[] = [];
 
   constructor() {
@@ -31,5 +31,5 @@ class SpecialistsStoreClass {
 }
 
 
-const specialistsStore = new SpecialistsStoreClass();
-export default specialistsStore;
+// const specialistsStore = new SpecialistsStoreClass();
+export default SpecialistsPAStoreClass;

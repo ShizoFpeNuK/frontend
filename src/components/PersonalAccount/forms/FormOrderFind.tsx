@@ -1,14 +1,13 @@
 import '../../../style/css/forms/formFindOrder.css';
 import { useForm } from "antd/es/form/Form";
-import { useState } from "react";
 import { ICheck, ICheckFind } from "../../../options/model/check.model";
+import dayjs from "dayjs";
 import ButtonStep from "../../Buttons/ButtonStep";
 import CheckServices from "../../../services/check.service";
 import FormOrderFindBase from "../../Forms/FormOrderFindBase";
-import CheckPAStoreClass from "../../../store/CheckPAStoreClass";
-import ClientPAStoreClass from "../../../store/ClientPAStoreClass";
-import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
-import dayjs from "dayjs";
+import CheckPAStoreClass from "../../../store/paStore/CheckPAStoreClass";
+import ClientPAStoreClass from "../../../store/paStore/ClientPAStoreClass";
+import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
 interface fieldValue {
@@ -49,7 +48,7 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
     notificationsStore?.deleteNotificationsChecks();
 
 
-    await CheckServices.getChecksByClientId(clientStore.client!.client_id, correctValues)
+    await CheckServices.getChecks(clientStore.client!.client_id, correctValues)
       .then((checks: ICheck[]) => {
         if (checks.length) {
           checkStore.setChecks(checks);

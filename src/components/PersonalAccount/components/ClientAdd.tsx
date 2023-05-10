@@ -3,7 +3,7 @@ import { Col, Row } from "antd";
 import FormClientAdd from "../forms/FormClientAdd";
 import ResultSuccess from "../../Results/ResultSuccess";
 import ResultErrorConflict from "../../Results/ResultErrorConflict";
-import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
+import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
 interface ClientAddProps {

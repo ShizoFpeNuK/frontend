@@ -1,9 +1,9 @@
-import { IOrder } from "../options/model/order.model";
-import { IService } from "../options/model/service.model";
-import { ISchedule } from "../options/model/schedule.model";
-import { ISpecialist } from "../options/model/specialist.model";
-import { IClientBase } from "../options/model/client.model";
-import { IEstablishment } from "../options/model/establishment.model";
+import { IOrder } from "../../options/model/order.model";
+import { IService } from "../../options/model/service.model";
+import { ISchedule } from "../../options/model/schedule.model";
+import { ISpecialist } from "../../options/model/specialist.model";
+import { IClientBase } from "../../options/model/client.model";
+import { IEstablishment } from "../../options/model/establishment.model";
 import { makeAutoObservable } from "mobx";
 
 
@@ -12,8 +12,8 @@ class OrderDetailsStoreClass {
   OrderDetailsEstablishment: IEstablishment | undefined = undefined;
   OrderDetailsSpecialist: ISpecialist | undefined = undefined;
   OrderDetailsServices: IService[] = [];
-  OrderDetailsDate: string = "";
-  OrderDetailsTime: string = "";
+  OrderDetailsDate: string | undefined = undefined;
+  OrderDetailsTime: string | undefined = undefined;
   OrderDetailsDateWithTimes: ISchedule | undefined = undefined;
 
   constructor() {
@@ -41,11 +41,11 @@ class OrderDetailsStoreClass {
     this.OrderDetailsServices = services;
   }
 
-  setOrderDetailsDate(date: string) {
+  setOrderDetailsDate(date: string | undefined) {
     this.OrderDetailsDate = date;
   }
 
-  setOrderDetailsTime(time: string) {
+  setOrderDetailsTime(time: string | undefined) {
     this.OrderDetailsTime = time;
   }
 
@@ -83,11 +83,11 @@ class OrderDetailsStoreClass {
   }
 
   deleteOrderDetailsDate() {
-    this.setOrderDetailsDate("");
+    this.setOrderDetailsDate(undefined);
   }
 
   deleteOrderDetailsTime() {
-    this.setOrderDetailsTime("");
+    this.setOrderDetailsTime(undefined);
   }
 
   deleteOrderDetailsDateWithTimes() {
@@ -120,7 +120,7 @@ class OrderDetailsStoreClass {
       services_id: this.getOrderDetailServicesId(),
       establishment_id: this.OrderDetailsEstablishment!.establishment_id,
       date: this.OrderDetailsDateWithTimes!.date,
-      time: this.OrderDetailsTime
+      time: this.OrderDetailsTime!
     }
   }
 
@@ -143,5 +143,4 @@ class OrderDetailsStoreClass {
 }
 
 
-const orderDetailsStore = new OrderDetailsStoreClass();
-export default orderDetailsStore;
+export default OrderDetailsStoreClass;

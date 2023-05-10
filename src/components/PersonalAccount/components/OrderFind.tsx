@@ -8,16 +8,16 @@ import CheckServices from "../../../services/check.service";
 import FormOrderFind from "../forms/FormOrderFind";
 import ClientServices from "../../../services/client.service";
 import FormClientFind from "../forms/FormClientFind";
-import CheckPAStoreClass from "../../../store/CheckPAStoreClass";
-import ClientPAStoreClass from "../../../store/ClientPAStoreClass";
+import CheckPAStoreClass from "../../../store/paStore/CheckPAStoreClass";
+import ClientPAStoreClass from "../../../store/paStore/ClientPAStoreClass";
 import ResultSuccessNoData from "../../Results/ResultSuccessNoData";
 import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
-import NotificationsPAStoreClass from "../../../store/NotificationsPAStoreClass";
+import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
 interface OrderFindProps {
-  clientStore: ClientPAStoreClass,
   checkStore: CheckPAStoreClass,
+  clientStore: ClientPAStoreClass,
   notificationsStore?: NotificationsPAStoreClass,
 }
 
@@ -28,7 +28,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
 
 
   const getChecksAfterDelete = () => {
-    CheckServices.getChecksByClientId(clientStore.client!.client_id)
+    CheckServices.getChecks(clientStore.client!.client_id)
       .then((checks: ICheck[]) => {
         if (!checks.length) {
           notificationsStore?.setIsEmptyChecks(true);
@@ -36,7 +36,6 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
         checkStore.setChecks(checks);
       });
   }
-
 
   const handlerDeleteCheck = (boolean: boolean) => {
     setIsDeleteCheck(boolean);
@@ -46,6 +45,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
     setIsPaidCheck(boolean);
   }
 
+
   useEffect(() => {
     if (isDeleteCheck) {
       getChecksAfterDelete();
@@ -53,7 +53,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
     }
     if (isPaidCheck) {
       getChecksAfterDelete();
-      ClientServices.getClientById(clientStore.client!.client_id)
+      ClientServices.getClient(clientStore.client!.client_id)
         .then((client: IClient) => {
           clientStore.setClient(client);
           setIsPaidCheck(false);

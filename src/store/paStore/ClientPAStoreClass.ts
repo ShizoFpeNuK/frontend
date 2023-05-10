@@ -1,4 +1,4 @@
-import { IClient } from "../options/model/client.model";
+import { IClient } from "../../options/model/client.model";
 import { makeAutoObservable } from "mobx";
 
 

@@ -3,9 +3,9 @@ import { FormBaseProps } from "../../options/model/props/formBaseProps.model";
 import { Button, Card, Form, Input } from "antd";
 
 
-const FormClientFindBase = (props: FormBaseProps) => {
+const FormPeopleFindBase = (props: FormBaseProps) => {
   return (
-    <Card title="Найти клиента" style={CardForm}>
+    <Card title={props.title} style={CardForm}>
       <Form
         layout="vertical"
         form={props.form}
@@ -56,4 +56,4 @@ const FormClientFindBase = (props: FormBaseProps) => {
 };
 
 
-export default FormClientFindBase;
+export default FormPeopleFindBase;

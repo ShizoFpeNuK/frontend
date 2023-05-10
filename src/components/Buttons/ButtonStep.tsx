@@ -1,10 +1,9 @@
 import { Button } from "antd";
-import { ReactNode } from "react";
 
 
 interface ButtonsStepProps {
   onClick: () => void,
-  children: ReactNode,
+  children: string,
 }
 
 

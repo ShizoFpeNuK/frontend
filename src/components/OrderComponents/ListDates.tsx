@@ -5,8 +5,8 @@ import { ISchedule } from "../../options/model/schedule.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Row, Space } from "antd";
-import scheduleStore from "../../store/ScheduleStoreClass";
-import orderDetailsStore from "../../store/OrderDetailsStoreClass";
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
+import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
 
 
 const selectorListDatesTimes: string = ".enroll_list_dates_times";
@@ -14,8 +14,13 @@ const selectorDateButton: string = ".enroll_list_dates_item_button";
 const selectorTimeButton: string = ".enroll_list_times_button";
 const blackButton: string = "button--black";
 
+interface ListDatesProps {
+  scheduleStore: ScheduleOrderStoreClass,
+  orderDetailsStore: OrderDetailsStoreClass,
+}
 
-const ListDates = observer(() => {
+
+const ListDates = observer(({scheduleStore, orderDetailsStore}: ListDatesProps) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const useListDateTimes = useRef<Element | null>(null);
   const useListDateButtons = useRef<NodeListOf<Element> | null>(null);
@@ -23,7 +28,7 @@ const ListDates = observer(() => {
 
 
   const loadingPage = async () => {
-    await scheduleStore.getScheduleListBySpecialistId({
+    await scheduleStore.getScheduleList({
       establishment_id: orderDetailsStore.OrderDetailsEstablishment!.establishment_id,
       employee_id: orderDetailsStore.OrderDetailsSpecialist!.employee_id,
       services_id: orderDetailsStore.getOrderDetailServicesId(),
@@ -46,7 +51,7 @@ const ListDates = observer(() => {
 
 
   const onClickClearChoice = () => {
-    if (scheduleStore.ScheduleListBySpecialist.length) {
+    if (scheduleStore.ScheduleList.length) {
       orderDetailsStore.deleteOrderDetailsTime();
       onlyOneButtonTimeDisabled();
       orderDetailsStore.deleteOrderDetailsDate();
@@ -106,7 +111,7 @@ const ListDates = observer(() => {
       });
 
       Array.from(useListTimeButtons.current!).every((el: any) => {
-        if (el.getAttribute("data-id") == (orderDetailsStore.OrderDetailsTime + orderDetailsStore.OrderDetailsDate)) {
+        if (el.getAttribute("data-id") == (orderDetailsStore.OrderDetailsTime! + orderDetailsStore.OrderDetailsDate!)) {
           el.classList.add(blackButton);
           return false;
         }
@@ -128,7 +133,7 @@ const ListDates = observer(() => {
     <Card
       className="enroll_list_dates_times"
       style={CardForm}
-      loading={!scheduleStore.ScheduleListBySpecialist.length}
+      loading={!scheduleStore.ScheduleList.length}
       title={
         <Row
         justify={'space-between'}
@@ -149,7 +154,7 @@ const ListDates = observer(() => {
         </Row>
       }
     >
-      {scheduleStore.ScheduleListBySpecialist.length !== 0 &&
+      {scheduleStore.ScheduleList.length !== 0 &&
         <div className="enroll_list_dates_items">
           {scheduleStore.ScheduleMonth.map((month: string) =>
             <div className="enroll_list_dates_item" key={month}>
@@ -162,7 +167,7 @@ const ListDates = observer(() => {
                 direction="horizontal"
                 size={[8, 8]}
               >
-                {scheduleStore.ScheduleListBySpecialist.filter((schedule: ISchedule) => {
+                {scheduleStore.ScheduleList.filter((schedule: ISchedule) => {
                   return month === new Date(schedule.date).toLocaleString('ru', { month: 'long' });
                 }).map((schedule: ISchedule) =>
                   <Button
@@ -181,7 +186,7 @@ const ListDates = observer(() => {
         </div>
       }
 
-      {orderDetailsStore.OrderDetailsDate.length !== 0 &&
+      {orderDetailsStore.OrderDetailsDate &&
         <Space
           wrap={true}
           className="enroll_list_times_buttons"

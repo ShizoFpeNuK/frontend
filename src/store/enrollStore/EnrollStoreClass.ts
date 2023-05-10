@@ -1,5 +1,4 @@
 import { makeAutoObservable } from "mobx";
-import orderDetailsStore from "./OrderDetailsStoreClass";
 
 
 class EnrollStoreClass {
@@ -67,37 +66,19 @@ class EnrollStoreClass {
   }
 
   clearStore() {
-    enrollStore.setSelectButtonDateIsClicked(false);
-    enrollStore.setSelectButtonServicesIsClicked(false);
-    enrollStore.setSelectButtonSpecialistIsClicked(false);
-    enrollStore.setSelectButtonClientIsClicked(false);
-    enrollStore.setSelectButtonEstablishmentIsClicked(false);
-    enrollStore.setIsSubmitOrder(false);
-    enrollStore.setIsOpenListDate(false);
-    enrollStore.setIsOpenListServices(false);
-    enrollStore.setIsOpenListSpecialist(false);
-    enrollStore.setIsOpenListEstablishment(false);
-    enrollStore.setIsOpenFormFindClient(true);
-  }
-
-
-  get IsNextServices(): boolean {
-    if (orderDetailsStore.OrderDetailsServices.length) {
-      return true;
-    }
-
-    return false;
-  }
-
-  get IsNextDates(): boolean {
-    if (orderDetailsStore.OrderDetailsDate.length && orderDetailsStore.OrderDetailsTime.length) {
-      return true;
-    }
-
-    return false;
+    this.setSelectButtonDateIsClicked(false);
+    this.setSelectButtonServicesIsClicked(false);
+    this.setSelectButtonSpecialistIsClicked(false);
+    this.setSelectButtonClientIsClicked(false);
+    this.setSelectButtonEstablishmentIsClicked(false);
+    this.setIsSubmitOrder(false);
+    this.setIsOpenListDate(false);
+    this.setIsOpenListServices(false);
+    this.setIsOpenListSpecialist(false);
+    this.setIsOpenListEstablishment(false);
+    this.setIsOpenFormFindClient(true);
   }
 }
 
 
-const enrollStore = new EnrollStoreClass();
-export default enrollStore;
+export default EnrollStoreClass;
