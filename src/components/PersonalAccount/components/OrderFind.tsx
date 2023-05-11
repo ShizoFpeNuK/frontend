@@ -69,14 +69,17 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
         className="personal_account_forms_order_row"
         justify={'space-between'}
         wrap={false}>
-        <Col className="personal_account_order_form" span={6}>
+        <Col
+          className="personal_account_order_form"
+          span={6}
+          style={{paddingRight: "20px"}}
+        >
           {!clientStore.client
             ? <FormClientFind
               clientStore={clientStore}
               notificationsStore={notificationsStore}
             />
-            :
-            <FormOrderFind
+            : <FormOrderFind
               clientStore={clientStore}
               checkStore={checkStore}
               notificationsStore={notificationsStore}

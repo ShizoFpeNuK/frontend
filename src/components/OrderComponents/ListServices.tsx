@@ -4,9 +4,8 @@ import { IService } from "../../options/model/service.model";
 import { List, Button, Row, Col } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { ClockCircleOutlined, DeleteOutlined, DollarCircleOutlined } from "@ant-design/icons";
-import orderDetailsStore from "../../store/enrollStore/OrderDetailsStoreClass";
 import ServicesStoreClass from "../../store/ServicesStoreClass";
-import OrderDetailsStoreClass from '../../store/enrollStore/OrderDetailsStoreClass';
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
 
 
 const selectorListServices: string = ".enroll_list_services";

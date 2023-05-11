@@ -1,11 +1,12 @@
 import '../../../style/css/cards/cardCheck.css';
 import { ICheck } from "../../../options/model/check.model";
 import { useForm } from "antd/es/form/Form";
-import { ColumnsType } from "antd/es/table";
+import { Button, Card, Space } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import { IServiceWithStartAndEndTime } from "../../../options/model/service.model";
-import { Button, Card, Col, Form, InputNumber, Modal, Rate, Row, Space, Table } from "antd";
 import CheckServices from "../../../services/check.service";
+import ModalCheckPaid from "../modals/ModalCheckPaid";
+import ModalCheckDetails from "../modals/ModalCheckDetails";
 
 
 interface CardCheckProps {
@@ -21,127 +22,29 @@ interface IPaid {
   paid_bonus: number,
 }
 
-interface DataType {
-  key: number,
-  name_service: string,
-  duration: string,
-  cost: number,
-}
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Название услуги",
-    dataIndex: "name_service",
-    key: "name_service",
-  },
-  {
-    title: "Длительность",
-    dataIndex: "duration",
-    key: "duration",
-  },
-  {
-    title: "Стоимость",
-    dataIndex: "cost",
-    key: "cost",
-  },
-];
-
 
 const CardCheck = (props: CardCheckProps) => {
   const [form] = useForm();
-  let data: DataType[] = [];
 
 
   const showModalDetails = async () => {
-    await CheckServices.getCheckDetails(props.check.check_id)
-      .then((services: IServiceWithStartAndEndTime[]) => {
-        data = [];
-        services.forEach((service: IServiceWithStartAndEndTime) => {
-          data.push({
-            key: service.service_id,
-            name_service: service.name_service,
-            duration: `${service.start_order} —  ${service.end_order}`,
-            cost: service.cost
-          })
-        })
-        Modal.info({
-          className: "modal_details",
-          title: <h3>Чек №{props.check.check_id}</h3>,
-          icon: null,
-          centered: true,
-          width: "700px",
-          content: (
-            <div className="modal_details_services">
-              <Table
-                pagination={false}
-                columns={columns}
-                dataSource={data}
-              />
-            </div>
-          )
-        });
-      })
+    const services: IServiceWithStartAndEndTime[] =
+      await CheckServices.getCheckDetails(props.check.check_id);
+    ModalCheckDetails(props.check.check_id, services);
   };
 
 
   const onFinish = async (values: IPaid) => {
-    await CheckServices.updateCheckGrade(values.grade, values.paid_bonus, props.check.check_id);
+    await CheckServices.updateCheckGrade(
+      values.grade,
+      values.paid_bonus,
+      props.check.check_id
+    );
     props.setPaidCheckFlag(true);
   }
 
   const showModalPaid = () => {
-    Modal.confirm({
-      className: "modal_paid",
-      title: <h3> Чек №{props.check.check_id} </h3>,
-      icon: null,
-      centered: true,
-      okText: "Оплатить",
-      cancelText: "Назад",
-      content: (
-        <Form
-          layout="vertical"
-          preserve={false}
-          form={form}
-          onFinish={onFinish}
-        >
-          <Form.Item
-            style={{ fontWeight: 600 }}
-            label="Оценка"
-            name="grade"
-          >
-            <Rate
-              allowHalf
-              allowClear
-            />
-          </Form.Item>
-          <Row
-            justify={'space-between'}
-            wrap={false}
-            align={'middle'}
-          >
-            <Col>
-              <Form.Item
-                style={{ fontWeight: 600 }}
-                label="Потратить бонусы"
-                name="paid_bonus"
-              >
-                <InputNumber
-                  min={0}
-                  max={props.bonus}
-                  onPressEnter={(e) => e.preventDefault()}
-                />
-              </Form.Item>
-            </Col>
-            <Col>
-              <p style={{ fontWeight: 400 }}> Имеется бонусов: {props.bonus} </p>
-            </Col>
-          </Row>
-        </Form >
-      ),
-      async onOk() {
-        form.submit();
-      }
-    });
+    ModalCheckPaid(form, props.check.check_id, props.bonus, onFinish)
   };
 
 
@@ -188,7 +91,8 @@ const CardCheck = (props: CardCheckProps) => {
       <Space
         className="client_check_card_details_buttons"
         direction="vertical"
-        style={{ width: "100%" }}
+        style={{ width: "300px" }}
+        // style={{ width: "100%" }}
       >
         <Button block onClick={showModalDetails}> Подробнее </Button>
         <Button block onClick={onClickDeleteButton}> Удалить </Button>

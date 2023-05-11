@@ -13,13 +13,16 @@ interface EmployeeAddProps {
 
 const EmployeeAdd = observer(({ notificationsStore }: EmployeeAddProps) => {
   return (
-    <div className="personal_account_forms_employee">
-      <h2 className="personal_account_forms_employee_title title--border"> Добавить сотрудника </h2>
-      <Row justify={'space-between'} className="personal_account_forms_employee_row">
-        <Col className="personal_account_employee_form" span={6}>
+    <div className="employee_add">
+      <h2 className="employee_add_title title--border"> Добавить сотрудника </h2>
+      <Row
+        justify={'space-between'}
+        className="employee_add_row"
+      >
+        <Col className="employee_add_form" span={6}>
           <FormEmployeeAdd notificationsStore={notificationsStore} />
         </Col>
-        <Col className="personal_account_employee_result" span={6}>
+        <Col className="employee_add_result" span={6}>
           {notificationsStore?.isCreateEmployee &&
             <ResultSuccess title="Сотрудник успешно создан!" />
           }

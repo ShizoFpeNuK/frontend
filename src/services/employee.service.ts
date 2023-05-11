@@ -25,7 +25,6 @@ export default class EmployeeServices {
   }
 
   static async createEmployee(employeeAdd: IEmployeeCreate): Promise<void> {
-    console.log(employeeAdd);
     await axios.post(this.pathDefault, employeeAdd);
   }
 

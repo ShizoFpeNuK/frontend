@@ -1,17 +1,17 @@
 import { useForm } from "antd/es/form/Form";
 import { AxiosError } from "axios";
 import { IEmployeeCreate } from "../../../options/model/employee.model";
-import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
-import FormEmployeeAddBase from "../../Forms/FormEmployeeAddBase";
 import EmployeeServices from "../../../services/employee.service";
+import FormEmployeeAddBase from "../../Forms/FormEmployeeAddBase";
+import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
-interface FormAddEmployeeProps {
+interface FormEmployeeAddProps {
   notificationsStore?: NotificationsPAStoreClass,
 }
 
 
-const FormAddEmployee = ({ notificationsStore }: FormAddEmployeeProps) => {
+const FormEmployeeAdd = ({ notificationsStore }: FormEmployeeAddProps) => {
   const [form] = useForm();
 
 
@@ -32,7 +32,7 @@ const FormAddEmployee = ({ notificationsStore }: FormAddEmployeeProps) => {
   }
 
   const onFinishFailed = (errorInfo: any) => {
-    notificationsStore?.deleteNotificationsClient();
+    notificationsStore?.deleteNotificationsSchedule();
     console.log("Failed:", errorInfo);
   }
 
@@ -47,4 +47,4 @@ const FormAddEmployee = ({ notificationsStore }: FormAddEmployeeProps) => {
 }
 
 
-export default FormAddEmployee;
+export default FormEmployeeAdd;

@@ -3,7 +3,7 @@ import { makeAutoObservable } from "mobx";
 import ScheduleServices from "../../services/schedule.service";
 
 
-class SchedulePAStoreClass {
+class ScheduleWorkerPAStoreClass {
   schedule: IScheduleWorker[] = [];
 
   constructor() {
@@ -12,7 +12,7 @@ class SchedulePAStoreClass {
 
 
   async getScheduleByEmployeeId(employeeId: number) {
-    const schedule = await ScheduleServices.getScheduleByEmployeeId(employeeId);
+    const schedule = await ScheduleServices.getScheduleWorkerByEmployeeId(employeeId);
     this.setSchedule(schedule);
   }
 
@@ -27,4 +27,4 @@ class SchedulePAStoreClass {
 }
 
 
-export default SchedulePAStoreClass;
+export default ScheduleWorkerPAStoreClass;

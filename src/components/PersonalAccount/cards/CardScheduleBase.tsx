@@ -1,19 +1,23 @@
 import '../../../style/css/cards/cardSchedule.css';
 import { Card } from "antd";
-import { IScheduleWorker } from "../../../options/model/schedule.model";
+import { observer } from "mobx-react";
+import { IScheduleControl, IScheduleWorker } from "../../../options/model/schedule.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
+import { CSSProperties, ReactNode } from "react";
 
 
-interface CardScheduleProps {
-  schedule: IScheduleWorker,
+interface CardScheduleBaseProps {
+  schedule: IScheduleWorker | IScheduleControl,
+  children?: ReactNode,
+  style?: CSSProperties | undefined,
 }
 
 
-const CardSchedule = ({ schedule }: CardScheduleProps) => {
+const CardScheduleBase = observer(({ schedule, ...props }: CardScheduleBaseProps) => {
   return (
     <Card
       className="card_schedule"
-      style={CardForm}
+      style={{ width: "300px", ...CardForm, ...props.style, }}
       bodyStyle={CardBodyForm}
     >
       <div className="card_schedule_info">
@@ -25,14 +29,11 @@ const CardSchedule = ({ schedule }: CardScheduleProps) => {
           <h3 className="card_schedule_info_inner_title"> Рабочий день </h3>
           <p className="card_schedule_info_inner_duration_day"> {schedule.start_work} — {schedule.end_work}</p>
         </div>
-        <div className="card_schedule_info_inner">
-          <h3 className="card_schedule_info_inner_title"> Адрес работы </h3>
-          <p className="card_schedule_info_inner_address"> {schedule.address_establishment} </p>
-        </div>
+        {props.children}
       </div>
     </Card>
   )
-};
+});
 
 
-export default CardSchedule;
+export default CardScheduleBase;

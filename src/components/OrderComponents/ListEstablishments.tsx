@@ -3,8 +3,8 @@ import { IEstablishment } from "../../options/model/establishment.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Col, List, Row } from "antd"
 import { useEffect, useRef, useState } from "react";
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
 import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
-import OrderDetailsStoreClass from '../../store/enrollStore/OrderDetailsStoreClass';
 
 
 const selectorListEstablishments: string = ".enroll_list_establishments";

@@ -1,7 +1,7 @@
 import '../../style/css/order/listDates.css';
 import { observer } from "mobx-react";
 import { CardForm } from "../../style/typescript/cardForm";
-import { ISchedule } from "../../options/model/schedule.model";
+import { IScheduleSpecialist } from "../../options/model/schedule.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { Button, Card, Col, Row, Space } from "antd";
@@ -60,7 +60,7 @@ const ListDates = observer(({scheduleStore, orderDetailsStore}: ListDatesProps) 
     }
   }
 
-  const onClickButtonDate = (e: any, schedule: ISchedule) => {
+  const onClickButtonDate = (e: any, schedule: IScheduleSpecialist) => {
     const button = e.target.closest(selectorDateButton);
 
     if (!button.classList.contains(blackButton)) {
@@ -167,9 +167,9 @@ const ListDates = observer(({scheduleStore, orderDetailsStore}: ListDatesProps) 
                 direction="horizontal"
                 size={[8, 8]}
               >
-                {scheduleStore.ScheduleList.filter((schedule: ISchedule) => {
+                {scheduleStore.ScheduleList.filter((schedule: IScheduleSpecialist) => {
                   return month === new Date(schedule.date).toLocaleString('ru', { month: 'long' });
-                }).map((schedule: ISchedule) =>
+                }).map((schedule: IScheduleSpecialist) =>
                   <Button
                     className="enroll_list_dates_item_button"
                     key={schedule.date}

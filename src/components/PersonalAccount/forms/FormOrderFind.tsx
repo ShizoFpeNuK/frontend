@@ -1,4 +1,4 @@
-import '../../../style/css/forms/formFindOrder.css';
+import '../../../style/css/forms/formOrderFind.css';
 import { useForm } from "antd/es/form/Form";
 import { ICheck, ICheckFind } from "../../../options/model/check.model";
 import dayjs from "dayjs";
@@ -39,7 +39,7 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
     checkStore.deleteChecks();
     const correctValues: ICheckFind = {
       ...values,
-      "paid": values["paid"] === undefined ? undefined : values["paid"],
+      "paid": values["paid"] !== undefined ? values["paid"] : undefined,
       "date": values["date"]?.format("YYYY-MM-DD"),
     }
 
@@ -74,7 +74,7 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
       form={form}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      buttons={<ButtonStep onClick={cancelClient}> Назад </ButtonStep>}
+      buttons={<ButtonStep block onClick={cancelClient}> Назад </ButtonStep>}
     >
       <div className="client_info" style={{ textAlign: "left" }}>
         <div className="client_info_inner">

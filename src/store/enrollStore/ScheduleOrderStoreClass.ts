@@ -1,11 +1,11 @@
-import { ISchedule } from "../../options/model/schedule.model";
+import { IScheduleSpecialist } from "../../options/model/schedule.model";
 import { IOrderBase } from "../../options/model/order.model";
 import { makeAutoObservable } from "mobx";
 import ScheduleServices from "../../services/schedule.service";
 
 
 class ScheduleOrderStoreClass {
-  ScheduleList: ISchedule[] = [];
+  ScheduleList: IScheduleSpecialist[] = [];
   ScheduleMonth: string[] = [];
 
   constructor() {
@@ -17,7 +17,7 @@ class ScheduleOrderStoreClass {
     const schedules = await ScheduleServices.getScheduleBySpecialistId(orderBase);
     this.deleteScheduleMonth();
 
-    schedules.forEach((schedule: ISchedule) => {
+    schedules.forEach((schedule: IScheduleSpecialist) => {
       const scheduleMonth: string = new Date(schedule.date).toLocaleString('ru', { month: 'long' });
 
       if (!this.ScheduleMonth.length) {
@@ -39,7 +39,7 @@ class ScheduleOrderStoreClass {
     this.setScheduleList(schedules);
   }
 
-  setScheduleList(schedules: ISchedule[]) {
+  setScheduleList(schedules: IScheduleSpecialist[]) {
     this.ScheduleList = schedules;
   }
 

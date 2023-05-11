@@ -4,9 +4,8 @@ import { ISpecialist } from "../../options/model/specialist.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useEffect, useRef, useState } from "react";
 import { Avatar, List, Row, Col, Button, Rate } from "antd";
-import orderDetailsStore from "../../store/enrollStore/OrderDetailsStoreClass";
-import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
 import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
+import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
 
 
 const selectorListSpecialists: string = ".enroll_list_specialists";

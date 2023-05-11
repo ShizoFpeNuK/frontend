@@ -5,11 +5,11 @@ import { IScheduleWorker } from "../../options/model/schedule.model";
 import { useEffect, useState } from "react";
 import { Button, Col, Row, Space } from "antd";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
-import CardSchedule from "../../components/PersonalAccount/cards/CardSchedule";
-import SchedulePAStoreClass from "../../store/paStore/SchedulePAStoreClass";
+import CardScheduleWorker from "../../components/PersonalAccount/cards/CardScheduleWorker";
+import ScheduleWorkerPAStoreClass from "../../store/paStore/ScheduleWorkerPAStoreClass";
 
 
-const scheduleStore = new SchedulePAStoreClass();
+const scheduleStore = new ScheduleWorkerPAStoreClass();
 
 interface PAWorkerProps {
   workerId: number,
@@ -67,7 +67,7 @@ const PAWorker = observer(({ workerId }: PAWorkerProps) => {
             style={{ width: "100%" }}
           >
             {scheduleStore.schedule.map((schedule: IScheduleWorker) =>
-              <CardSchedule schedule={schedule} />
+              <CardScheduleWorker schedule={schedule} />
             )}
           </Space>
         </Col>

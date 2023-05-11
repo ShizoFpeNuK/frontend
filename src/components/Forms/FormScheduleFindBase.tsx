@@ -1,7 +1,7 @@
 import { CardForm } from "../../style/typescript/cardForm";
 import { ReactNode } from "react";
 import { FormBaseProps } from "../../options/model/props/formBaseProps.model";
-import { Button, Card, DatePicker, Form, Radio, Space } from "antd";
+import { Button, Card, DatePicker, Form, Input, Radio, Space } from "antd";
 
 import "dayjs/locale/ru";
 import locale from "antd/es/date-picker/locale/ru_RU";
@@ -9,21 +9,20 @@ import locale from "antd/es/date-picker/locale/ru_RU";
 
 const dateFormat = "DD.MM.YYYY";
 
-interface FormOrderFindBaseProps extends FormBaseProps {
+interface FormScheduleFindBaseProps extends FormBaseProps {
   buttons?: ReactNode,
 }
 
 
-const FormOrderFindBase = (props: FormOrderFindBaseProps) => {
-
+const FormScheduleFindBase = (props: FormScheduleFindBaseProps) => {
   const clearFieldValues = () => {
     props.form.resetFields();
   }
 
   return (
     <Card
-      className="client_form"
-      title="Найти заказ"
+      className="schedule_form"
+      title="Найти расписание"
       style={CardForm}
     >
       {props.children}
@@ -34,8 +33,20 @@ const FormOrderFindBase = (props: FormOrderFindBaseProps) => {
         onFinishFailed={props.onFinishFailed}
       >
         <Form.Item
-          label="Выберите дату"
-          name="date"
+          label="Номер телефона"
+          name="telephone"
+          rules={[
+            {
+              pattern: new RegExp(/^\+7\s[\(]9\d{2}[\)]\s\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}$/),
+              message: "Пример ввода: +7 (916) 419-52-28"
+            }
+          ]}
+        >
+          <Input placeholder="Например, +7 (999) 999-99-99" />
+        </Form.Item>
+        <Form.Item
+          label="Выберите дату c"
+          name="date_work"
         >
           <DatePicker
             format={dateFormat}
@@ -45,15 +56,15 @@ const FormOrderFindBase = (props: FormOrderFindBaseProps) => {
           />
         </Form.Item>
         <Form.Item
-          label="Тип чека"
-          name="paid"
+          label="Присутствие"
+          name="presence"
           style={{ textAlign: "left" }}
         >
           <Radio.Group defaultValue={undefined}>
             <Space direction="vertical">
               <Radio value={undefined}> Все </Radio>
-              <Radio value={true}> Оплаченные </Radio>
-              <Radio value={false}> Неоплаченные </Radio>
+              <Radio value={true}> Да </Radio>
+              <Radio value={false}> Нет </Radio>
             </Space>
           </Radio.Group>
         </Form.Item>
@@ -68,7 +79,7 @@ const FormOrderFindBase = (props: FormOrderFindBaseProps) => {
       </Form>
     </Card>
   )
-};
+}
 
 
-export default FormOrderFindBase;
+export default FormScheduleFindBase;

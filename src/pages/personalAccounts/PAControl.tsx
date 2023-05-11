@@ -1,22 +1,40 @@
 import '../../style/css/personal_account/paControl.css';
 import { useState } from "react";
 import { Button, Col, Row, Space } from "antd";
-import { SearchOutlined, UserAddOutlined } from "@ant-design/icons";
+import { FileAddOutlined, SearchOutlined, UserAddOutlined } from "@ant-design/icons";
+import OrderAdd from "../../components/PersonalAccount/components/OrderAdd";
+import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientAdd from "../../components/PersonalAccount/components/ClientAdd";
-import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
+import ClientFind from "../../components/PersonalAccount/components/ClientFind";
+import ScheduleAdd from "../../components/PersonalAccount/components/ScheduleAdd";
+import EmployeeAdd from "../../components/PersonalAccount/components/EmployeeAdd";
+import ScheduleFind from "../../components/PersonalAccount/components/ScheduleFind";
 import EmployeeFind from "../../components/PersonalAccount/components/EmployeeFind";
+import EnrollStoreClass from "../../store/enrollStore/EnrollStoreClass";
 import CheckPAStoreClass from "../../store/paStore/CheckPAStoreClass";
+import ServicesStoreClass from "../../store/ServicesStoreClass";
 import ClientPAStoreClass from "../../store/paStore/ClientPAStoreClass";
 import EmployeePAStoreClass from "../../store/paStore/EmployeePAStoreClass";
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
+import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
+import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
 import NotificationsPAStoreClass from "../../store/paStore/NotificationsPAStoreClass";
-import EmployeeAdd from '../../components/PersonalAccount/components/EmployeeAdd';
+import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
+import ScheduleControlPAStoreClass from "../../store/paStore/ScheduleControlPAStoreClass";
 
 
+const enrollStore = new EnrollStoreClass();
 const checkStore = new CheckPAStoreClass();
 const clientStore = new ClientPAStoreClass();
 const employeeStore = new EmployeePAStoreClass();
+const scheduleStore = new ScheduleControlPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
+const orderDetailsStore = new OrderDetailsStoreClass();
+const scheduleOrderStore = new ScheduleOrderStoreClass();
+const specialistsStore = new SpecialistsPAStoreClass();
+const servicesStore = new ServicesStoreClass();
+const establishmentStore = new EstablishmentPAStoreClass();
 
 
 const PAControl = () => {
@@ -26,6 +44,7 @@ const PAControl = () => {
   const [isOpenFindEmployeeForm, setIsOpenFindEmployeeForm] = useState<boolean>(false);
   const [isOpenAddEmployeeForm, setIsOpenAddEmployeeForm] = useState<boolean>(false);
   const [isOpenFindScheduleForm, setIsOpenFindScheduleForm] = useState<boolean>(false);
+  const [isOpenAddScheduleForm, setIsOpenAddScheduleForm] = useState<boolean>(false);
 
   //Пока не нужно
   const [isOpenFindOrderForm, setIsOpenFindOrderClientForm] = useState<boolean>(false);
@@ -33,95 +52,77 @@ const PAControl = () => {
 
 
   const clearAll = () => {
-    // notificationsStore.deleteNotificationsChecks();
-    notificationsStore.deleteNotificationsEmployee();
     notificationsStore.deleteIsSubmitOrder();
+    notificationsStore.deleteNotificationsClient();
+    notificationsStore.deleteNotificationsEmployee();
+    notificationsStore.deleteNotificationsSchedule();
+    notificationsStore.deleteNotificationsChecks();
 
     clientStore.deleteClient();
     employeeStore.deleteEmployee();
-    employeeStore.deleteEmployees();
-    // checkStore.deleteChecks();
-    // enrollStore.clearStore();
-    // orderDetailsStore.clearStore();
+    employeeStore.deleteEmployees()
+    scheduleStore.deleteScheduleList();
+    checkStore.deleteChecks();
+    enrollStore.clearStore();
+    orderDetailsStore.clearStore();
 
-    // specialistsStore.deleteSpecialistsList();
-    // servicesStore.deleteServicesList();
-    // scheduleStore.deleteScheduleListBySpecialist();
+    specialistsStore.deleteSpecialistsList();
+    servicesStore.deleteServicesList();
+    scheduleOrderStore.deleteScheduleList();
+    establishmentStore.deleteEstablishmentsList();
   }
 
-
-  const onClickFoundClientButton = () => {
+  const closeAllWindow = () => {
     clearAll();
     setIsOpenAddClientForm(false);
-    setIsOpenFindEmployeeForm(false);
+    setIsOpenFindClientForm(false);
     setIsOpenAddEmployeeForm(false);
+    setIsOpenFindEmployeeForm(false);
+    setIsOpenAddScheduleForm(false);
     setIsOpenFindScheduleForm(false);
-    // setIsOpenAddOrderClientForm(false);
-    // setIsOpenFindOrderClientForm(false);
+    setIsOpenAddOrderClientForm(false);
+    setIsOpenFindOrderClientForm(false);
+  }
+
+  const onClickFoundClientButton = () => {
+    closeAllWindow();
     setIsOpenFindClientForm(!isOpenFindClientForm);
   }
 
   const onClickAddClientButton = () => {
-    clearAll();
-    setIsOpenFindClientForm(false);
-    setIsOpenFindEmployeeForm(false);
-    setIsOpenAddEmployeeForm(false);
-    setIsOpenFindScheduleForm(false);
-    // setIsOpenAddOrderClientForm(false);
-    // setIsOpenFindOrderClientForm(false);
+    closeAllWindow();
     setIsOpenAddClientForm(!isOpenAddClientForm);
   }
 
   const onClickFoundEmployeeButton = () => {
-    clearAll();
-    setIsOpenAddClientForm(false);
-    setIsOpenFindClientForm(false);
-    setIsOpenAddEmployeeForm(false);
-    setIsOpenFindScheduleForm(false);
-    // setIsOpenAddOrderClientForm(false);
-    // setIsOpenFindOrderClientForm(false);
+    closeAllWindow();
     setIsOpenFindEmployeeForm(!isOpenFindEmployeeForm);
   }
 
   const onClickAddEmployeeButton = () => {
-    clearAll();
-    setIsOpenAddClientForm(false);
-    setIsOpenFindClientForm(false);
-    setIsOpenFindEmployeeForm(false);
-    setIsOpenFindScheduleForm(false);
-    // setIsOpenAddOrderClientForm(false);
-    // setIsOpenFindOrderClientForm(false);
+    closeAllWindow();
     setIsOpenAddEmployeeForm(!isOpenAddEmployeeForm);
   }
 
   const onClickFoundScheduleButton = () => {
-    clearAll();
-    setIsOpenAddClientForm(false);
-    setIsOpenFindClientForm(false);
-    setIsOpenAddEmployeeForm(false);
-    setIsOpenFindEmployeeForm(false);
-    // setIsOpenAddOrderClientForm(false);
-    // setIsOpenFindOrderClientForm(false);
+    closeAllWindow();
     setIsOpenFindScheduleForm(!isOpenFindScheduleForm);
   }
 
+  const onClickAddScheduleButton = () => {
+    closeAllWindow();
+    setIsOpenAddScheduleForm(!isOpenAddScheduleForm);
+  }
 
+  const onClickAddOrderButton = () => {
+    closeAllWindow();
+    setIsOpenAddOrderClientForm(!isOpenAddOrderForm);
+  }
 
-  // const onClickAddOrderButton = () => {
-  //   clearAll();
-  //   setIsOpenAddClientForm(false);
-  //   setIsOpenFindClientForm(false);
-  //   setIsOpenFindOrderClientForm(false);
-  //   setIsOpenAddOrderClientForm(!isOpenAddOrderForm);
-  // }
-
-  // const onClickFindOrderButton = () => {
-  //   clearAll();
-  //   setIsOpenAddClientForm(false);
-  //   setIsOpenFindClientForm(false);
-  //   setIsOpenAddOrderClientForm(false);
-  //   setIsOpenFindOrderClientForm(!isOpenFindOrderForm);
-  // }
+  const onClickFindOrderButton = () => {
+    closeAllWindow();
+    setIsOpenFindOrderClientForm(!isOpenFindOrderForm);
+  }
 
 
   return (
@@ -138,7 +139,10 @@ const PAControl = () => {
             <Button block onClick={onClickAddClientButton}> <UserAddOutlined /> Добавить клиента </Button>
             <Button block onClick={onClickFoundEmployeeButton}> <SearchOutlined /> Найти сотрудника </Button>
             <Button block onClick={onClickAddEmployeeButton}> <UserAddOutlined /> Добавить сотрудника </Button>
-            <Button block onClick={onClickFoundScheduleButton}> <UserAddOutlined /> Найти расписание </Button>
+            <Button block onClick={onClickFoundScheduleButton}> <SearchOutlined /> Посмотреть расписание </Button>
+            <Button block onClick={onClickAddScheduleButton}> <FileAddOutlined /> Добавить расписание </Button>
+            <Button block onClick={onClickFindOrderButton}> <SearchOutlined /> Найти заказ </Button>
+            <Button block onClick={onClickAddOrderButton}> <FileAddOutlined /> Добавить заказ </Button>
           </Space>
         </Col>
 
@@ -167,9 +171,16 @@ const PAControl = () => {
             <EmployeeAdd notificationsStore={notificationsStore} />
           }
           {isOpenFindScheduleForm &&
-            <></>
+            <ScheduleFind
+              notificationsStore={notificationsStore}
+              employeeStore={employeeStore}
+              scheduleStore={scheduleStore}
+            />
           }
-          {/* {isOpenFindOrderForm &&
+          {isOpenAddScheduleForm &&
+            <ScheduleAdd notificationsStore={notificationsStore} />
+          }
+          {isOpenFindOrderForm &&
             <OrderFind
               notificationsStore={notificationsStore}
               clientStore={clientStore}
@@ -178,10 +189,16 @@ const PAControl = () => {
           }
           {isOpenAddOrderForm &&
             <OrderAdd
-              notificationsStore={notificationsStore}
+              enrollStore={enrollStore}
               clientStore={clientStore}
+              servicesStore={servicesStore}
+              scheduleStore={scheduleOrderStore}
+              specialistsStore={specialistsStore}
+              orderDetailsStore={orderDetailsStore}
+              establishmentStore={establishmentStore}
+              notificationsStore={notificationsStore}
             />
-          } */}
+          }
         </Col>
       </Row>
     </div>

@@ -13,7 +13,7 @@ interface FindEmployeeFormProps {
 }
 
 
-const FormClientFind = observer(({ employeeStore, notificationsStore }: FindEmployeeFormProps) => {
+const FormEmployeeFind = observer(({ employeeStore, notificationsStore }: FindEmployeeFormProps) => {
   const [form] = useForm();
 
 
@@ -61,4 +61,4 @@ const FormClientFind = observer(({ employeeStore, notificationsStore }: FindEmpl
 });
 
 
-export default FormClientFind;
+export default FormEmployeeFind;

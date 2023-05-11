@@ -2,7 +2,7 @@ import { useForm } from "antd/es/form/Form";
 import { CardForm } from "../style/typescript/cardForm";
 import { useNavigate } from "react-router-dom";
 import { ILogin, IUser } from "../options/model/user.model";
-import { Button, Card, Checkbox, Form, Input } from "antd";
+import { Button, Card, Form, Input } from "antd";
 import loginStore from "../store/LoginStoreClass";
 import LoginServices from "../services/login.service";
 

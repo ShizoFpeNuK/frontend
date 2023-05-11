@@ -12,9 +12,9 @@ import EnrollStoreClass from "../../store/enrollStore/EnrollStoreClass";
 import CheckPAStoreClass from "../../store/paStore/CheckPAStoreClass";
 import ClientPAStoreClass from "../../store/paStore/ClientPAStoreClass";
 import ServicesStoreClass from "../../store/ServicesStoreClass";
-import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
 import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
 import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
+import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
 import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
 import NotificationsPAStoreClass from "../../store/paStore/NotificationsPAStoreClass";
 
@@ -44,14 +44,13 @@ const PAManager = observer(() => {
 
     checkStore.deleteChecks();
     clientStore.deleteClient();
-
-    //Закоментить
     enrollStore.clearStore();
     orderDetailsStore.clearStore();
 
     specialistsStore.deleteSpecialistsList();
     servicesStore.deleteServicesList();
     scheduleStore.deleteScheduleList();
+    establishmentStore.deleteEstablishmentsList();
   }
 
 

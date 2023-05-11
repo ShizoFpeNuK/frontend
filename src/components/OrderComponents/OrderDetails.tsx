@@ -8,11 +8,11 @@ import CheckServices from "../../services/check.service";
 import EnrollStoreClass from "../../store/enrollStore/EnrollStoreClass";
 import ClientPAStoreClass from "../../store/paStore/ClientPAStoreClass";
 import ServicesStoreClass from "../../store/ServicesStoreClass";
+import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
 import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
 import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
 import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
 import NotificationsPAStoreClass from "../../store/paStore/NotificationsPAStoreClass";
-import OrderDetailsStoreClass from '../../store/enrollStore/OrderDetailsStoreClass';
 
 
 interface OrderDetailsProps {
@@ -200,56 +200,58 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
         </Row>
       }
 
-      <div className="order_check_details_buttons_step">
+      <Space
+        direction="vertical"
+        className="order_check_details_buttons"
+        style={{ width: "100%", justifyContent: "center" }}
+      >
+        {/* <div className="order_check_details_buttons_step"> */}
         {/* Кнопка после клиента */}
         {props.clientStore?.client && !props.enrollStore.selectButtonClientIsClicked &&
-          <ButtonStep onClick={selectedClient}> Далее </ButtonStep>
+          <ButtonStep block onClick={selectedClient}> Далее </ButtonStep>
         }
         {props.enrollStore.selectButtonClientIsClicked && !props.orderDetailsStore.OrderDetailsEstablishment &&
-          <ButtonStep onClick={cancelClient}> Назад </ButtonStep>
+          <ButtonStep block onClick={cancelClient}> Назад </ButtonStep>
         }
 
         {/* Кнопка после заведения */}
         {props.orderDetailsStore.OrderDetailsEstablishment && !props.enrollStore.selectButtonEstablishmentIsClicked &&
-          <ButtonStep onClick={selectedEstablishment}> Далее </ButtonStep>
+          <ButtonStep block onClick={selectedEstablishment}> Далее </ButtonStep>
         }
         {props.enrollStore.selectButtonEstablishmentIsClicked && !props.orderDetailsStore.OrderDetailsSpecialist &&
-          <ButtonStep onClick={cancelEstablishment}> Назад </ButtonStep>
+          <ButtonStep block onClick={cancelEstablishment}> Назад </ButtonStep>
         }
 
         {/* Кнопка после специалиста */}
         {props.orderDetailsStore.OrderDetailsSpecialist && !props.enrollStore.selectButtonSpecialistIsClicked &&
-          <ButtonStep onClick={selectedSpecialist}> Далее </ButtonStep>
+          <ButtonStep block onClick={selectedSpecialist}> Далее </ButtonStep>
         }
         {props.enrollStore.selectButtonSpecialistIsClicked && props.orderDetailsStore.OrderDetailsServices.length === 0 &&
-          <ButtonStep onClick={cancelSpecialist}> Назад </ButtonStep>
+          <ButtonStep block onClick={cancelSpecialist}> Назад </ButtonStep>
         }
 
         {/* Кнопка после услуг */}
         {props.orderDetailsStore.OrderDetailsServices.length !== 0 && !props.enrollStore.selectButtonServicesIsClicked &&
-          <ButtonStep onClick={selectedServices}> Далее </ButtonStep>
+          <ButtonStep block onClick={selectedServices}> Далее </ButtonStep>
         }
         {props.enrollStore.selectButtonServicesIsClicked && !props.orderDetailsStore.OrderDetailsDate &&
-          <ButtonStep onClick={cancelServices}> Назад </ButtonStep>
+          <ButtonStep block onClick={cancelServices}> Назад </ButtonStep>
         }
 
         {/* Кнопка после даты */}
         {props.orderDetailsStore.OrderDetailsDate && !props.enrollStore.selectButtonDateIsClicked &&
-          <ButtonStep onClick={selectedDate}> Далее </ButtonStep>
+          <ButtonStep block onClick={selectedDate}> Далее </ButtonStep>
         }
         {props.enrollStore.selectButtonDateIsClicked &&
-          <ButtonStep onClick={cancelDate}> Назад </ButtonStep>
+          <ButtonStep block onClick={cancelDate}> Назад </ButtonStep>
         }
-      </div>
+        {/* </div> */}
 
-      {/* Кнопки очистки и submit */}
-      <Space
-        className="order_check_details_buttons"
-        style={{ width: "100%", justifyContent: "center" }}
-      >
+        {/* Кнопки очистки и submit */}
         {props.orderDetailsStore.OrderDetailsEstablishment &&
           <Button
             className="order_check_details_clear_button"
+            block
             danger
             onClick={onClickClearAll}
           >
@@ -259,6 +261,7 @@ const OrderDetails = observer((props: OrderDetailsProps) => {
         {props.enrollStore.selectButtonDateIsClicked &&
           <Button
             className="order_check_details_submit_button"
+            block
             type="primary"
             onClick={onClickSubmit}
           >

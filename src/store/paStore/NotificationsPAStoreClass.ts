@@ -14,6 +14,10 @@ class NotificationsPAStoreClass {
   isCreateEmployee: boolean = false;
   isConflictEmployee: boolean = false;
   isDeleteEmployee: boolean = false;
+
+  isNotFindSchedule: boolean = false;
+  isCreateSchedule: boolean = false;
+  isConflictSchedule: boolean = false;
   
 
   isSubmitOrder: boolean = false;
@@ -123,6 +127,36 @@ class NotificationsPAStoreClass {
     this.deleteIsDeleteEmployee();
   }
 
+
+  setIsNotFindSchedule(boolean: boolean) {
+    this.isNotFindSchedule = boolean
+  }
+
+  setIsCreateSchedule(boolean: boolean) {
+    this.isCreateSchedule = boolean;
+  }
+
+  setIsConflictSchedule(boolean: boolean) {
+    this.isConflictSchedule= boolean;
+  }
+
+  deleteIsNotFindSchedule() {
+    this.setIsNotFindSchedule(false);
+  }
+
+  deleteIsCreateSchedule() {
+    this.setIsCreateSchedule(false);
+  }
+
+  deleteIsConflictSchedule() {
+    this.setIsConflictSchedule(false);
+  }
+
+  deleteNotificationsSchedule() {
+    this.deleteIsNotFindSchedule();
+    this.deleteIsCreateSchedule();
+    this.deleteIsConflictSchedule();
+  }
 
   setIsSubmitOrder(boolean: boolean) {
     this.isSubmitOrder = boolean;

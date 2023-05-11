@@ -1,6 +1,6 @@
 import { IOrder } from "../../options/model/order.model";
 import { IService } from "../../options/model/service.model";
-import { ISchedule } from "../../options/model/schedule.model";
+import { IScheduleSpecialist } from "../../options/model/schedule.model";
 import { ISpecialist } from "../../options/model/specialist.model";
 import { IClientBase } from "../../options/model/client.model";
 import { IEstablishment } from "../../options/model/establishment.model";
@@ -14,7 +14,7 @@ class OrderDetailsStoreClass {
   OrderDetailsServices: IService[] = [];
   OrderDetailsDate: string | undefined = undefined;
   OrderDetailsTime: string | undefined = undefined;
-  OrderDetailsDateWithTimes: ISchedule | undefined = undefined;
+  OrderDetailsDateWithTimes: IScheduleSpecialist | undefined = undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -49,7 +49,7 @@ class OrderDetailsStoreClass {
     this.OrderDetailsTime = time;
   }
 
-  setOrderDetailsDateWithTimes(schedule: ISchedule | undefined) {
+  setOrderDetailsDateWithTimes(schedule: IScheduleSpecialist | undefined) {
     this.OrderDetailsDateWithTimes = schedule;
   }
 
