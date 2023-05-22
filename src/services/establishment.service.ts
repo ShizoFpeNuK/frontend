@@ -8,6 +8,7 @@ export default class EstablishmentServices {
 
   static async getAll(): Promise<IEstablishment[]> {
     const establishments = await axios.get(this.pathDefault);
+    console.log(establishments.data);
 
     return establishments.data;
   }

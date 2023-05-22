@@ -1,5 +1,5 @@
 import { useForm } from "antd/es/form/Form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
 import { Button, Col, Row, Space } from "antd";
 import { IScheduleControl, IScheduleControlFind, IScheduleControlUpdate } from "../../../options/model/schedule.model";
@@ -14,20 +14,18 @@ import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPASto
 import ScheduleControlPAStoreClass from "../../../store/paStore/ScheduleControlPAStoreClass";
 
 
+const employeeStore = new EmployeePAStoreClass();
+const scheduleStore = new ScheduleControlPAStoreClass();
+const notificationsStore = new NotificationsPAStoreClass();
+
 interface fieldValue {
   date_work: dayjs.Dayjs,
   duration: { start_work: string, end_work: string },
   presence: boolean,
 }
 
-interface ScheduleFindProps {
-  employeeStore: EmployeePAStoreClass,
-  scheduleStore: ScheduleControlPAStoreClass,
-  notificationsStore: NotificationsPAStoreClass,
-}
 
-
-const ScheduleFind = observer(({ scheduleStore, notificationsStore, employeeStore }: ScheduleFindProps) => {
+const ScheduleFind = observer(() => {
   const [valuesForm, setValuesForm] = useState<IScheduleControlFind>();
   const [form] = useForm();
 
@@ -55,6 +53,16 @@ const ScheduleFind = observer(({ scheduleStore, notificationsStore, employeeStor
     const schedule: IScheduleControl[] = await ScheduleServices.getScheduleControlByData(valuesForm!);
     scheduleStore.setScheduleList(schedule);
   }
+
+
+  useEffect(() => {
+    return () => {
+      employeeStore.deleteEmployee();
+      scheduleStore.deleteSchedule();
+      scheduleStore.deleteScheduleList();
+      notificationsStore.deleteNotificationsSchedule();
+    }
+  }, [])
 
 
   return (

@@ -4,13 +4,14 @@ import PAWorker from "./personalAccounts/PAWorker";
 import PAManager from "./personalAccounts/PAManager";
 import loginStore from "../store/LoginStoreClass";
 import PAControl from "./personalAccounts/PAControl";
+import PAAnalyst from "./personalAccounts/PAAnalyst";
 
 
 const PersonalAccount = observer(() => {
 
-  if (!loginStore.isLogin) {
-    return <Navigate to="/auth" />
-  }
+  // if (!loginStore.isLogin) {
+  //   return <Navigate to="/auth" />
+  // }
 
 
   return (
@@ -18,6 +19,7 @@ const PersonalAccount = observer(() => {
       {/* <PAManager /> */}
       {/* <PAWorker workerId={loginStore.user!.user_id} /> */}
       <PAControl />
+      {/* <PAAnalyst /> */}
     </div>
   )
 });

@@ -30,7 +30,7 @@ a {
   color: black;
 }
 
-a::after {
+.notfound_links_home::after {
   content: "";
   display: block;
   height: 1px;
@@ -40,6 +40,6 @@ a::after {
   transition: width 0.5s ease;
 }
 
-a:hover::after {
+.notfound_links_home:hover::after {
   width: 100%;
 }

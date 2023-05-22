@@ -4,6 +4,7 @@ import { makeAutoObservable } from "mobx";
 
 class ClientPAStoreClass {
   client: IClient | undefined = undefined;
+  clients: IClient[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -14,8 +15,16 @@ class ClientPAStoreClass {
     this.client = client;
   }
 
+  setClients(clients: IClient[]) {
+    this.clients = clients;
+  }
+
   deleteClient() {
     this.setClient(undefined);
+  }
+
+  deleteClients() {
+    this.setClients([]);
   }
 };
 

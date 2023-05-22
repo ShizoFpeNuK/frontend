@@ -8,26 +8,6 @@ import ClientAdd from "../../components/PersonalAccount/components/ClientAdd";
 import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
-import EnrollStoreClass from "../../store/enrollStore/EnrollStoreClass";
-import CheckPAStoreClass from "../../store/paStore/CheckPAStoreClass";
-import ClientPAStoreClass from "../../store/paStore/ClientPAStoreClass";
-import ServicesStoreClass from "../../store/ServicesStoreClass";
-import OrderDetailsStoreClass from "../../store/enrollStore/OrderDetailsStoreClass";
-import ScheduleOrderStoreClass from "../../store/enrollStore/ScheduleOrderStoreClass";
-import SpecialistsPAStoreClass from "../../store/paStore/SpecialistsPAStoreClass";
-import EstablishmentPAStoreClass from "../../store/paStore/EstablishmentsPAStoreClass";
-import NotificationsPAStoreClass from "../../store/paStore/NotificationsPAStoreClass";
-
-
-const checkStore = new CheckPAStoreClass();
-const enrollStore = new EnrollStoreClass();
-const clientStore = new ClientPAStoreClass();
-const servicesStore = new ServicesStoreClass();
-const scheduleStore = new ScheduleOrderStoreClass();
-const specialistsStore = new SpecialistsPAStoreClass();
-const orderDetailsStore = new OrderDetailsStoreClass();
-const establishmentStore = new EstablishmentPAStoreClass();
-const notificationsStore = new NotificationsPAStoreClass();
 
 
 const PAManager = observer(() => {
@@ -37,25 +17,7 @@ const PAManager = observer(() => {
   const [isOpenAddOrderForm, setIsOpenAddOrderClientForm] = useState<boolean>(false);
 
 
-  const clearAll = () => {
-    notificationsStore.deleteNotificationsChecks();
-    notificationsStore.deleteNotificationsClient();
-    notificationsStore.deleteIsSubmitOrder();
-
-    checkStore.deleteChecks();
-    clientStore.deleteClient();
-    enrollStore.clearStore();
-    orderDetailsStore.clearStore();
-
-    specialistsStore.deleteSpecialistsList();
-    servicesStore.deleteServicesList();
-    scheduleStore.deleteScheduleList();
-    establishmentStore.deleteEstablishmentsList();
-  }
-
-
   const onClickFoundClientButton = () => {
-    clearAll();
     setIsOpenAddClientForm(false);
     setIsOpenAddOrderClientForm(false);
     setIsOpenFindOrderClientForm(false);
@@ -63,7 +25,6 @@ const PAManager = observer(() => {
   }
 
   const onClickAddClientButton = () => {
-    clearAll();
     setIsOpenFindClientForm(false);
     setIsOpenAddOrderClientForm(false);
     setIsOpenFindOrderClientForm(false);
@@ -71,7 +32,6 @@ const PAManager = observer(() => {
   }
 
   const onClickAddOrderButton = () => {
-    clearAll();
     setIsOpenAddClientForm(false);
     setIsOpenFindClientForm(false);
     setIsOpenFindOrderClientForm(false);
@@ -79,7 +39,6 @@ const PAManager = observer(() => {
   }
 
   const onClickFindOrderButton = () => {
-    clearAll();
     setIsOpenAddClientForm(false);
     setIsOpenFindClientForm(false);
     setIsOpenAddOrderClientForm(false);
@@ -109,32 +68,16 @@ const PAManager = observer(() => {
           span={20}
         >
           {isOpenFindClientForm &&
-            <ClientFind
-              notificationsStore={notificationsStore}
-              clientStore={clientStore}
-            />
+            <ClientFind />
           }
           {isOpenAddClientForm &&
-            <ClientAdd notificationsStore={notificationsStore} />
+            <ClientAdd />
           }
           {isOpenFindOrderForm &&
-            <OrderFind
-              notificationsStore={notificationsStore}
-              clientStore={clientStore}
-              checkStore={checkStore}
-            />
+            <OrderFind />
           }
           {isOpenAddOrderForm &&
-            <OrderAdd
-              enrollStore={enrollStore}
-              clientStore={clientStore}
-              servicesStore={servicesStore}
-              scheduleStore={scheduleStore}
-              specialistsStore={specialistsStore}
-              orderDetailsStore={orderDetailsStore}
-              establishmentStore={establishmentStore}
-              notificationsStore={notificationsStore}
-            />
+            <OrderAdd />
           }
         </Col>
       </Row>

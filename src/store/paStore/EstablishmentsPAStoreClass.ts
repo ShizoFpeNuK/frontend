@@ -1,4 +1,4 @@
-import { IEstablishment } from "../../options/model/establishment.model";
+import { IEstablishment, IEstablishmentBase } from "../../options/model/establishment.model";
 import { makeAutoObservable } from "mobx";
 import EstablishmentServices from "../../services/establishment.service";
 

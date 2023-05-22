@@ -1,8 +1,21 @@
-import { Form, Input } from "antd";
-import { IEmployeeUpdate } from "../../options/model/employee.model"
+import { IService } from "../../options/model/service.model";
 import { FormBaseProps } from "../../options/model/props/formBaseProps.model"
+import { IEmployeeUpdate } from "../../options/model/employee.model"
+import { useEffect, useState } from "react";
+import { Form, Input, Select, SelectProps } from "antd";
+import ServicesStoreClass from "../../store/ServicesStoreClass";
 import FormPeopleUpdateBase from "./FormPeopleUpdateBase"
 
+
+const selectPosts = [
+  { label: "Парикмахер", value: "Парикмахер" },
+  { label: "Уборщик", value: "Уборщик" },
+  { label: "Администратор", value: "Администратор" },
+  { label: "Менеджер", value: "Менеджер" },
+  { label: "Управляющий", value: "Управляющий" },
+  { label: "Аналитик", value: "Аналитик" },
+];
+const servicesStore = new ServicesStoreClass();
 
 interface FormEmployeeUpdateBaseProps extends FormBaseProps {
   employee: IEmployeeUpdate
@@ -10,6 +23,46 @@ interface FormEmployeeUpdateBaseProps extends FormBaseProps {
 
 
 const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
+  const [disabledServices, setDisabledServices] = useState<boolean>(false);
+  const [selectServices, setSelectServices] = useState<SelectProps["options"]>([]);
+
+
+  const getServices = async () => {
+    await servicesStore.getServicesList()
+      .then(() => {
+        const services: SelectProps["options"] = [];
+        servicesStore.ServicesList.forEach((service: IService) => {
+          services.push({
+            label: service.name_service,
+            value: service.service_id,
+          })
+        });
+        setSelectServices(services);
+      })
+  }
+
+  const changePost = (value: string) => {
+    if (value === "Парикмахер") {
+      setDisabledServices(false);
+    } else {
+      setDisabledServices(true);
+      props.form.setFieldValue("services_id", undefined);
+    }
+  }
+
+
+  useEffect(() => {
+    getServices();
+    if (props.employee.post !== "Парикмахер") {
+      setDisabledServices(true);
+    }
+
+    return () => {
+      servicesStore.deleteServicesList();
+    }
+  }, [])
+
+
   return (
     <FormPeopleUpdateBase
       form={props.form}
@@ -72,17 +125,40 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
         <Input.TextArea
           allowClear
           defaultValue={props.employee.brief_info}
-          style={{resize: "none", height: "150px"}}
+          style={{ resize: "none", height: "150px" }}
         />
       </Form.Item>
       <Form.Item
         label="Позиция"
         name="post"
       >
-        <Input
+        <Select
+          // labelInValue
+          options={selectPosts}
           defaultValue={props.employee.post}
+          onChange={changePost}
+          placeholder="Выберите позицию"
         />
       </Form.Item>
+      {selectServices?.length !== 0
+        ? <Form.Item
+          label="Услуги"
+          name="services_id"
+          initialValue={props.employee.services_id ?? undefined}
+        >
+          <Select
+            // labelInValue
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Выберите услуги"
+            options={selectServices}
+            disabled={disabledServices}
+            loading={!selectServices}
+          />
+        </Form.Item>
+        : <p> Загрузка... </p>
+      }
     </FormPeopleUpdateBase>
   )
 };

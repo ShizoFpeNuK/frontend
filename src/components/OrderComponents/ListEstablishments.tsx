@@ -1,5 +1,5 @@
 import '../../style/css/order/listEstablishments.css';
-import { IEstablishment } from "../../options/model/establishment.model";
+import { IEstablishmentBase } from "../../options/model/establishment.model";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Button, Col, List, Row } from "antd"
 import { useEffect, useRef, useState } from "react";
@@ -39,7 +39,7 @@ const ListEstablishments = ({ establishmentStore, orderDetailsStore }: ListEstab
   }
 
 
-  const onClickAddService = async (e: any, establishment: IEstablishment) => {
+  const onClickAddService = async (e: any, establishment: IEstablishmentBase) => {
     const button = e.target.closest(selectorAddButton);
 
     changeChoice();
@@ -120,7 +120,7 @@ const ListEstablishments = ({ establishmentStore, orderDetailsStore }: ListEstab
         </Row>
       }
     >
-      {establishmentStore.EstablishmentsList.map((establishment: IEstablishment) =>
+      {establishmentStore.EstablishmentsList.map((establishment: IEstablishmentBase) =>
         <List.Item
           className="enroll_list_establishments_item"
           key={establishment.establishment_id}

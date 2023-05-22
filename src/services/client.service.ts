@@ -6,6 +6,12 @@ export default class ClientServices {
   static pathDefault: string = "/clients";
 
 
+  static async getAll(): Promise<IClient[]> {
+    const clients = await axios.get(this.pathDefault);
+
+    return clients.data;
+  }
+
   static async getClientByTelephone(clientBase: IClientBase): Promise<IClient> {
     const client = await axios.post(`${this.pathDefault}/info`, clientBase);
 

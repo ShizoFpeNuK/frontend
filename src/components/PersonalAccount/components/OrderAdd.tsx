@@ -1,6 +1,7 @@
 import '../../../style/css/order/order.css';
 import { observer } from "mobx-react";
 import { Col, Row } from "antd";
+import { useEffect } from "react";
 import ListDates from "../../OrderComponents/ListDates";
 import OrderDetails from "../../OrderComponents/OrderDetails";
 import ListServices from "../../OrderComponents/ListServices";
@@ -19,19 +20,31 @@ import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
-interface OrderAddProps {
-  enrollStore: EnrollStoreClass;
-  clientStore: ClientPAStoreClass,
-  servicesStore: ServicesStoreClass,
-  scheduleStore: ScheduleOrderStoreClass,
-  specialistsStore: SpecialistsPAStoreClass,
-  orderDetailsStore: OrderDetailsStoreClass,
-  establishmentStore: EstablishmentPAStoreClass,
-  notificationsStore?: NotificationsPAStoreClass,
-}
+const enrollStore = new EnrollStoreClass();
+const clientStore = new ClientPAStoreClass();
+const servicesStore = new ServicesStoreClass();
+const scheduleStore = new ScheduleOrderStoreClass();
+const specialistsStore = new SpecialistsPAStoreClass();
+const orderDetailsStore = new OrderDetailsStoreClass();
+const establishmentStore = new EstablishmentPAStoreClass();
+const notificationsStore = new NotificationsPAStoreClass();
 
 
-const OrderAdd = observer(({ clientStore, notificationsStore, ...props }: OrderAddProps) => {
+const OrderAdd = observer(() => {
+  useEffect(() => {
+    return () => {
+      enrollStore.clearStore();
+      servicesStore.deleteServicesList();
+      scheduleStore.deleteScheduleList();
+      specialistsStore.deleteSpecialistsList();
+      orderDetailsStore.clearStore();
+      establishmentStore.deleteEstablishmentsList();
+      clientStore.deleteClient();
+      notificationsStore.deleteNotificationsClient();
+      notificationsStore.deleteNotificationsChecks();
+    }
+  }, [])
+  
   return (
     <div className="personal_account_forms_order">
       <h2 className="personal_account_forms_order_title title--border"> Добавить заказ </h2>
@@ -40,7 +53,7 @@ const OrderAdd = observer(({ clientStore, notificationsStore, ...props }: OrderA
         justify={'space-between'}
         wrap={false}
       >
-        {props.enrollStore.isOpenFormFindClient
+        {enrollStore.isOpenFormFindClient
           ? <Col className="order_form" span={6}>
             <FindClientForm
               notificationsStore={notificationsStore}
@@ -48,31 +61,31 @@ const OrderAdd = observer(({ clientStore, notificationsStore, ...props }: OrderA
             />
           </Col>
           : <Col className="order_lists" span={16}>
-            {props.enrollStore.isOpenListEstablishment &&
+            {enrollStore.isOpenListEstablishment &&
               <ListEstablishments
-                establishmentStore={props.establishmentStore}
-                orderDetailsStore={props.orderDetailsStore}
+                establishmentStore={establishmentStore}
+                orderDetailsStore={orderDetailsStore}
               />
             }
-            {props.enrollStore.isOpenListSpecialist &&
+            {enrollStore.isOpenListSpecialist &&
               <ListSpecialists
-                specialistsStore={props.specialistsStore}
-                orderDetailsStore={props.orderDetailsStore}
+                specialistsStore={specialistsStore}
+                orderDetailsStore={orderDetailsStore}
               />
             }
-            {props.enrollStore.isOpenListServices &&
+            {enrollStore.isOpenListServices &&
               <ListServices
-                servicesStore={props.servicesStore}
-                orderDetailsStore={props.orderDetailsStore}
+                servicesStore={servicesStore}
+                orderDetailsStore={orderDetailsStore}
               />
             }
-            {props.enrollStore.isOpenListDate &&
+            {enrollStore.isOpenListDate &&
               <ListDates
-                scheduleStore={props.scheduleStore}
-                orderDetailsStore={props.orderDetailsStore}
+                scheduleStore={scheduleStore}
+                orderDetailsStore={orderDetailsStore}
               />
             }
-            {props.enrollStore.isSubmitOrder &&
+            {enrollStore.isSubmitOrder &&
               <Col className="order_message">
                 Нажмите кнопку <span>Записаться</span> , чтобы создать запись в нашу парикмахерскую.
               </Col>
@@ -83,13 +96,13 @@ const OrderAdd = observer(({ clientStore, notificationsStore, ...props }: OrderA
         <Col className="order_check" span={8}>
           {clientStore.client &&
             <OrderDetails
-              enrollStore={props.enrollStore}
+              enrollStore={enrollStore}
               clientStore={clientStore}
-              servicesStore={props.servicesStore}
-              scheduleStore={props.scheduleStore}
-              specialistsStore={props.specialistsStore}
-              orderDetailsStore={props.orderDetailsStore}
-              establishmentStore={props.establishmentStore}
+              servicesStore={servicesStore}
+              scheduleStore={scheduleStore}
+              specialistsStore={specialistsStore}
+              orderDetailsStore={orderDetailsStore}
+              establishmentStore={establishmentStore}
               notificationsStore={notificationsStore}
             />
           }

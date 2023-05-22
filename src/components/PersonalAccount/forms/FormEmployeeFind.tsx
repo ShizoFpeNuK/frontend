@@ -1,6 +1,6 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
-import { IEmployee, IEmployeeBase } from "../../../options/model/employee.model";
+import { IEmployee, IEmployeeFind } from "../../../options/model/employee.model";
 import EmployeeServices from "../../../services/employee.service";
 import FormPeopleFindBase from "../../Forms/FormPeopleFindBase";
 import EmployeePAStoreClass from "../../../store/paStore/EmployeePAStoreClass";
@@ -22,7 +22,7 @@ const FormEmployeeFind = observer(({ employeeStore, notificationsStore }: FindEm
   }
 
 
-  const onFinish = async (employee: IEmployeeBase) => {
+  const onFinish = async (employee: IEmployeeFind) => {
     employeeStore.deleteEmployee();
     employeeStore.deleteEmployees();
 

@@ -3,13 +3,13 @@ import { IService } from "../../options/model/service.model";
 import { IScheduleSpecialist } from "../../options/model/schedule.model";
 import { ISpecialist } from "../../options/model/specialist.model";
 import { IClientBase } from "../../options/model/client.model";
-import { IEstablishment } from "../../options/model/establishment.model";
+import { IEstablishmentBase } from "../../options/model/establishment.model";
 import { makeAutoObservable } from "mobx";
 
 
 class OrderDetailsStoreClass {
   OrderDetailsClient: IClientBase | undefined = undefined;
-  OrderDetailsEstablishment: IEstablishment | undefined = undefined;
+  OrderDetailsEstablishment: IEstablishmentBase | undefined = undefined;
   OrderDetailsSpecialist: ISpecialist | undefined = undefined;
   OrderDetailsServices: IService[] = [];
   OrderDetailsDate: string | undefined = undefined;
@@ -25,7 +25,7 @@ class OrderDetailsStoreClass {
     this.OrderDetailsServices.push(service);
   }
 
-  setOrderDetailsEstablishment(establishments: IEstablishment | undefined) {
+  setOrderDetailsEstablishment(establishments: IEstablishmentBase | undefined) {
     this.OrderDetailsEstablishment = establishments;
   }
 

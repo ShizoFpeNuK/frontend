@@ -1,11 +1,67 @@
 import { CardForm } from "../../style/typescript/cardForm";
+import { IService } from "../../options/model/service.model";
+import { observer } from "mobx-react";
+import { useEffect, useState } from "react";
 import { FormBaseProps } from "../../options/model/props/formBaseProps.model";
-import { Button, Card, Form, Input, InputNumber } from "antd";
+import { Button, Card, Form, Input, InputNumber, Select, SelectProps } from "antd";
+import ServicesStoreClass from "../../store/ServicesStoreClass";
 
 
-const FormEmployeeAddBase = (props: FormBaseProps) => {
+const selectPosts = [
+  { label: "Парикмахер", value: "Парикмахер" },
+  { label: "Уборщик", value: "Уборщик" },
+  { label: "Администратор", value: "Администратор" },
+  { label: "Менеджер", value: "Менеджер" },
+  { label: "Управляющий", value: "Управляющий" },
+  { label: "Аналитик", value: "Аналитик" },
+];
+const servicesStore = new ServicesStoreClass();
+
+
+const FormEmployeeAddBase = observer((props: FormBaseProps) => {
+  const [disabledServices, setDisabledServices] = useState<boolean>(true);
+  const [selectServices, setSelectServices] = useState<SelectProps["options"]>([]);
+
+
+  const getServices = async () => {
+    await servicesStore.getServicesList()
+      .then(() => {
+        const services: SelectProps["options"] = [];
+        servicesStore.ServicesList.forEach((service: IService) => {
+          services.push({
+            label: service.name_service,
+            value: service.service_id,
+          })
+        });
+        setSelectServices(services);
+      })
+  }
+
+
+  const changePost = (value: string) => {
+    if (value === "Парикмахер") {
+      setDisabledServices(false);
+    } else {
+      setDisabledServices(true);
+      props.form.setFieldValue("services_id", undefined);
+    }
+  }
+
+
+  useEffect(() => {
+    getServices();
+
+    return () => {
+      servicesStore.deleteServicesList();
+    }
+  }, [])
+
+
   return (
-    <Card title="Добавить нового сотрудника" style={CardForm}>
+    <Card
+      title="Добавить нового сотрудника"
+      style={CardForm}
+    >
       <Form layout="vertical"
         form={props.form}
         onFinish={props.onFinish}
@@ -132,7 +188,27 @@ const FormEmployeeAddBase = (props: FormBaseProps) => {
             }
           ]}
         >
-          <Input />
+          <Select
+            // labelInValue
+            options={selectPosts}
+            onChange={changePost}
+            placeholder="Выберите позицию"
+          />
+        </Form.Item>
+        <Form.Item
+          label="Услуги"
+          name="services_id"
+        >
+          <Select
+            // labelInValue
+            mode="multiple"
+            allowClear
+            style={{ width: "100%" }}
+            placeholder="Выберите услуги"
+            options={selectServices}
+            disabled={disabledServices}
+            loading={!selectServices}
+          />
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 0 }}>
@@ -141,7 +217,7 @@ const FormEmployeeAddBase = (props: FormBaseProps) => {
       </Form>
     </Card>
   )
-}
+});
 
 
 export default FormEmployeeAddBase;

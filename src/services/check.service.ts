@@ -8,7 +8,13 @@ export default class CheckServices {
   static pathDefault: string = "/checks";
 
 
-  static async getChecks(clientId: number, check?: ICheckFind): Promise<ICheck[]> {
+  static async getAll(): Promise<ICheck[]> {
+    const checks = await axios.get(this.pathDefault);
+
+    return checks.data;
+  }
+
+  static async getChecksByClientId(clientId: number, check?: ICheckFind): Promise<ICheck[]> {
     const checks = await axios.get(`${this.pathDefault}/clients/${clientId}`, {
       params: {
         paid: check?.paid,

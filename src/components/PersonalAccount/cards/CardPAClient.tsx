@@ -12,7 +12,11 @@ interface ICardPAClientProps {
 
 export const CardPAClient = (props: ICardPAClientProps) => {
   return (
-    <CardPABase title={props.title} info={props.client}>
+    <CardPABase
+      title={props.title}
+      info={props.client}
+      style={{ width: "300px" }}
+    >
       <div className="cardbase_info_inner">
         <h3 className="cardbase_inner_info_title"> Количество визитов </h3>
         <p className="cardbase_inner_info_amount_visits"> {props.client.amount_visits} </p>

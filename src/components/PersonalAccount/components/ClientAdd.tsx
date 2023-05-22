@@ -1,17 +1,22 @@
 import { observer } from "mobx-react";
 import { Col, Row } from "antd";
+import { useEffect } from "react";
 import FormClientAdd from "../forms/FormClientAdd";
 import ResultSuccess from "../../Results/ResultSuccess";
 import ResultErrorConflict from "../../Results/ResultErrorConflict";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
-interface ClientAddProps {
-  notificationsStore?: NotificationsPAStoreClass,
-}
+const notificationsStore = new NotificationsPAStoreClass();
 
 
-const ClientAdd = observer(({ notificationsStore }: ClientAddProps) => {
+const ClientAdd = observer(() => {
+  useEffect(() => {
+    return () => {
+      notificationsStore.deleteNotificationsClient();
+    }
+  }, [])
+
   return (
     <div className="personal_account_forms_client">
       <h2 className="personal_account_forms_client_title title--border"> Добавить клиента </h2>

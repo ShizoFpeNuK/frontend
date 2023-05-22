@@ -1,7 +1,8 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
-import { IClientUpdate } from "../../../options/model/client.model";
-import { Button, Col, Row } from "antd";
+import { useEffect } from "react";
+import { IClient, IClientUpdate } from "../../../options/model/client.model";
+import { Button, Col, Row, Space } from "antd";
 import CardPAClient from "../cards/CardPAClient";
 import ResultSuccess from "../../Results/ResultSuccess";
 import ClientServices from "../../../services/client.service";
@@ -12,16 +13,25 @@ import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
+const clientStore = new ClientPAStoreClass();
+const notificationsStore = new NotificationsPAStoreClass();
+
 interface ClientFindProps {
-  clientStore: ClientPAStoreClass,
-  notificationsStore?: NotificationsPAStoreClass,
   isUpdateClient?: boolean,
 }
 
 
-const ClientFind = observer(({ notificationsStore, clientStore, ...props }: ClientFindProps) => {
+const ClientFind = observer((props: ClientFindProps) => {
   const [form] = useForm();
 
+
+  const handlerGetClients = async () => {
+    notificationsStore?.deleteNotificationsClient();
+    clientStore.deleteClient();
+    clientStore.deleteClients();
+    const clients: IClient[] = await ClientServices.getAll();
+    clientStore.setClients(clients);
+  }
 
   const onFinish = async (values: IClientUpdate) => {
     const correctValue: IClientUpdate = {
@@ -50,6 +60,15 @@ const ClientFind = observer(({ notificationsStore, clientStore, ...props }: Clie
   }
 
 
+  useEffect(() => {
+    return () => {
+      clientStore.deleteClient();
+      clientStore.deleteClients();
+      notificationsStore.deleteNotificationsClient();
+    }
+  }, [])
+
+
   return (
     <div className="client_find">
       <h2 className="client_find_title title--border"> Найти клиента </h2>
@@ -66,13 +85,20 @@ const ClientFind = observer(({ notificationsStore, clientStore, ...props }: Clie
             notificationsStore={notificationsStore}
             clientStore={clientStore}
           />
+          <Button
+            block
+            style={{ marginTop: "10px" }}
+            onClick={handlerGetClients}
+          >
+            Найти всех
+          </Button>
         </Col>
         <Col
           className="client_find_result"
-          span={6}
+          span={18}
           style={{ paddingLeft: "20px" }}
         >
-          {clientStore.client &&
+          {clientStore.client && clientStore.clients.length === 0 &&
             <CardPAClient
               title="Клиент"
               client={clientStore.client}
@@ -94,6 +120,37 @@ const ClientFind = observer(({ notificationsStore, clientStore, ...props }: Clie
               </Button>
             </CardPAClient>
           }
+          <Space
+            wrap={true}
+            direction="horizontal"
+            align="start"
+            size={[20, 20]}
+            style={{ width: "100%" }}
+          >
+            {clientStore.clients.map((client: IClient) =>
+              <CardPAClient
+                title="Сотрудник"
+                client={client}
+              >
+                {props.isUpdateClient &&
+                  <Button
+                    block
+                    // onClick={() => handlerUpdateEmployees(client)}
+                    style={{ marginBottom: "10px" }}
+                  >
+                    Изменить
+                  </Button>
+                }
+                <Button
+                  block
+                  // onClick={() => handlerDeleteEmployees(client)}
+                >
+                  Удалить
+                </Button>
+              </CardPAClient>
+            )}
+          </Space>
+
           {notificationsStore?.isNotFindClient &&
             <ResultErrorNotCorrectData title="Клиент не был найден" />
           }

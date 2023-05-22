@@ -1,5 +1,6 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
+import { useEffect } from "react";
 import { IEmployee, IEmployeeUpdate } from "../../../options/model/employee.model";
 import { Button, Col, Row, Space } from "antd";
 import ResultSuccess from "../../Results/ResultSuccess";
@@ -12,9 +13,10 @@ import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPASto
 import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
 
 
+const employeeStore = new EmployeePAStoreClass();
+const notificationsStore = new NotificationsPAStoreClass();
+
 interface ClientFindProps {
-  employeeStore: EmployeePAStoreClass,
-  notificationsStore?: NotificationsPAStoreClass,
   isUpdateEmployee?: boolean,
 }
 
@@ -31,11 +33,12 @@ const getCorrectValue = (values: IEmployeeUpdate, employeeStore: EmployeePAStore
     "brief_info": values["brief_info"]?.length ? values["brief_info"] :
       values["brief_info"] !== undefined ? undefined : employeeStore.employee!.brief_info,
     "post": values["post"]?.length ? values["post"] : employeeStore.employee!.post,
+    "services_id": values["services_id"]?.length ? values["services_id"] : employeeStore.employee?.services_id,
   }
 }
 
 
-const EmployeeFind = observer(({ employeeStore, notificationsStore, ...props }: ClientFindProps) => {
+const EmployeeFind = observer((props: ClientFindProps) => {
   const [form] = useForm();
 
 
@@ -92,6 +95,15 @@ const EmployeeFind = observer(({ employeeStore, notificationsStore, ...props }: 
         employeeStore.setEmployees(employees);
       })
   }
+
+  
+  useEffect(() => {
+    return () => {
+      employeeStore.deleteEmployee();
+      employeeStore.deleteEmployees();
+      notificationsStore.deleteNotificationsEmployee();
+    }
+  }, [])
 
 
   return (
@@ -156,6 +168,7 @@ const EmployeeFind = observer(({ employeeStore, notificationsStore, ...props }: 
               <CardPAEmployee
                 title="Сотрудник"
                 employee={employee}
+                key={employee.employee_id}
               >
                 {props.isUpdateEmployee &&
                   <Button

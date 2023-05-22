@@ -1,25 +1,6 @@
 
 
 export interface IEmployeeBase {
-  employee_id: number
-  full_name: string,
-  telephone: string,
-}
-
-export interface IEmployeeCreate extends IEmployeeBase {
-  email: string,
-  experience: number,
-  salary: number,
-  brief_info: string,
-  age: number,
-  post: string,
-}
-
-export interface IEmployee extends IEmployeeCreate {
-  rating: number,
-}
-
-export interface IEmployeeUpdate {
   full_name: string,
   telephone: string,
   email: string | undefined,
@@ -28,4 +9,25 @@ export interface IEmployeeUpdate {
   brief_info: string | undefined,
   age: number,
   post: string,
+}
+
+export interface IEmployee extends IEmployeeBase {
+  employee_id: number,
+  rating: number,
+  services_id: number[],
+}
+
+export interface IEmployeeFind {
+  employee_id: number,
+  full_name: string,
+  telephone: string,
+}
+
+export interface IEmployeeCreate extends IEmployeeBase {
+  employee_id: number,
+  services_id: number[],
+}
+
+export interface IEmployeeUpdate extends IEmployeeBase {
+  services_id: number[] | undefined,
 }

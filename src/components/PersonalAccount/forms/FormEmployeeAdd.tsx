@@ -17,7 +17,6 @@ const FormEmployeeAdd = ({ notificationsStore }: FormEmployeeAddProps) => {
 
   const onFinish = async (employee: IEmployeeCreate) => {
     notificationsStore?.deleteNotificationsEmployee();
-    console.log(employee);
 
     await EmployeeServices.createEmployee(employee)
       .then(() => {

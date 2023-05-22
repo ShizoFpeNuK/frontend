@@ -1,7 +1,7 @@
 import { ICheck } from "../../../options/model/check.model";
 import { IClient } from "../../../options/model/client.model";
 import { observer } from "mobx-react";
-import { Col, Row, Space } from "antd";
+import { Button, Col, Row, Space } from "antd";
 import { useEffect, useState } from "react";
 import CardCheck from "../cards/CardCheck";
 import CheckServices from "../../../services/check.service";
@@ -15,20 +15,25 @@ import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
-interface OrderFindProps {
-  checkStore: CheckPAStoreClass,
-  clientStore: ClientPAStoreClass,
-  notificationsStore?: NotificationsPAStoreClass,
-}
+const checkStore = new CheckPAStoreClass();
+const clientStore = new ClientPAStoreClass();
+const notificationsStore = new NotificationsPAStoreClass();
 
 
-const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: OrderFindProps) => {
+const OrderFind = observer(() => {
   const [isPaidCheck, setIsPaidCheck] = useState<boolean>(false);
   const [isDeleteCheck, setIsDeleteCheck] = useState<boolean>(false);
 
 
+  const handlerGetOrders = async () => {
+    // notificationsStore?.deleteNotificationsClient();
+    checkStore.deleteChecks();
+    const checks: ICheck[] = await CheckServices.getAll();
+    checkStore.setChecks(checks);
+  }
+
   const getChecksAfterDelete = () => {
-    CheckServices.getChecks(clientStore.client!.client_id)
+    CheckServices.getChecksByClientId(clientStore.client!.client_id)
       .then((checks: ICheck[]) => {
         if (!checks.length) {
           notificationsStore?.setIsEmptyChecks(true);
@@ -44,6 +49,16 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
   const handlerPaidCheck = (boolean: boolean) => {
     setIsPaidCheck(boolean);
   }
+
+
+  useEffect(() => {
+    return () => {
+      checkStore.deleteChecks();
+      clientStore.deleteClient();
+      notificationsStore.deleteNotificationsClient();
+      notificationsStore.deleteNotificationsChecks();
+    }
+  }, [])
 
 
   useEffect(() => {
@@ -72,7 +87,7 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
         <Col
           className="personal_account_order_form"
           span={6}
-          style={{paddingRight: "20px"}}
+          style={{ paddingRight: "20px" }}
         >
           {!clientStore.client
             ? <FormClientFind
@@ -85,6 +100,13 @@ const OrderFind = observer(({ clientStore, notificationsStore, checkStore }: Ord
               notificationsStore={notificationsStore}
             />
           }
+          <Button
+            block
+            style={{ marginTop: "10px" }}
+            onClick={handlerGetOrders}
+          >
+            Найти все
+          </Button>
         </Col>
         <Col className="personal_account_order_result" span={18}>
           <Space

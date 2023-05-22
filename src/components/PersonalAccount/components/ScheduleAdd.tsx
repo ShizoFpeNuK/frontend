@@ -4,14 +4,19 @@ import ResultSuccess from "../../Results/ResultSuccess";
 import FormScheduleAdd from "../forms/FormScheduleAdd";
 import ResultErrorConflict from "../../Results/ResultErrorConflict";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
+import { useEffect } from "react";
 
 
-interface ScheduleAddProps {
-  notificationsStore?: NotificationsPAStoreClass,
-}
+const notificationsStore = new NotificationsPAStoreClass();
 
 
-const ScheduleAdd = observer(({ notificationsStore }: ScheduleAddProps) => {
+const ScheduleAdd = observer(() => {
+  useEffect(() => {
+    return () => {
+      notificationsStore.deleteNotificationsSchedule();
+    }
+  }, [])
+
   return (
     <div className="schedule_add">
       <h2 className="schedule_add_title title--border"> Добавить расписание </h2>

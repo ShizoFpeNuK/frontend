@@ -48,7 +48,7 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
     notificationsStore?.deleteNotificationsChecks();
 
 
-    await CheckServices.getChecks(clientStore.client!.client_id, correctValues)
+    await CheckServices.getChecksByClientId(clientStore.client!.client_id, correctValues)
       .then((checks: ICheck[]) => {
         if (checks.length) {
           checkStore.setChecks(checks);
