@@ -101,25 +101,32 @@ const PAControl = () => {
           span={20}
         >
           {isOpenFindClientForm &&
-            <ClientFind isUpdateClient={true} />
+            <ClientFind
+              isDeleteClient={true}
+              isFindAllButton={true}
+              isUpdateClient={true}
+            />
           }
           {isOpenAddClientForm &&
             <ClientAdd />
           }
           {isOpenFindEmployeeForm &&
-            <EmployeeFind isUpdateEmployee={true} />
+            <EmployeeFind
+              isDeleteClient={true}
+              isUpdateEmployee={true}
+            />
           }
           {isOpenAddEmployeeForm &&
             <EmployeeAdd />
           }
           {isOpenFindScheduleForm &&
-            <ScheduleFind />
+            <ScheduleFind isChangeButton={true} />
           }
           {isOpenAddScheduleForm &&
             <ScheduleAdd />
           }
           {isOpenFindOrderForm &&
-            <OrderFind />
+            <OrderFind isFindAllButton={true} />
           }
           {isOpenAddOrderForm &&
             <OrderAdd />

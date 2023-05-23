@@ -1,4 +1,4 @@
-import { IEmployee, IEmployeeCreate, IEmployeeFind, IEmployeeUpdate } from "../options/model/employee.model";
+import { IEmployee, IEmployeeCreate, IEmployeeUpdate } from "../options/model/employee.model";
 import axios from "axios";
 
 
@@ -12,8 +12,12 @@ export default class EmployeeServices {
     return employees.data;
   }
 
-  static async getEmployeeByTelephone(employeeBase: IEmployeeFind): Promise<IEmployee> {
-    const employee = await axios.post(`${this.pathDefault}/info`, employeeBase);
+  static async getEmployeeByTelephone(telephone: string): Promise<IEmployee> {
+    const employee = await axios.get(`${this.pathDefault}/info`, {
+      params: {
+        telephone: telephone,
+      }
+    });
 
     return employee.data;
   }

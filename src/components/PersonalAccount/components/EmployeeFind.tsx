@@ -1,4 +1,5 @@
 import { useForm } from "antd/es/form/Form";
+import { IService } from "../../../options/model/service.model";
 import { observer } from "mobx-react";
 import { useEffect } from "react";
 import { IEmployee, IEmployeeUpdate } from "../../../options/model/employee.model";
@@ -7,17 +8,21 @@ import ResultSuccess from "../../Results/ResultSuccess";
 import CardPAEmployee from "../cards/CardPAEmployee";
 import FormEmployeeFind from "../forms/FormEmployeeFind";
 import EmployeeServices from "../../../services/employee.service";
+import ServicesStoreClass from "../../../store/ServicesStoreClass";
 import ModalUpdateEmployee from "../modals/ModalUpdateEmployee";
 import EmployeePAStoreClass from "../../../store/paStore/EmployeePAStoreClass";
+import ModalEmployeeDetails from "../modals/ModalEmployeeDetails";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
 
 
+const servicesStore = new ServicesStoreClass();
 const employeeStore = new EmployeePAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
 interface ClientFindProps {
   isUpdateEmployee?: boolean,
+  isDeleteClient?: boolean,
 }
 
 const getCorrectValue = (values: IEmployeeUpdate, employeeStore: EmployeePAStoreClass) => {
@@ -96,8 +101,27 @@ const EmployeeFind = observer((props: ClientFindProps) => {
       })
   }
 
-  
+  const showModalDetails = async (
+    brief_info: string | undefined,
+    services_id: number[] | undefined,
+    rating: number | undefined,
+  ) => {
+    const services: string[] = [];
+    servicesStore.ServicesList.forEach((service: IService) => {
+      services_id?.forEach((service_id: number) => {
+        if (service.service_id === service_id) {
+          services.push(service.name_service);
+        }
+      })
+    })
+
+    ModalEmployeeDetails(brief_info, services, rating);
+  };
+
+
   useEffect(() => {
+    servicesStore.getServicesList();
+
     return () => {
       employeeStore.deleteEmployee();
       employeeStore.deleteEmployees();
@@ -140,6 +164,17 @@ const EmployeeFind = observer((props: ClientFindProps) => {
               title="Сотрудник"
               employee={employeeStore.employee}
             >
+              <Button
+                block
+                onClick={() => showModalDetails(
+                  employeeStore.employee?.brief_info,
+                  employeeStore.employee?.services_id,
+                  employeeStore.employee?.rating,
+                  )}
+                style={{ marginBottom: "10px" }}
+              >
+                Подробнее
+              </Button>
               {props.isUpdateEmployee &&
                 <Button
                   block
@@ -149,12 +184,14 @@ const EmployeeFind = observer((props: ClientFindProps) => {
                   Изменить
                 </Button>
               }
-              <Button
-                block
-                onClick={() => handlerDeleteEmployee(employeeStore.employee!)}
-              >
-                Удалить
-              </Button>
+              {props.isDeleteClient &&
+                <Button
+                  block
+                  onClick={() => handlerDeleteEmployee(employeeStore.employee!)}
+                >
+                  Удалить
+                </Button>
+              }
             </CardPAEmployee>
           }
           <Space
@@ -170,6 +207,17 @@ const EmployeeFind = observer((props: ClientFindProps) => {
                 employee={employee}
                 key={employee.employee_id}
               >
+                <Button
+                  block
+                  onClick={() => showModalDetails(
+                    employee.brief_info, 
+                    employee.services_id,
+                    employee.rating
+                    )}
+                  style={{ marginBottom: "10px" }}
+                >
+                  Подробнее
+                </Button>
                 {props.isUpdateEmployee &&
                   <Button
                     block
@@ -179,12 +227,14 @@ const EmployeeFind = observer((props: ClientFindProps) => {
                     Изменить
                   </Button>
                 }
-                <Button
-                  block
-                  onClick={() => handlerDeleteEmployees(employee)}
-                >
-                  Удалить
-                </Button>
+                {props.isDeleteClient &&
+                  <Button
+                    block
+                    onClick={() => handlerDeleteEmployees(employee)}
+                  >
+                    Удалить
+                  </Button>
+                }
               </CardPAEmployee>
             )}
           </Space>

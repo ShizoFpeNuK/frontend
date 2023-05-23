@@ -1,6 +1,6 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
-import { IEmployee, IEmployeeFind } from "../../../options/model/employee.model";
+import { IEmployee } from "../../../options/model/employee.model";
 import EmployeeServices from "../../../services/employee.service";
 import FormPeopleFindBase from "../../Forms/FormPeopleFindBase";
 import EmployeePAStoreClass from "../../../store/paStore/EmployeePAStoreClass";
@@ -10,6 +10,10 @@ import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPASto
 interface FindEmployeeFormProps {
   employeeStore: EmployeePAStoreClass,
   notificationsStore?: NotificationsPAStoreClass,
+}
+
+interface FormValue {
+  telephone: string,
 }
 
 
@@ -22,7 +26,7 @@ const FormEmployeeFind = observer(({ employeeStore, notificationsStore }: FindEm
   }
 
 
-  const onFinish = async (employee: IEmployeeFind) => {
+  const onFinish = async (value: FormValue) => {
     employeeStore.deleteEmployee();
     employeeStore.deleteEmployees();
 
@@ -30,15 +34,16 @@ const FormEmployeeFind = observer(({ employeeStore, notificationsStore }: FindEm
       clearNotifications();
     }
 
-    await EmployeeServices.getEmployeeByTelephone(employee)
+    await EmployeeServices.getEmployeeByTelephone(value.telephone)
       .then((employee: IEmployee) => {
         employeeStore.setEmployee(employee);
         form.resetFields();
       })
-      .catch(() => {
+      .catch((err) => {
         if (notificationsStore) {
           notificationsStore.setIsNotFindEmployee(true);
         }
+        console.log(err);
       })
   }
 

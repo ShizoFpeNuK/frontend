@@ -13,22 +13,6 @@ const FormPeopleFindBase = (props: FormBaseProps) => {
         onFinishFailed={props.onFinishFailed}
       >
         <Form.Item
-          label="ФИО клиента"
-          name="full_name"
-          rules={[
-            {
-              required: true,
-              message: "Это поле является обязательным!",
-            },
-            {
-              pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
-              message: "Только русские буквы, пробелы и дефисы"
-            }
-          ]}
-        >
-          <Input defaultValue="Дьякова Ольга Александровна" placeholder="Например, Иванов Иван Иваныч" />
-        </Form.Item>
-        <Form.Item
           label="Номер телефона"
           name="telephone"
           rules={[

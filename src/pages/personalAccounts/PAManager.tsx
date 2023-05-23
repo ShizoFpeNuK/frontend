@@ -51,7 +51,7 @@ const PAManager = observer(() => {
       <h1 className="personal_account_manager_title title--border"> Личный кабинет </h1>
       <Row className="personal_account_manager_row">
         <Col className="personal_account_manager_info" span={4}>
-          <CardPAUser />
+          {/* <CardPAUser /> */}
           <Space
             className="personal_account_manager_control_buttons"
             direction="vertical"
@@ -68,7 +68,7 @@ const PAManager = observer(() => {
           span={20}
         >
           {isOpenFindClientForm &&
-            <ClientFind />
+            <ClientFind isDeleteClient={true} />
           }
           {isOpenAddClientForm &&
             <ClientAdd />

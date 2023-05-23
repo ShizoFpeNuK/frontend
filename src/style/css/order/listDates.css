@@ -3,11 +3,20 @@
   font-weight: 600;
 }
 
+.enroll_list_dates_item {
+  margin-bottom: 10px;
+}
+
+.enroll_list_dates_item:last-child {
+  margin-bottom: 0;
+}
+
 .enroll_list_dates_items {
   text-align: left;
   margin-bottom: 15px;
   padding-bottom: 15px;
   border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+  margin-bottom: 10px;
 }
 
 .enroll_list_dates_item_buttons {

@@ -1,4 +1,4 @@
-import { IClient, IClientCreate, IClientBase, IClientUpdate } from "../options/model/client.model";
+import { IClient, IClientCreate, IClientUpdate } from "../options/model/client.model";
 import axios from "axios";
 
 
@@ -12,8 +12,12 @@ export default class ClientServices {
     return clients.data;
   }
 
-  static async getClientByTelephone(clientBase: IClientBase): Promise<IClient> {
-    const client = await axios.post(`${this.pathDefault}/info`, clientBase);
+  static async getClientByTelephone(telephone: string): Promise<IClient> {
+    const client = await axios.get(`${this.pathDefault}/info`, {
+      params: {
+        telephone: telephone,
+      }
+    });
 
     return client.data;
   }

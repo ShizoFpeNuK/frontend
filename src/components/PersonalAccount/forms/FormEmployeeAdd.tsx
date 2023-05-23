@@ -18,7 +18,12 @@ const FormEmployeeAdd = ({ notificationsStore }: FormEmployeeAddProps) => {
   const onFinish = async (employee: IEmployeeCreate) => {
     notificationsStore?.deleteNotificationsEmployee();
 
-    await EmployeeServices.createEmployee(employee)
+    const correctValue: IEmployeeCreate = {
+      ...employee,
+      "email": employee["email"]?.length ? employee["email"] : undefined,
+    }
+
+    await EmployeeServices.createEmployee(correctValue)
       .then(() => {
         notificationsStore?.setIsCreateEmployee(true);
         form.resetFields();

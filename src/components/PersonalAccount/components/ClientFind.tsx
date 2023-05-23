@@ -17,7 +17,9 @@ const clientStore = new ClientPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
 interface ClientFindProps {
+  isFindAllButton?: boolean,
   isUpdateClient?: boolean,
+  isDeleteClient?: boolean,
 }
 
 
@@ -85,13 +87,15 @@ const ClientFind = observer((props: ClientFindProps) => {
             notificationsStore={notificationsStore}
             clientStore={clientStore}
           />
-          <Button
-            block
-            style={{ marginTop: "10px" }}
-            onClick={handlerGetClients}
-          >
-            Найти всех
-          </Button>
+          {props.isFindAllButton &&
+            <Button
+              block
+              style={{ marginTop: "10px" }}
+              onClick={handlerGetClients}
+            >
+              Найти всех
+            </Button>
+          }
         </Col>
         <Col
           className="client_find_result"
@@ -112,12 +116,14 @@ const ClientFind = observer((props: ClientFindProps) => {
                   Изменить
                 </Button>
               }
-              <Button
-                block
-                onClick={handlerDeleteClient}
-              >
-                Удалить
-              </Button>
+              {props.isDeleteClient &&
+                <Button
+                  block
+                  onClick={handlerDeleteClient}
+                >
+                  Удалить
+                </Button>
+              }
             </CardPAClient>
           }
           <Space
@@ -129,25 +135,9 @@ const ClientFind = observer((props: ClientFindProps) => {
           >
             {clientStore.clients.map((client: IClient) =>
               <CardPAClient
-                title="Сотрудник"
+                title="Клиент"
                 client={client}
-              >
-                {props.isUpdateClient &&
-                  <Button
-                    block
-                    // onClick={() => handlerUpdateEmployees(client)}
-                    style={{ marginBottom: "10px" }}
-                  >
-                    Изменить
-                  </Button>
-                }
-                <Button
-                  block
-                  // onClick={() => handlerDeleteEmployees(client)}
-                >
-                  Удалить
-                </Button>
-              </CardPAClient>
+              />
             )}
           </Space>
 

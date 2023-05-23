@@ -59,8 +59,7 @@ const FormOrderFind = ({ clientStore, notificationsStore, checkStore }: FormFind
       })
       .catch(() => {
         notificationsStore?.setIsNotFindChecks(true);
-      }
-      )
+      })
   }
 
   const onFinishFailed = (errorInfo: any) => {

@@ -17,12 +17,6 @@ export interface IEmployee extends IEmployeeBase {
   services_id: number[],
 }
 
-export interface IEmployeeFind {
-  employee_id: number,
-  full_name: string,
-  telephone: string,
-}
-
 export interface IEmployeeCreate extends IEmployeeBase {
   employee_id: number,
   services_id: number[],

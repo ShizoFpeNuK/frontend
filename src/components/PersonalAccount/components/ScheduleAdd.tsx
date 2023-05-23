@@ -1,10 +1,10 @@
 import { observer } from "mobx-react";
 import { Col, Row } from "antd";
+import { useEffect } from "react";
 import ResultSuccess from "../../Results/ResultSuccess";
 import FormScheduleAdd from "../forms/FormScheduleAdd";
 import ResultErrorConflict from "../../Results/ResultErrorConflict";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
-import { useEffect } from "react";
 
 
 const notificationsStore = new NotificationsPAStoreClass();
@@ -33,10 +33,10 @@ const ScheduleAdd = observer(() => {
         </Col>
         <Col className="schedule_add_result" span={6}>
           {notificationsStore?.isCreateSchedule &&
-            <ResultSuccess title="Сотрудник успешно создан!" />
+            <ResultSuccess title="Расписание успешно создано!" />
           }
           {notificationsStore?.isConflictSchedule &&
-            <ResultErrorConflict title="Такой сотрудник уже создан!" />
+            <ResultErrorConflict title="Расписание уже сделано на этот день!" />
           }
         </Col>
       </Row>

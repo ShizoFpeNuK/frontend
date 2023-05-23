@@ -18,6 +18,10 @@ const employeeStore = new EmployeePAStoreClass();
 const scheduleStore = new ScheduleControlPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
+interface ScheduleFindProps {
+  isChangeButton?: boolean,
+}
+
 interface fieldValue {
   date_work: dayjs.Dayjs,
   duration: { start_work: string, end_work: string },
@@ -25,7 +29,7 @@ interface fieldValue {
 }
 
 
-const ScheduleFind = observer(() => {
+const ScheduleFind = observer((props: ScheduleFindProps) => {
   const [valuesForm, setValuesForm] = useState<IScheduleControlFind>();
   const [form] = useForm();
 
@@ -101,19 +105,23 @@ const ScheduleFind = observer(() => {
                 schedule={schedule}
                 key={schedule.schedule_id}
               >
-                <Button
-                  block
-                  onClick={() => handlerUpdateSchedule(schedule)}
-                  style={{ marginBottom: "10px", marginTop: "20px" }}
-                >
-                  Изменить
-                </Button>
-                <Button
-                  block
-                  onClick={() => handlerDeleteSchedule(schedule.schedule_id)}
-                >
-                  Удалить
-                </Button>
+                {props.isChangeButton &&
+                  <>
+                    <Button
+                      block
+                      onClick={() => handlerUpdateSchedule(schedule)}
+                      style={{ marginBottom: "10px", marginTop: "20px" }}
+                    >
+                      Изменить
+                    </Button>
+                    <Button
+                      block
+                      onClick={() => handlerDeleteSchedule(schedule.schedule_id)}
+                    >
+                      Удалить
+                    </Button>
+                  </>
+                }
               </CardScheduleControl>
             )}
           </Space>

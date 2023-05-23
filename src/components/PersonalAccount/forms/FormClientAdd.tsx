@@ -18,7 +18,12 @@ const FormClientAdd = ({ notificationsStore }: FormAddClientProps) => {
   const onFinish = async (client: IClientCreate) => {
     notificationsStore?.deleteNotificationsClient();
 
-    await ClientServices.createClient(client)
+    const correctValue: IClientCreate = {
+      ...client,
+      "email": client["email"]?.length ? client["email"] : undefined,
+    }
+
+    await ClientServices.createClient(correctValue)
       .then(() => {
         notificationsStore?.setIsCreateClient(true);
         form.resetFields();

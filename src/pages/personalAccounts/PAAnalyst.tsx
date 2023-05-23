@@ -2,6 +2,7 @@ import '../../style/css/personal_account/paControl.css';
 import { useState } from "react";
 import { Button, Col, Row, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import Report from "../../components/PersonalAccount/components/Report";
 import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import ServiceFind from "../../components/PersonalAccount/components/ServiceFind";
@@ -17,9 +18,11 @@ const PAAnalyst = () => {
   const [isOpenFindOrderForm, setIsOpenFindOrderClientForm] = useState<boolean>(false);
   const [isOpenFindEstablishmentWindow, setIsOpenFindEstablishmentWindow] = useState<boolean>(false);
   const [isOpenFindServiceWindow, setIsOpenFindServiceWindow] = useState<boolean>(false);
+  const [isOpenReportWindow, setIsOpenReportWindow] = useState<boolean>(false);
 
 
   const closeAllWindow = () => {
+    setIsOpenReportWindow(false);
     setIsOpenFindClientForm(false);
     setIsOpenFindEmployeeForm(false);
     setIsOpenFindScheduleForm(false);
@@ -58,6 +61,11 @@ const PAAnalyst = () => {
     setIsOpenFindOrderClientForm(!isOpenFindOrderForm);
   }
 
+  const onClickReportButton = () => {
+    closeAllWindow();
+    setIsOpenReportWindow(!isOpenReportWindow);
+  }
+
 
   return (
     <div className="personal_account_control_page">
@@ -75,6 +83,7 @@ const PAAnalyst = () => {
             <Button block onClick={onClickFoundEstablishmentButton}> <SearchOutlined /> Посмотреть заведения </Button>
             <Button block onClick={onClickFoundScheduleButton}> <SearchOutlined /> Посмотреть расписание </Button>
             <Button block onClick={onClickFindOrderButton}> <SearchOutlined /> Найти заказ </Button>
+            <Button block onClick={onClickReportButton}> <SearchOutlined /> Получить отчёт </Button>
           </Space>
         </Col>
 
@@ -83,7 +92,7 @@ const PAAnalyst = () => {
           span={20}
         >
           {isOpenFindClientForm &&
-            <ClientFind />
+            <ClientFind isFindAllButton={true} />
           }
           {isOpenFindEmployeeForm &&
             <EmployeeFind />
@@ -98,7 +107,10 @@ const PAAnalyst = () => {
             <ScheduleFind />
           }
           {isOpenFindOrderForm &&
-            <OrderFind />
+            <OrderFind isFindAllButton={true} />
+          }
+          {isOpenReportWindow &&
+            <Report />
           }
         </Col>
       </Row>

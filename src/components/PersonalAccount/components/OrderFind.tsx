@@ -19,17 +19,33 @@ const checkStore = new CheckPAStoreClass();
 const clientStore = new ClientPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
+interface OrderFindProps {
+  isFindAllButton?: boolean,
+}
 
-const OrderFind = observer(() => {
+
+const OrderFind = observer((props: OrderFindProps) => {
   const [isPaidCheck, setIsPaidCheck] = useState<boolean>(false);
   const [isDeleteCheck, setIsDeleteCheck] = useState<boolean>(false);
 
 
   const handlerGetOrders = async () => {
-    // notificationsStore?.deleteNotificationsClient();
+    notificationsStore?.deleteNotificationsClient();
+    notificationsStore?.deleteNotificationsChecks();
+    clientStore.deleteClient();
     checkStore.deleteChecks();
-    const checks: ICheck[] = await CheckServices.getAll();
-    checkStore.setChecks(checks);
+
+    await CheckServices.getAll()
+      .then((checks: ICheck[]) => {
+        if (checks.length) {
+          checkStore.setChecks(checks);
+        } else {
+          notificationsStore?.setIsEmptyChecks(true);
+        }
+      })
+      .catch(() => {
+        notificationsStore?.setIsNotFindChecks(true);
+      })
   }
 
   const getChecksAfterDelete = () => {
@@ -100,13 +116,15 @@ const OrderFind = observer(() => {
               notificationsStore={notificationsStore}
             />
           }
-          <Button
-            block
-            style={{ marginTop: "10px" }}
-            onClick={handlerGetOrders}
-          >
-            Найти все
-          </Button>
+          {props.isFindAllButton &&
+            <Button
+              block
+              style={{ marginTop: "10px" }}
+              onClick={handlerGetOrders}
+            >
+              Найти все
+            </Button>
+          }
         </Col>
         <Col className="personal_account_order_result" span={18}>
           <Space
@@ -116,16 +134,25 @@ const OrderFind = observer(() => {
             size={[20, 20]}
             style={{ width: "100%" }}
           >
-            {checkStore.checks.map((check: ICheck) =>
-              <CardCheck
-                check={check}
-                bonus={clientStore.client!.bonus}
-                clientId={clientStore.client!.client_id}
-                key={check.check_id}
-                setDeleteCheckFlag={handlerDeleteCheck}
-                setPaidCheckFlag={handlerPaidCheck}
-              />
-            )}
+            {clientStore.client
+              ? checkStore.checks.map((check: ICheck) =>
+                <CardCheck
+                  check={check}
+                  bonus={clientStore.client!.bonus}
+                  clientId={clientStore.client!.client_id}
+                  key={check.check_id}
+                  isChangeChecks={true}
+                  setDeleteCheckFlag={handlerDeleteCheck}
+                  setPaidCheckFlag={handlerPaidCheck}
+                />
+              )
+              : checkStore.checks.map((check: ICheck) =>
+                <CardCheck
+                  check={check}
+                  key={check.check_id}
+                  setDeleteCheckFlag={handlerDeleteCheck}
+                />
+              )}
           </Space>
 
 

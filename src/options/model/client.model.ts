@@ -7,7 +7,7 @@ export interface IClientBase {
 }
 
 export interface IClientCreate extends IClientBase {
-  email: string,
+  email: string | undefined,
 }
 
 export interface IClient extends IClientCreate {

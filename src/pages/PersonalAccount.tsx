@@ -18,8 +18,8 @@ const PersonalAccount = observer(() => {
     <div className="personal_account_page">
       {/* <PAManager /> */}
       {/* <PAWorker workerId={loginStore.user!.user_id} /> */}
-      <PAControl />
-      {/* <PAAnalyst /> */}
+      {/* <PAControl /> */}
+      <PAAnalyst />
     </div>
   )
 });

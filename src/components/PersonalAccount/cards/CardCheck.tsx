@@ -11,10 +11,11 @@ import ModalCheckDetails from "../modals/ModalCheckDetails";
 
 interface CardCheckProps {
   check: ICheck,
-  bonus: number,
-  clientId: number,
+  bonus?: number,
+  clientId?: number,
+  isChangeChecks?: boolean,
   setDeleteCheckFlag: (boolean: boolean) => void,
-  setPaidCheckFlag: (boolean: boolean) => void,
+  setPaidCheckFlag?: (boolean: boolean) => void,
 }
 
 interface IPaid {
@@ -25,6 +26,19 @@ interface IPaid {
 
 const CardCheck = (props: CardCheckProps) => {
   const [form] = useForm();
+
+  const ChangeButton = (isChangeChecks: boolean) => {
+    if (isChangeChecks) {
+      return (
+        <>
+          <Button block onClick={onClickDeleteButton}> Удалить </Button>
+          {!props.check.paid &&
+            <Button block onClick={showModalPaid}> Оплатить </Button>
+          }
+        </>
+      )
+    }
+  }
 
 
   const showModalDetails = async () => {
@@ -40,11 +54,13 @@ const CardCheck = (props: CardCheckProps) => {
       values.paid_bonus,
       props.check.check_id
     );
-    props.setPaidCheckFlag(true);
+    if (props.setPaidCheckFlag) {
+      props.setPaidCheckFlag(true);
+    }
   }
 
   const showModalPaid = () => {
-    ModalCheckPaid(form, props.check.check_id, props.bonus, onFinish)
+    ModalCheckPaid(form, props.check.check_id, props.bonus!, onFinish)
   };
 
 
@@ -88,17 +104,15 @@ const CardCheck = (props: CardCheckProps) => {
           <p className="client_check_card_totalcost"> {props.check.total_cost} руб. </p>
         </div>
       </div>
+
       <Space
         className="client_check_card_details_buttons"
         direction="vertical"
         style={{ width: "300px" }}
-        // style={{ width: "100%" }}
+      // style={{ width: "100%" }}
       >
         <Button block onClick={showModalDetails}> Подробнее </Button>
-        <Button block onClick={onClickDeleteButton}> Удалить </Button>
-        {!props.check.paid &&
-          <Button block onClick={showModalPaid}> Оплатить </Button>
-        }
+        {ChangeButton(props.isChangeChecks ?? false)}
       </Space>
     </Card >
   )
