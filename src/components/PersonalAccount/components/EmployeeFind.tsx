@@ -120,7 +120,9 @@ const EmployeeFind = observer((props: ClientFindProps) => {
 
 
   useEffect(() => {
-    servicesStore.getServicesList();
+    if (props.isUpdateEmployee) {
+      servicesStore.getServicesList();
+    }
 
     return () => {
       employeeStore.deleteEmployee();
@@ -170,7 +172,7 @@ const EmployeeFind = observer((props: ClientFindProps) => {
                   employeeStore.employee?.brief_info,
                   employeeStore.employee?.services_id,
                   employeeStore.employee?.rating,
-                  )}
+                )}
                 style={{ marginBottom: "10px" }}
               >
                 Подробнее
@@ -210,10 +212,10 @@ const EmployeeFind = observer((props: ClientFindProps) => {
                 <Button
                   block
                   onClick={() => showModalDetails(
-                    employee.brief_info, 
+                    employee.brief_info,
                     employee.services_id,
                     employee.rating
-                    )}
+                  )}
                   style={{ marginBottom: "10px" }}
                 >
                   Подробнее

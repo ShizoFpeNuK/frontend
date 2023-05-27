@@ -17,6 +17,7 @@ export const AuthForm = () => {
       .then((user: IUser) => {
         loginStore.setIsLogin(true);
         loginStore.setUser(user);
+        localStorage.setItem("token", user.access_token);
         navigate("/personal_account");
         form.resetFields();
       })

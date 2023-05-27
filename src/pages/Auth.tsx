@@ -1,8 +1,11 @@
 import '../style/css/auth/auth.css';
 import { AuthForm } from "../components/AuthForm";
+import { observer } from "mobx-react";
+import { useEffect } from "react";
+import { Button, message } from "antd";
 
 
-const Auth = () => {
+const Auth = observer(() => {
   return (
     <div className="auth_page">
       <h1 className="auth_header title--border"> Авторизация </h1>
@@ -11,7 +14,7 @@ const Auth = () => {
       </div>
     </div>
   )
-};
+})
 
 
 export default Auth;

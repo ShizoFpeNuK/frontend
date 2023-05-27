@@ -51,7 +51,7 @@ const Header = observer(() => {
           preview={false}
         />
       </Col>
-      <Col className="navigation">
+      <Col className="navigation" span={4}>
         {loginStore.isLogin
           ? <Menu mode="horizontal" items={itemsBaseWithPersAccount} />
           : <Menu mode="horizontal" items={itemsBaseWithAuth} />

@@ -1,9 +1,9 @@
-import '../../style/css/personal_account/paControl.css';
 import { useState } from "react";
 import { Button, Col, Row, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Report from "../../components/PersonalAccount/components/Report";
 import OrderFind from "../../components/PersonalAccount/components/OrderFind";
+import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import ServiceFind from "../../components/PersonalAccount/components/ServiceFind";
 import ScheduleFind from "../../components/PersonalAccount/components/ScheduleFind";
@@ -68,15 +68,19 @@ const PAAnalyst = () => {
 
 
   return (
-    <div className="personal_account_control_page">
-      <h1 className="personal_account_control_title title--border"> Личный кабинет </h1>
-      <Row className="personal_account_control_row">
-        <Col className="personal_account_control_info" span={4}>
-          {/* <CardPAUser /> */}
+    <div className="personal_account_analyst_page">
+      <h1 className="personal_account_analyst_title title--border"> Личный кабинет </h1>
+      <Row className="personal_account_analyst_row">
+        <Col 
+        className="personal_account_analyst_info" 
+        span={4}
+        style={{paddingRight: "20px"}}
+        >
+          <CardPAUser />
           <Space
             className="personal_account_manager_control_buttons"
             direction="vertical"
-            style={{ width: "100%" }}>
+            style={{ width: "100%", marginTop: "40px" }}>
             <Button block onClick={onClickFoundClientButton}> <SearchOutlined /> Найти клиента </Button>
             <Button block onClick={onClickFoundEmployeeButton}> <SearchOutlined /> Найти сотрудника </Button>
             <Button block onClick={onClickFoundServicesButton}> <SearchOutlined /> Посмотреть услуги </Button>
@@ -88,8 +92,9 @@ const PAAnalyst = () => {
         </Col>
 
         <Col
-          className="personal_account_control_forms"
+          className="personal_account_analyst_forms"
           span={20}
+          style={{paddingLeft: "20px"}}
         >
           {isOpenFindClientForm &&
             <ClientFind isFindAllButton={true} />

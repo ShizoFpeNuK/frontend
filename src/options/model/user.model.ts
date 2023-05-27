@@ -11,4 +11,5 @@ export interface IUser {
   telephone: string,
   email: string,
   post: string,
+  access_token: string,
 }

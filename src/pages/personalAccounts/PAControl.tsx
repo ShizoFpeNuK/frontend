@@ -10,6 +10,7 @@ import ScheduleAdd from "../../components/PersonalAccount/components/ScheduleAdd
 import EmployeeAdd from "../../components/PersonalAccount/components/EmployeeAdd";
 import ScheduleFind from "../../components/PersonalAccount/components/ScheduleFind";
 import EmployeeFind from "../../components/PersonalAccount/components/EmployeeFind";
+import CardPAUser from '../../components/PersonalAccount/cards/CardPAUser';
 
 
 const PAControl = () => {
@@ -80,7 +81,7 @@ const PAControl = () => {
       <h1 className="personal_account_control_title title--border"> Личный кабинет </h1>
       <Row className="personal_account_control_row">
         <Col className="personal_account_control_info" span={4}>
-          {/* <CardPAUser /> */}
+          <CardPAUser />
           <Space
             className="personal_account_manager_control_buttons"
             direction="vertical"

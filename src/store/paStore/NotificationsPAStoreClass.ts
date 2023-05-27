@@ -18,13 +18,17 @@ class NotificationsPAStoreClass {
   isNotFindSchedule: boolean = false;
   isCreateSchedule: boolean = false;
   isConflictSchedule: boolean = false;
-  
+
+  isSuccessRegister: boolean = false;
+  isConflictRegister: boolean = false;
+  isSuccessUnregister: boolean = false;
 
   isSubmitOrder: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
+
 
   setIsNotFindChecks(boolean: boolean) {
     this.isNotFindChecks = boolean;
@@ -157,6 +161,37 @@ class NotificationsPAStoreClass {
     this.deleteIsCreateSchedule();
     this.deleteIsConflictSchedule();
   }
+
+
+  setIsSuccessRegister(boolean: boolean) {
+    this.isSuccessRegister = boolean;
+  }
+  setIsSuccessUnregister(boolean: boolean) {
+    this.isSuccessUnregister = boolean;
+  }
+
+  setIsConflictRegister(boolean: boolean) {
+    this.isConflictRegister = boolean;
+  }
+
+  deleteIsSuccessRegister() {
+    this.setIsSuccessRegister(false);
+  }
+
+  deleteIsSuccessUnregister() {
+    this.setIsSuccessUnregister(false);
+  }
+
+  deleteIsConflictRegister() {
+    this.setIsConflictRegister(false);
+  }
+
+  deleteNotificationsRegister() {
+    this.deleteIsSuccessRegister();
+    this.deleteIsSuccessUnregister();
+    this.deleteIsConflictRegister();
+  }
+
 
   setIsSubmitOrder(boolean: boolean) {
     this.isSubmitOrder = boolean;
