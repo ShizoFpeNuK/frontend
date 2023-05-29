@@ -1,9 +1,9 @@
 import { useForm } from "antd/es/form/Form";
 import { IService } from "../../../options/model/service.model";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IEmployee, IEmployeeUpdate } from "../../../options/model/employee.model";
-import { Button, Col, Row, Space } from "antd";
+import { Button, Col, Pagination, Row, Space, message } from "antd";
 import ResultSuccess from "../../Results/ResultSuccess";
 import CardPAEmployee from "../cards/CardPAEmployee";
 import FormEmployeeFind from "../forms/FormEmployeeFind";
@@ -14,13 +14,15 @@ import EmployeePAStoreClass from "../../../store/paStore/EmployeePAStoreClass";
 import ModalEmployeeDetails from "../modals/ModalEmployeeDetails";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
+import loginStore from "../../../store/LoginStoreClass";
 
 
+const pageSize: number = 3;
 const servicesStore = new ServicesStoreClass();
 const employeeStore = new EmployeePAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
-interface ClientFindProps {
+interface EmployeeFindProps {
   isUpdateEmployee?: boolean,
   isDeleteClient?: boolean,
 }
@@ -37,14 +39,44 @@ const getCorrectValue = (values: IEmployeeUpdate, employeeStore: EmployeePAStore
     "salary": values["salary"] ? values["salary"] : employeeStore.employee!.salary,
     "brief_info": values["brief_info"]?.length ? values["brief_info"] :
       values["brief_info"] !== undefined ? undefined : employeeStore.employee!.brief_info,
-    "post": values["post"]?.length ? values["post"] : employeeStore.employee!.post,
     "services_id": values["services_id"]?.length ? values["services_id"] : employeeStore.employee?.services_id,
   }
 }
 
 
-const EmployeeFind = observer((props: ClientFindProps) => {
+const EmployeeFind = observer((props: EmployeeFindProps) => {
   const [form] = useForm();
+  const [page, setPage] = useState<number>(1);
+  const [messageApi, contextHolder] = message.useMessage();
+
+
+  const errorUpdateEmployee = () => {
+    messageApi.open({
+      type: "error",
+      content: "Ошибка обновления сотрудника!",
+    });
+  }
+
+  const successUpdateEmployee = () => {
+    messageApi.open({
+      type: "success",
+      content: "Сотрдник успешно обновлён!",
+    });
+  }
+
+  const errorDeleteEmployee = () => {
+    messageApi.open({
+      type: "error",
+      content: "Ошибка удаления сотрудника!",
+    });
+  }
+
+  const successDeleteEmployee = () => {
+    messageApi.open({
+      type: "success",
+      content: "Сотрудник успешно удалён!",
+    });
+  }
 
 
   const handlerGetEmployees = async () => {
@@ -61,10 +93,12 @@ const EmployeeFind = observer((props: ClientFindProps) => {
 
     await EmployeeServices.updateEmployee(employeeStore.employee!.employee_id, correctValue)
       .then(async () => {
+        successUpdateEmployee();
         const employee = await EmployeeServices.getEmployee(employeeStore.employee!.employee_id);
         employeeStore.deleteEmployee();
         employeeStore.setEmployee(employee);
       })
+      .catch(() => errorUpdateEmployee());
   }
 
   const onFinishEmployees = async (values: IEmployeeUpdate) => {
@@ -72,10 +106,14 @@ const EmployeeFind = observer((props: ClientFindProps) => {
 
     await EmployeeServices.updateEmployee(employeeStore.employee!.employee_id, correctValue)
       .then(async () => {
+        successUpdateEmployee();
         const employees: IEmployee[] = await EmployeeServices.getAll();
         employeeStore.deleteEmployees();
         employeeStore.setEmployees(employees);
       })
+      .catch((error) => {
+        errorUpdateEmployee();
+      });
   }
 
   const handlerUpdateEmployee = async (employee: IEmployee) => {
@@ -88,17 +126,21 @@ const EmployeeFind = observer((props: ClientFindProps) => {
   };
 
   const handlerDeleteEmployee = async (employee: IEmployee) => {
-    await EmployeeServices.deleteEmployee(employee.employee_id);
-    employeeStore.deleteEmployee();
-    notificationsStore?.setIsDeleteEmployee(true);
+    await EmployeeServices.deleteEmployee(employee.employee_id)
+      .then(() => {
+        employeeStore.deleteEmployee();
+        notificationsStore?.setIsDeleteEmployee(true);
+      })
   }
 
   const handlerDeleteEmployees = async (employee: IEmployee) => {
     await EmployeeServices.deleteEmployee(employee.employee_id)
       .then(async () => {
+        successDeleteEmployee();
         const employees: IEmployee[] = await EmployeeServices.getAll();
         employeeStore.setEmployees(employees);
       })
+      .catch(() => errorDeleteEmployee());
   }
 
   const showModalDetails = async (
@@ -135,6 +177,7 @@ const EmployeeFind = observer((props: ClientFindProps) => {
   return (
     <div className="employee_find">
       <h2 className="employee_find_title title--border"> Найти сотрудника Якимова Варвара Григорьевна +7 (956) 254-33-29 </h2>
+      {contextHolder}
       <Row
         justify={'space-between'}
         className="employee_find_row"
@@ -189,6 +232,7 @@ const EmployeeFind = observer((props: ClientFindProps) => {
               {props.isDeleteClient &&
                 <Button
                   block
+                  disabled={loginStore.user!.user_id === employeeStore.employee.employee_id}
                   onClick={() => handlerDeleteEmployee(employeeStore.employee!)}
                 >
                   Удалить
@@ -203,7 +247,9 @@ const EmployeeFind = observer((props: ClientFindProps) => {
             size={[20, 20]}
             style={{ width: "100%" }}
           >
-            {employeeStore.employees.map((employee: IEmployee) =>
+            {employeeStore.employees.filter((employee: IEmployee, index: number) => {
+              return index + 1 <= page * pageSize && index >= (page - 1) * pageSize;
+            }).map((employee: IEmployee) =>
               <CardPAEmployee
                 title="Сотрудник"
                 employee={employee}
@@ -232,6 +278,7 @@ const EmployeeFind = observer((props: ClientFindProps) => {
                 {props.isDeleteClient &&
                   <Button
                     block
+                    disabled={loginStore.user!.user_id === employee.employee_id}
                     onClick={() => handlerDeleteEmployees(employee)}
                   >
                     Удалить
@@ -240,6 +287,15 @@ const EmployeeFind = observer((props: ClientFindProps) => {
               </CardPAEmployee>
             )}
           </Space>
+          {employeeStore.employees.length !== 0 &&
+            <Pagination
+              current={page}
+              pageSize={pageSize}
+              onChange={setPage}
+              style={{ marginTop: "30px" }}
+              total={employeeStore.employees.length || 0}
+            />
+          }
 
           {notificationsStore?.isNotFindEmployee &&
             <ResultErrorNotCorrectData title="Сотрудник не был найден" />

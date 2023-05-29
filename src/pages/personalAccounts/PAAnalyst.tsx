@@ -9,6 +9,7 @@ import ServiceFind from "../../components/PersonalAccount/components/ServiceFind
 import ScheduleFind from "../../components/PersonalAccount/components/ScheduleFind";
 import EmployeeFind from "../../components/PersonalAccount/components/EmployeeFind";
 import EstablishmentFind from "../../components/PersonalAccount/components/EstablishmentFind";
+import ScheduleWorkerFind from "../../components/PersonalAccount/components/ScheduleWorkerFind";
 
 
 const PAAnalyst = () => {
@@ -19,6 +20,7 @@ const PAAnalyst = () => {
   const [isOpenFindEstablishmentWindow, setIsOpenFindEstablishmentWindow] = useState<boolean>(false);
   const [isOpenFindServiceWindow, setIsOpenFindServiceWindow] = useState<boolean>(false);
   const [isOpenReportWindow, setIsOpenReportWindow] = useState<boolean>(false);
+  const [isOpenFindScheduleMeForm, setIsOpenFindScheduleMeForm] = useState<boolean>(false);
 
 
   const closeAllWindow = () => {
@@ -29,6 +31,7 @@ const PAAnalyst = () => {
     setIsOpenFindServiceWindow(false);
     setIsOpenFindOrderClientForm(false);
     setIsOpenFindEstablishmentWindow(false);
+    setIsOpenFindScheduleMeForm(false);
   }
 
   const onClickFoundClientButton = () => {
@@ -66,6 +69,11 @@ const PAAnalyst = () => {
     setIsOpenReportWindow(!isOpenReportWindow);
   }
 
+  const onClickScheduleMeButton = () => {
+    closeAllWindow();
+    setIsOpenFindScheduleMeForm(!isOpenFindScheduleMeForm);
+  }
+
 
   return (
     <div className="personal_account_analyst_page">
@@ -88,6 +96,7 @@ const PAAnalyst = () => {
             <Button block onClick={onClickFoundScheduleButton}> <SearchOutlined /> Посмотреть расписание </Button>
             <Button block onClick={onClickFindOrderButton}> <SearchOutlined /> Найти заказ </Button>
             <Button block onClick={onClickReportButton}> <SearchOutlined /> Получить отчёт </Button>
+            <Button block onClick={onClickScheduleMeButton}> <SearchOutlined /> Посмотреть своё расписание </Button>
           </Space>
         </Col>
 
@@ -116,6 +125,9 @@ const PAAnalyst = () => {
           }
           {isOpenReportWindow &&
             <Report />
+          }
+          {isOpenFindScheduleMeForm &&
+            <ScheduleWorkerFind />
           }
         </Col>
       </Row>

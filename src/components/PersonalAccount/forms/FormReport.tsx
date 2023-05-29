@@ -15,7 +15,7 @@ interface FormReportProps extends FormBaseProps {
 
 const FormReport = (props: FormReportProps) => {
   return (
-    <Card style={CardForm}>
+    <Card style={CardForm} title={props.title}>
       <Form layout="vertical"
         form={props.form}
         onFinish={props.onFinish}

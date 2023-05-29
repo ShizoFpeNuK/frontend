@@ -1,8 +1,8 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IClient, IClientUpdate } from "../../../options/model/client.model";
-import { Button, Col, Row, Space } from "antd";
+import { Button, Col, Pagination, Row, Space, message } from "antd";
 import CardPAClient from "../cards/CardPAClient";
 import ResultSuccess from "../../Results/ResultSuccess";
 import ClientServices from "../../../services/client.service";
@@ -13,6 +13,7 @@ import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
 import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 
 
+const pageSize: number = 6;
 const clientStore = new ClientPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
 
@@ -25,6 +26,30 @@ interface ClientFindProps {
 
 const ClientFind = observer((props: ClientFindProps) => {
   const [form] = useForm();
+  const [page, setPage] = useState<number>(1);
+  const [messageApi, contextHolder] = message.useMessage();
+
+
+  const errorUpdateClient = () => {
+    messageApi.open({
+      type: "error",
+      content: "Ошибка обновления клиента!",
+    });
+  }
+
+  const successUpdateClient = () => {
+    messageApi.open({
+      type: "success",
+      content: "Клиент успешно обновлён!",
+    });
+  }
+
+  const errorDeleteClient = () => {
+    messageApi.open({
+      type: "error",
+      content: "Ошибка удаления клиента!",
+    });
+  }
 
 
   const handlerGetClients = async () => {
@@ -46,9 +71,11 @@ const ClientFind = observer((props: ClientFindProps) => {
 
     await ClientServices.updateClient(clientStore.client!.client_id, correctValue)
       .then(async () => {
+        successUpdateClient();
         const client = await ClientServices.getClient(clientStore.client!.client_id);
         clientStore.setClient(client);
       })
+      .catch(() => errorUpdateClient());
   }
 
   const handlerUpdateClient = (client: IClientUpdate) => {
@@ -56,9 +83,12 @@ const ClientFind = observer((props: ClientFindProps) => {
   };
 
   const handlerDeleteClient = async () => {
-    await ClientServices.deleteClient(clientStore.client!.client_id);
-    clientStore.deleteClient();
-    notificationsStore?.setIsDeleteClient(true);
+    await ClientServices.deleteClient(clientStore.client!.client_id)
+      .then(() => {
+        clientStore.deleteClient();
+        notificationsStore?.setIsDeleteClient(true);
+      })
+      .catch(() => errorDeleteClient());
   }
 
 
@@ -74,6 +104,7 @@ const ClientFind = observer((props: ClientFindProps) => {
   return (
     <div className="client_find">
       <h2 className="client_find_title title--border"> Найти клиента </h2>
+      {contextHolder}
       <Row
         justify={'space-between'}
         className="client_find_row"
@@ -133,13 +164,24 @@ const ClientFind = observer((props: ClientFindProps) => {
             size={[20, 20]}
             style={{ width: "100%" }}
           >
-            {clientStore.clients.map((client: IClient) =>
+            {clientStore.clients.filter((client: IClient, index: number) => {
+              return index + 1 <= page * pageSize && index >= (page - 1) * pageSize;
+            }).map((client: IClient) =>
               <CardPAClient
                 title="Клиент"
                 client={client}
               />
             )}
           </Space>
+          {clientStore.clients.length !== 0 &&
+            <Pagination
+              current={page}
+              pageSize={pageSize}
+              onChange={setPage}
+              style={{ marginTop: "30px" }}
+              total={clientStore.clients.length || 0}
+            />
+          }
 
           {notificationsStore?.isNotFindClient &&
             <ResultErrorNotCorrectData title="Клиент не был найден" />

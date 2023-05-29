@@ -8,6 +8,7 @@ import ClientAdd from "../../components/PersonalAccount/components/ClientAdd";
 import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
+import ScheduleWorkerFind from "../../components/PersonalAccount/components/ScheduleWorkerFind";
 
 
 const PAManager = observer(() => {
@@ -15,34 +16,47 @@ const PAManager = observer(() => {
   const [isOpenAddClientForm, setIsOpenAddClientForm] = useState<boolean>(false);
   const [isOpenFindOrderForm, setIsOpenFindOrderClientForm] = useState<boolean>(false);
   const [isOpenAddOrderForm, setIsOpenAddOrderClientForm] = useState<boolean>(false);
+  const [isOpenFindScheduleMeForm, setIsOpenFindScheduleMeForm] = useState<boolean>(false);
 
 
   const onClickFoundClientButton = () => {
     setIsOpenAddClientForm(false);
     setIsOpenAddOrderClientForm(false);
     setIsOpenFindOrderClientForm(false);
+    setIsOpenFindScheduleMeForm(false);
     setIsOpenFindClientForm(!isOpenFindClientForm);
   }
-
+  
   const onClickAddClientButton = () => {
     setIsOpenFindClientForm(false);
     setIsOpenAddOrderClientForm(false);
     setIsOpenFindOrderClientForm(false);
+    setIsOpenFindScheduleMeForm(false);
     setIsOpenAddClientForm(!isOpenAddClientForm);
   }
-
+  
   const onClickAddOrderButton = () => {
     setIsOpenAddClientForm(false);
     setIsOpenFindClientForm(false);
     setIsOpenFindOrderClientForm(false);
+    setIsOpenFindScheduleMeForm(false);
     setIsOpenAddOrderClientForm(!isOpenAddOrderForm);
   }
-
+  
   const onClickFindOrderButton = () => {
     setIsOpenAddClientForm(false);
     setIsOpenFindClientForm(false);
     setIsOpenAddOrderClientForm(false);
+    setIsOpenFindScheduleMeForm(false);
     setIsOpenFindOrderClientForm(!isOpenFindOrderForm);
+  }
+  
+  const onClickScheduleMeButton = () => {
+    setIsOpenAddClientForm(false);
+    setIsOpenFindClientForm(false);
+    setIsOpenAddOrderClientForm(false);
+    setIsOpenFindOrderClientForm(false);
+    setIsOpenFindScheduleMeForm(!isOpenFindScheduleMeForm);
   }
 
 
@@ -60,6 +74,7 @@ const PAManager = observer(() => {
             <Button block onClick={onClickAddClientButton}> <UserAddOutlined /> Добавить клиента </Button>
             <Button block onClick={onClickFindOrderButton}> <SearchOutlined /> Найти заказ </Button>
             <Button block onClick={onClickAddOrderButton}> <FileAddOutlined /> Добавить заказ </Button>
+            <Button block onClick={onClickScheduleMeButton}> <SearchOutlined /> Посмотреть своё расписание </Button>
           </Space>
         </Col>
 
@@ -78,6 +93,9 @@ const PAManager = observer(() => {
           }
           {isOpenAddOrderForm &&
             <OrderAdd />
+          }
+          {isOpenFindScheduleMeForm &&
+            <ScheduleWorkerFind />
           }
         </Col>
       </Row>

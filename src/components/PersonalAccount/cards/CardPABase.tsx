@@ -2,9 +2,9 @@ import '../../../style/css/cards/cardBase.css';
 import { Card } from "antd";
 import { IUser } from "../../../options/model/user.model";
 import { IClient } from "../../../options/model/client.model";
-import { CSSProperties, ReactNode } from "react";
 import { IEmployee } from "../../../options/model/employee.model";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
+import { CSSProperties, ReactNode } from "react";
 
 
 interface ICardPABaseProps {

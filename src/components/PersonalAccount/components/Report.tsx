@@ -53,14 +53,17 @@ const Report = observer(() => {
 
 
   const cancelServicesReport = () => {
+    reportStore.deleteReportServices();
     setIsOpenServicesReport(false);
   }
 
   const cancelSpecialistsReport = () => {
+    reportStore.deleteReportSpecialists();
     setIsOpenSpecialistsReport(false);
   }
 
   const cancelEstablishmentsReport = () => {
+    reportStore.deleteReportEstablishments();
     setIsOpenEstablishmnetReport(false);
   }
 
@@ -139,6 +142,7 @@ const Report = observer(() => {
           {isOpenServicesReport &&
             <FormReport
               form={formServicesReport}
+              title="Отчёт по услугам"
               onFinish={onFinishServicesReport}
               buttons={<ButtonStep block onClick={cancelServicesReport}> Назад </ButtonStep>}
             />
@@ -146,6 +150,7 @@ const Report = observer(() => {
           {isOpenSpecialistsReport &&
             <FormReport
               form={formSpecialistsReport}
+              title="Отчёт по специалистам"
               onFinish={onFinishSpecialistsReport}
               buttons={<ButtonStep block onClick={cancelSpecialistsReport}> Назад </ButtonStep>}
             />
@@ -153,6 +158,7 @@ const Report = observer(() => {
           {isOpenEstablishmentsReport &&
             <FormReport
               form={formEstablishmentsReport}
+              title="Отчёт по заведениям"
               onFinish={onFinishEstablishmentsReport}
               buttons={<ButtonStep block onClick={cancelEstablishmentsReport}> Назад </ButtonStep>}
             />

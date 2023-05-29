@@ -1,17 +1,16 @@
 import './style/css/App.css';
+import { message } from "antd";
 import { observer } from "mobx-react";
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
-import axios, { Axios, AxiosError } from "axios";
-import Enroll from "./pages/Enroll";
+import axios, { AxiosError } from "axios";
 import Header from "./components/MainComponents/Header";
 import Footer from "./components/MainComponents/Footer";
 import NotFound from "./pages/NotFound";
 import loginStore from "./store/LoginStoreClass";
 import PersonalAccount from "./pages/PersonalAccount";
-import { useEffect } from 'react';
-import { message } from 'antd';
 
 
 axios.defaults.withCredentials = true;
@@ -34,7 +33,8 @@ axios.interceptors.response.use(
       localStorage.removeItem("token");
       loginStore.setIsLogin(false);
     }
-    console.log(error)
+   
+    throw error;
   }
 );
 
@@ -78,7 +78,6 @@ const App = observer(() => {
         <div className="main_wrapper">
           <Routes>
             <Route path="/" element={<Home />} />
-            {/* <Route path="/enroll" element={<Enroll />} /> */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/personal_account" element={<PersonalAccount />} />
             <Route path="*" element={<NotFound />} />

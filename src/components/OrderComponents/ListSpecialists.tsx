@@ -18,7 +18,7 @@ interface ListServicesProps {
 }
 
 
-const ListSpecialists = observer(({specialistsStore, orderDetailsStore}: ListServicesProps) => {
+const ListSpecialists = observer(({ specialistsStore, orderDetailsStore }: ListServicesProps) => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
   const useListSpecialists = useRef<Element | null>(null);
   const useListDeleteButtons = useRef<NodeListOf<Element> | null>(null);
@@ -120,45 +120,48 @@ const ListSpecialists = observer(({specialistsStore, orderDetailsStore}: ListSer
         </Row>
       }
     >
-      {specialistsStore.SpecialistsList.map((specialist: ISpecialist) =>
-        <List.Item
-          className="enroll_list_specialists_item"
-          key={specialist.employee_id}
-          data-id={specialist.employee_id}
-        >
-          <List.Item.Meta
-            className="enroll_list_specialists_item_meta"
-            avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${specialist.employee_id}`} />}
-            title={specialist.full_name}
-            description={
-              <Row
-                wrap={false}
-                justify={'space-between'}
-                align={'middle'}
-                className="enroll_list_specialists_item_meta_row">
-                <Col className="enroll_list_specialists_item_meta_info">
-                  <p className="enroll_list_specialists_item_meta_info_position"> {specialist.post} </p>
-                  <Rate className="enroll_list_specialists_item_meta_info_raring" allowHalf disabled value={specialist.rating} />
-                </Col>
-                <Col className="enroll_list_specialists_item_meta_buttons">
-                  <Button
-                    className="enroll_list_specialists_item_meta_button_add button_text--center button--black"
-                    shape="circle"
-                    onClick={(e) => onClickAddService(e, specialist)}>
-                    +
-                  </Button>
-                  <Button
-                    className="enroll_list_specialists_item_meta_button_delete button_text--center button--white"
-                    shape="circle"
-                    onClick={(e) => onClickDeleteService(e)}>
-                    -
-                  </Button>
-                </Col>
-              </Row>
-            }
-          />
-        </List.Item>
-      )}
+      {specialistsStore.SpecialistsList.length !== 0
+        ? specialistsStore.SpecialistsList.map((specialist: ISpecialist) =>
+          <List.Item
+            className="enroll_list_specialists_item"
+            key={specialist.employee_id}
+            data-id={specialist.employee_id}
+          >
+            <List.Item.Meta
+              className="enroll_list_specialists_item_meta"
+              avatar={<Avatar src={`https://xsgames.co/randomusers/avatar.php?g=pixel&key=${specialist.employee_id}`} />}
+              title={specialist.full_name}
+              description={
+                <Row
+                  wrap={false}
+                  justify={'space-between'}
+                  align={'middle'}
+                  className="enroll_list_specialists_item_meta_row">
+                  <Col className="enroll_list_specialists_item_meta_info">
+                    <p className="enroll_list_specialists_item_meta_info_position"> {specialist.post} </p>
+                    <Rate className="enroll_list_specialists_item_meta_info_raring" allowHalf disabled value={specialist.rating} />
+                  </Col>
+                  <Col className="enroll_list_specialists_item_meta_buttons">
+                    <Button
+                      className="enroll_list_specialists_item_meta_button_add button_text--center button--black"
+                      shape="circle"
+                      onClick={(e) => onClickAddService(e, specialist)}>
+                      +
+                    </Button>
+                    <Button
+                      className="enroll_list_specialists_item_meta_button_delete button_text--center button--white"
+                      shape="circle"
+                      onClick={(e) => onClickDeleteService(e)}>
+                      -
+                    </Button>
+                  </Col>
+                </Row>
+              }
+            />
+          </List.Item>
+        )
+        : <p style={{margin: "20px 0"}}> Нет доступных записей </p>
+      }
     </List>
   )
 });

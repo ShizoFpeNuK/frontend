@@ -1,6 +1,5 @@
 import { observer } from "mobx-react";
 import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
 import PAWorker from "./personalAccounts/PAWorker";
 import PAManager from "./personalAccounts/PAManager";
 import loginStore from "../store/LoginStoreClass";
@@ -49,7 +48,7 @@ const PersonalAccount = observer(() => {
 
   return (
     <div className="personal_account_page">
-      <PAWorker workerId={loginStore.user!.user_id} />
+      <PAWorker />
     </div>
   )
 });

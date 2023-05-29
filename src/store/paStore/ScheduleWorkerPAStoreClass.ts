@@ -11,8 +11,8 @@ class ScheduleWorkerPAStoreClass {
   }
 
 
-  async getScheduleByEmployeeId(employeeId: number) {
-    const schedule = await ScheduleServices.getScheduleWorkerByEmployeeId(employeeId);
+  async getSchedule() {
+    const schedule = await ScheduleServices.getScheduleWorkerByEmployeeId();
     this.setSchedule(schedule);
   }
 

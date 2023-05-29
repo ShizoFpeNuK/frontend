@@ -8,8 +8,8 @@ export default class ScheduleServices {
   static pathDefault: string = "/schedules";
 
 
-  static async getScheduleWorkerByEmployeeId(employeeId: number): Promise<IScheduleWorker[]> {
-    const schedule = await axios.get(`/employees/${employeeId}${this.pathDefault}`);
+  static async getScheduleWorkerByEmployeeId(): Promise<IScheduleWorker[]> {
+    const schedule = await axios.get(`/employees/me${this.pathDefault}`);
 
     return schedule.data;
   }

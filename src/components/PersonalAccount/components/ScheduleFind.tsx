@@ -1,7 +1,7 @@
 import { useForm } from "antd/es/form/Form";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react";
-import { Button, Col, Row, Space } from "antd";
+import { Button, Col, Pagination, Row, Space } from "antd";
 import { IScheduleControl, IScheduleControlFind, IScheduleControlUpdate } from "../../../options/model/schedule.model";
 import dayjs from "dayjs";
 import FormScheduleFind from "../forms/FormScheduleFind";
@@ -14,6 +14,7 @@ import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPASto
 import ScheduleControlPAStoreClass from "../../../store/paStore/ScheduleControlPAStoreClass";
 
 
+const pageSize: number = 6;
 const employeeStore = new EmployeePAStoreClass();
 const scheduleStore = new ScheduleControlPAStoreClass();
 const notificationsStore = new NotificationsPAStoreClass();
@@ -31,6 +32,7 @@ interface fieldValue {
 
 const ScheduleFind = observer((props: ScheduleFindProps) => {
   const [valuesForm, setValuesForm] = useState<IScheduleControlFind>();
+  const [page, setPage] = useState<number>(1);
   const [form] = useForm();
 
 
@@ -100,7 +102,9 @@ const ScheduleFind = observer((props: ScheduleFindProps) => {
             size={[20, 20]}
             style={{ width: "100%" }}
           >
-            {scheduleStore.scheduleList.map((schedule: IScheduleControl) =>
+            {scheduleStore.scheduleList.filter((schedule: IScheduleControl, index: number) => {
+              return index + 1 <= page * pageSize && index >= (page - 1) * pageSize;
+            }).map((schedule: IScheduleControl) =>
               <CardScheduleControl
                 schedule={schedule}
                 key={schedule.schedule_id}
@@ -125,6 +129,15 @@ const ScheduleFind = observer((props: ScheduleFindProps) => {
               </CardScheduleControl>
             )}
           </Space>
+          {scheduleStore.scheduleList.length !== 0 &&
+            <Pagination
+              current={page}
+              pageSize={pageSize}
+              onChange={setPage}
+              style={{ marginTop: "30px" }}
+              total={scheduleStore.scheduleList.length || 0}
+            />
+          }
 
           {notificationsStore.isNotFindSchedule &&
             <ResultSuccessNoData title="Расписаний не было найдено" subTitle="" />

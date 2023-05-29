@@ -1,12 +1,13 @@
 import '../../../style/css/cards/cardCheck.css';
 import { ICheck } from "../../../options/model/check.model";
 import { useForm } from "antd/es/form/Form";
-import { Button, Card, Space } from "antd";
+import { Button, Card, Space, message } from "antd";
 import { CardBodyForm, CardForm } from "../../../style/typescript/cardForm";
 import { IServiceWithStartAndEndTime } from "../../../options/model/service.model";
 import CheckServices from "../../../services/check.service";
 import ModalCheckPaid from "../modals/ModalCheckPaid";
 import ModalCheckDetails from "../modals/ModalCheckDetails";
+import { MessageInstance } from 'antd/es/message/interface';
 
 
 interface CardCheckProps {
@@ -14,6 +15,7 @@ interface CardCheckProps {
   bonus?: number,
   clientId?: number,
   isChangeChecks?: boolean,
+  messageApi?: MessageInstance,
   setDeleteCheckFlag: (boolean: boolean) => void,
   setPaidCheckFlag?: (boolean: boolean) => void,
 }
@@ -26,6 +28,35 @@ interface IPaid {
 
 const CardCheck = (props: CardCheckProps) => {
   const [form] = useForm();
+
+  const errorPaidCheck = () => {
+    props.messageApi?.open({
+      type: "error",
+      content: "Ошибка оплаты чека!",
+    });
+  }
+
+  const successPaidCheck = () => {
+    props.messageApi?.open({
+      type: "success",
+      content: "Оплата успешно произведена!",
+    });
+  }
+
+  const errorDeleteCheck = () => {
+    props.messageApi?.open({
+      type: "error",
+      content: "Ошибка удаления чека!",
+    });
+  }
+
+  const successDeleteCheck = () => {
+    props.messageApi?.open({
+      type: "success",
+      content: "Чек успешно удалён!",
+    });
+  }
+
 
   const ChangeButton = (isChangeChecks: boolean) => {
     if (isChangeChecks) {
@@ -53,10 +84,14 @@ const CardCheck = (props: CardCheckProps) => {
       values.grade,
       values.paid_bonus,
       props.check.check_id
-    );
-    if (props.setPaidCheckFlag) {
-      props.setPaidCheckFlag(true);
-    }
+    ).then(() => {
+      successPaidCheck();
+      if (props.setPaidCheckFlag) {
+        props.setPaidCheckFlag(true);
+      }
+    })
+      .catch(() => errorPaidCheck());
+
   }
 
   const showModalPaid = () => {
@@ -65,8 +100,12 @@ const CardCheck = (props: CardCheckProps) => {
 
 
   const onClickDeleteButton = async () => {
-    await CheckServices.deleteCheck(props.check.check_id);
-    props.setDeleteCheckFlag(true);
+    await CheckServices.deleteCheck(props.check.check_id)
+      .then(() => {
+        successDeleteCheck();
+        props.setDeleteCheckFlag(true);
+      })
+      .catch(() => errorDeleteCheck());
   }
 
 

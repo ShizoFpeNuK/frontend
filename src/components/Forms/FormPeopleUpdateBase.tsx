@@ -20,6 +20,7 @@ const FormPeopleUpdateBase = (props: FormPeopleUpdateBase) => {
       <Form.Item
         label="ФИО клиента"
         name="full_name"
+        initialValue={props.defaultPeopleInfo.full_name}
         rules={[
           {
             pattern: new RegExp(/^[А-Я][а-яА-Я\s-]+[а-я]$/),
@@ -28,13 +29,13 @@ const FormPeopleUpdateBase = (props: FormPeopleUpdateBase) => {
         ]}
       >
         <Input
-          defaultValue={props.defaultPeopleInfo.full_name}
           placeholder="Например, Иванов Иван Иваныч"
         />
       </Form.Item>
       <Form.Item
         label="Номер телефона"
         name="telephone"
+        initialValue={props.defaultPeopleInfo.telephone}
         rules={[
           {
             pattern: new RegExp(/^\+7\s[\(]9\d{2}[\)]\s\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}$/),
@@ -43,13 +44,13 @@ const FormPeopleUpdateBase = (props: FormPeopleUpdateBase) => {
         ]}
       >
         <Input
-          defaultValue={props.defaultPeopleInfo.telephone}
           placeholder="Например, +7 (999) 999-99-99"
         />
       </Form.Item>
       <Form.Item
         label="Электронная почта"
         name="email"
+        initialValue={props.defaultPeopleInfo.email}
         rules={[
           {
             pattern: new RegExp(/^[a-zA-Z\d]+\@[a-z]+\.[a-z]+$/),
@@ -58,7 +59,6 @@ const FormPeopleUpdateBase = (props: FormPeopleUpdateBase) => {
         ]}
       >
         <Input
-          defaultValue={props.defaultPeopleInfo.email}
           placeholder="Например, barbershop@gmail.com"
         />
       </Form.Item>

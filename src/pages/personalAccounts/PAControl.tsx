@@ -5,12 +5,13 @@ import { FileAddOutlined, SearchOutlined, UserAddOutlined } from "@ant-design/ic
 import OrderAdd from "../../components/PersonalAccount/components/OrderAdd";
 import OrderFind from "../../components/PersonalAccount/components/OrderFind";
 import ClientAdd from "../../components/PersonalAccount/components/ClientAdd";
+import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
 import ClientFind from "../../components/PersonalAccount/components/ClientFind";
 import ScheduleAdd from "../../components/PersonalAccount/components/ScheduleAdd";
 import EmployeeAdd from "../../components/PersonalAccount/components/EmployeeAdd";
 import ScheduleFind from "../../components/PersonalAccount/components/ScheduleFind";
 import EmployeeFind from "../../components/PersonalAccount/components/EmployeeFind";
-import CardPAUser from '../../components/PersonalAccount/cards/CardPAUser';
+import ScheduleWorkerFind from "../../components/PersonalAccount/components/ScheduleWorkerFind";
 
 
 const PAControl = () => {
@@ -22,6 +23,7 @@ const PAControl = () => {
   const [isOpenAddScheduleForm, setIsOpenAddScheduleForm] = useState<boolean>(false);
   const [isOpenFindOrderForm, setIsOpenFindOrderClientForm] = useState<boolean>(false);
   const [isOpenAddOrderForm, setIsOpenAddOrderClientForm] = useState<boolean>(false);
+  const [isOpenFindScheduleMeForm, setIsOpenFindScheduleMeForm] = useState<boolean>(false);
 
 
   const closeAllWindow = () => {
@@ -33,6 +35,7 @@ const PAControl = () => {
     setIsOpenFindScheduleForm(false);
     setIsOpenAddOrderClientForm(false);
     setIsOpenFindOrderClientForm(false);
+    setIsOpenFindScheduleMeForm(false);
   }
 
   const onClickFoundClientButton = () => {
@@ -65,14 +68,9 @@ const PAControl = () => {
     setIsOpenAddScheduleForm(!isOpenAddScheduleForm);
   }
 
-  const onClickAddOrderButton = () => {
+  const onClickScheduleMeButton = () => {
     closeAllWindow();
-    setIsOpenAddOrderClientForm(!isOpenAddOrderForm);
-  }
-
-  const onClickFindOrderButton = () => {
-    closeAllWindow();
-    setIsOpenFindOrderClientForm(!isOpenFindOrderForm);
+    setIsOpenFindScheduleMeForm(!isOpenFindScheduleMeForm);
   }
 
 
@@ -92,8 +90,7 @@ const PAControl = () => {
             <Button block onClick={onClickAddEmployeeButton}> <UserAddOutlined /> Добавить сотрудника </Button>
             <Button block onClick={onClickFoundScheduleButton}> <SearchOutlined /> Посмотреть расписание </Button>
             <Button block onClick={onClickAddScheduleButton}> <FileAddOutlined /> Добавить расписание </Button>
-            <Button block onClick={onClickFindOrderButton}> <SearchOutlined /> Найти заказ </Button>
-            <Button block onClick={onClickAddOrderButton}> <FileAddOutlined /> Добавить заказ </Button>
+            <Button block onClick={onClickScheduleMeButton}> <SearchOutlined /> Посмотреть своё расписание </Button>
           </Space>
         </Col>
 
@@ -131,6 +128,9 @@ const PAControl = () => {
           }
           {isOpenAddOrderForm &&
             <OrderAdd />
+          }
+          {isOpenFindScheduleMeForm &&
+            <ScheduleWorkerFind />
           }
         </Col>
       </Row>

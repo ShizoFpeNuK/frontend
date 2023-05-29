@@ -3,41 +3,28 @@ import { observer } from "mobx-react";
 import { SearchOutlined } from "@ant-design/icons";
 import { IScheduleWorker } from "../../options/model/schedule.model";
 import { useEffect, useState } from "react";
-import { Button, Col, Row, Space } from "antd";
+import { Button, Col, Pagination, Row, Space } from "antd";
 import CardPAUser from "../../components/PersonalAccount/cards/CardPAUser";
 import CardScheduleWorker from "../../components/PersonalAccount/cards/CardScheduleWorker";
 import ScheduleWorkerPAStoreClass from "../../store/paStore/ScheduleWorkerPAStoreClass";
 
 
+const pageSize: number = 10;
 const scheduleStore = new ScheduleWorkerPAStoreClass();
 
-interface PAWorkerProps {
-  workerId: number,
-}
 
+const PAWorker = observer(() => {
+  const [page, setPage] = useState<number>(1);
 
-const PAWorker = observer(({ workerId }: PAWorkerProps) => {
-  const [isLoader, setIsLoader] = useState<boolean>(false);
-
-
-  const loadingPage = async () => {
-    await scheduleStore.getScheduleByEmployeeId(2) //workerId
-      .then(() => {
-        setIsLoader(true);
-      })
-    //Обработка ошибки
-  }
 
   const onClickFoundScheduleButton = async () => {
-    await scheduleStore.getScheduleByEmployeeId(2); //workerId
+    await scheduleStore.getSchedule();
   }
 
 
   useEffect(() => {
-    if (!isLoader) {
-      loadingPage();
-    }
-  }, [isLoader])
+    scheduleStore.getSchedule()
+  }, [])
 
 
   return (
@@ -51,7 +38,7 @@ const PAWorker = observer(({ workerId }: PAWorkerProps) => {
             block
             onClick={onClickFoundScheduleButton}
           >
-            <SearchOutlined /> Посмотреть расписание
+            <SearchOutlined /> Посмотреть своё расписание
           </Button>
         </Col>
 
@@ -66,10 +53,21 @@ const PAWorker = observer(({ workerId }: PAWorkerProps) => {
             size={[20, 20]}
             style={{ width: "100%" }}
           >
-            {scheduleStore.schedule.map((schedule: IScheduleWorker) =>
+            {scheduleStore.schedule.filter((schedule: IScheduleWorker, index: number) => {
+              return index + 1 <= page * pageSize && index >= (page - 1) * pageSize;
+            }).map((schedule: IScheduleWorker) =>
               <CardScheduleWorker schedule={schedule} />
             )}
           </Space>
+          {scheduleStore.schedule.length !== 0 &&
+            <Pagination
+              current={page}
+              pageSize={pageSize}
+              onChange={setPage}
+              style={{ marginTop: "30px" }}
+              total={scheduleStore.schedule.length || 0}
+            />
+          }
         </Col>
       </Row>
     </div>

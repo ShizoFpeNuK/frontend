@@ -24,7 +24,7 @@ const ClientAdd = observer(() => {
         <Col className="personal_account_client_form" span={6}>
           <FormClientAdd notificationsStore={notificationsStore} />
         </Col>
-        <Col className="personal_account_client_result" span={6}>
+        <Col className="personal_account_client_result" span={18}>
           {notificationsStore?.isCreateClient &&
             <ResultSuccess title="Клиент успешно создан!" />
           }

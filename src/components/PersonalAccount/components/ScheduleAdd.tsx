@@ -31,7 +31,7 @@ const ScheduleAdd = observer(() => {
         >
           <FormScheduleAdd notificationsStore={notificationsStore} />
         </Col>
-        <Col className="schedule_add_result" span={6}>
+        <Col className="schedule_add_result" span={18}>
           {notificationsStore?.isCreateSchedule &&
             <ResultSuccess title="Расписание успешно создано!" />
           }

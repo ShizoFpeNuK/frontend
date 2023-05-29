@@ -42,6 +42,7 @@ const OrderAdd = observer(() => {
       clientStore.deleteClient();
       notificationsStore.deleteNotificationsClient();
       notificationsStore.deleteNotificationsChecks();
+      notificationsStore.deleteIsSubmitOrder();
     }
   }, [])
   

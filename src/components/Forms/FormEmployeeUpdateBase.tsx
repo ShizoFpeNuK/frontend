@@ -41,21 +41,21 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
       })
   }
 
-  const changePost = (value: string) => {
-    if (value === "Парикмахер") {
-      setDisabledServices(false);
-    } else {
-      setDisabledServices(true);
-      props.form.setFieldValue("services_id", undefined);
-    }
-  }
+  // const changePost = (value: string) => {
+  //   if (value === "Парикмахер") {
+  //     setDisabledServices(false);
+  //   } else {
+  //     setDisabledServices(true);
+  //     props.form.setFieldValue("services_id", undefined);
+  //   }
+  // }
 
 
   useEffect(() => {
     getServices();
-    if (props.employee.post !== "Парикмахер") {
-      setDisabledServices(true);
-    }
+    // if (props.employee.post !== "Парикмахер") {
+    //   setDisabledServices(true);
+    // }
 
     return () => {
       servicesStore.deleteServicesList();
@@ -73,6 +73,7 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
       <Form.Item
         label="Возраст"
         name="age"
+        initialValue={props.employee.age}
         rules={[
           {
             pattern: new RegExp(/^[1-9]\d{1,2}$/),
@@ -80,13 +81,12 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
           }
         ]}
       >
-        <Input
-          defaultValue={props.employee.age}
-        />
+        <Input placeholder="Введите возраст" />
       </Form.Item>
       <Form.Item
         label="Опыт работы (мес)"
         name="experience"
+        initialValue={props.employee.experience}
         rules={[
           {
             pattern: new RegExp(/^\d{1,4}$/),
@@ -94,13 +94,12 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
           }
         ]}
       >
-        <Input
-          defaultValue={props.employee.experience}
-        />
+        <Input placeholder="Введите опыт работы" />
       </Form.Item>
       <Form.Item
         label="Зарплата"
         name="salary"
+        initialValue={props.employee.salary}
         rules={[
           {
             pattern: new RegExp(/^[1-9]\d{1,5}$/),
@@ -108,13 +107,12 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
           }
         ]}
       >
-        <Input
-          defaultValue={props.employee.salary}
-        />
+        <Input placeholder="Введите размер зарплаты" />
       </Form.Item>
       <Form.Item
         label="Краткая информация"
         name="brief_info"
+        initialValue={props.employee.brief_info}
         rules={[
           {
             pattern: new RegExp(/^[а-яА-Яa-zA-Z0-9\s-]+$/),
@@ -124,40 +122,39 @@ const FormEmployeeUpdateBase = (props: FormEmployeeUpdateBaseProps) => {
       >
         <Input.TextArea
           allowClear
-          defaultValue={props.employee.brief_info}
           style={{ resize: "none", height: "150px" }}
+          placeholder="Введите краткую информацию о сотруднике"
         />
       </Form.Item>
-      <Form.Item
+      {/* <Form.Item
         label="Позиция"
         name="post"
+        initialValue={props.employee.post}
       >
         <Select
           // labelInValue
           options={selectPosts}
-          defaultValue={props.employee.post}
           onChange={changePost}
           placeholder="Выберите позицию"
         />
-      </Form.Item>
-      {selectServices?.length !== 0
-        ? <Form.Item
+      </Form.Item> */}
+      {props.employee.post === "Парикмахер" && selectServices?.length !== 0 &&
+        <Form.Item
           label="Услуги"
           name="services_id"
-          initialValue={props.employee.services_id ?? undefined}
+          initialValue={props.employee.services_id}
         >
           <Select
-            // labelInValue
             mode="multiple"
             allowClear
             style={{ width: "100%" }}
             placeholder="Выберите услуги"
             options={selectServices}
-            disabled={disabledServices}
+            // disabled={disabledServices}
             loading={!selectServices}
           />
         </Form.Item>
-        : <p> Загрузка... </p>
+        // : <p> Загрузка... </p>
       }
     </FormPeopleUpdateBase>
   )

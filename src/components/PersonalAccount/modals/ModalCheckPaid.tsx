@@ -43,6 +43,7 @@ const ModalCheckPaid = (
               style={{ fontWeight: 600 }}
               label="Потратить бонусы"
               name="paid_bonus"
+              initialValue={0}
             >
               <InputNumber
                 min={0}

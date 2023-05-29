@@ -28,7 +28,7 @@ const EmployeeAdd = observer(() => {
           <FormEmployeeAdd
             notificationsStore={notificationsStore} />
         </Col>
-        <Col className="employee_add_result" span={6}>
+        <Col className="employee_add_result" span={18}>
           {notificationsStore?.isCreateEmployee &&
             <ResultSuccess title="Сотрудник успешно создан!" />
           }
