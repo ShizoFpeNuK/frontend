@@ -73,7 +73,7 @@ const ScheduleFind = observer((props: ScheduleFindProps) => {
 
   return (
     <div className="schedule_find">
-      <h2 className="schedule_find_title title--border"> Посмотреть расписание Якимова Варвара Григорьевна +7 (956) 254-33-29 </h2>
+      <h2 className="schedule_find_title title--border"> Посмотреть расписание </h2>
       <Row
         justify={'space-between'}
         className="schedule_find_row"

@@ -3,14 +3,10 @@ import { IService } from "../../../options/model/service.model";
 import { useEffect } from "react";
 import { Col, Row, Space } from "antd";
 import CardService from "../cards/CardService";
-import ResultSuccess from "../../Results/ResultSuccess";
-import ResultErrorNotCorrectData from "../../Results/ResultErrorNotCorrectData";
-import NotificationsPAStoreClass from "../../../store/paStore/NotificationsPAStoreClass";
 import ServicesStoreClass from "../../../store/ServicesStoreClass";
 
 
 const servicesStore = new ServicesStoreClass();
-const notificationsStore = new NotificationsPAStoreClass();
 
 
 const ServiceFind = observer(() => {

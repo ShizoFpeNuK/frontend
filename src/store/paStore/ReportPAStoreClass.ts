@@ -1,12 +1,13 @@
 import { ICheck } from "../../options/model/check.model";
 import { makeAutoObservable } from "mobx";
-import { IReportEstablishments, IReportServices, IReportSpecialists } from "../../options/model/report.model";
+import { IReportDownload, IReportEstablishments, IReportServices, IReportSpecialists } from "../../options/model/report.model";
 
 
 class ReportPAStoreClass {
   reportServices: IReportServices[] = [];
   reportSpecialists: IReportSpecialists[] = [];
   reportEstablishments: IReportEstablishments[] = [];
+  reportRangeDate: IReportDownload | undefined = undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,8 +21,13 @@ class ReportPAStoreClass {
   setReportSpecialists(report: IReportSpecialists[]) {
     this.reportSpecialists = report;
   }
+
   setReportEstablishments(report: IReportEstablishments[]) {
     this.reportEstablishments = report;
+  }
+
+  setReportRangeDate(range: IReportDownload | undefined) {
+    this.reportRangeDate = range;
   }
 
 
@@ -35,6 +41,10 @@ class ReportPAStoreClass {
 
   deleteReportEstablishments() {
     this.setReportEstablishments([]);
+  }
+
+  deleteReportRangeDate() {
+    this.setReportRangeDate(undefined);
   }
 };
 

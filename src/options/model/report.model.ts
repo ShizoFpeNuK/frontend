@@ -23,3 +23,8 @@ export interface IReportEstablishments {
   profit: number,
   amount_checks: number,
 }
+
+export interface IReportDownload {
+  start_date: string,
+  end_date: string,
+}

@@ -176,7 +176,7 @@ const EmployeeFind = observer((props: EmployeeFindProps) => {
 
   return (
     <div className="employee_find">
-      <h2 className="employee_find_title title--border"> Найти сотрудника Якимова Варвара Григорьевна +7 (956) 254-33-29 </h2>
+      <h2 className="employee_find_title title--border"> Найти сотрудника </h2>
       {contextHolder}
       <Row
         justify={'space-between'}

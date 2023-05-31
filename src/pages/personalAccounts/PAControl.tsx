@@ -123,12 +123,6 @@ const PAControl = () => {
           {isOpenAddScheduleForm &&
             <ScheduleAdd />
           }
-          {isOpenFindOrderForm &&
-            <OrderFind isFindAllButton={true} />
-          }
-          {isOpenAddOrderForm &&
-            <OrderAdd />
-          }
           {isOpenFindScheduleMeForm &&
             <ScheduleWorkerFind />
           }

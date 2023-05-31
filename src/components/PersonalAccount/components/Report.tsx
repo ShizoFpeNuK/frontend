@@ -1,7 +1,7 @@
 import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { SearchOutlined } from "@ant-design/icons";
+import { DownloadOutlined, SearchOutlined } from "@ant-design/icons";
 import { Button, Col, Row, Space } from "antd";
 import { IReportEstablishments, IReportServices, IReportSpecialists } from "../../../options/model/report.model";
 import dayjs from "dayjs";
@@ -15,6 +15,17 @@ import TableReportEstablishments from "../tables/TableReportEstablishments";
 
 
 const reportStore = new ReportPAStoreClass();
+
+const downloadReportFile = (file: any, nameFile: string | null) => {
+  const url = window.URL.createObjectURL(file);
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", nameFile ?? "report.csv");
+
+  document.body.appendChild(link);
+  link.click();
+  link.parentNode?.removeChild(link);
+}
 
 interface fieldValue {
   duration: {
@@ -77,6 +88,7 @@ const Report = observer(() => {
 
     await ReportServices.getReportServices(correctValue)
       .then((report: IReportServices[]) => {
+        reportStore.setReportRangeDate(correctValue);
         reportStore.setReportServices(report);
         formServicesReport.resetFields();
       })
@@ -90,6 +102,7 @@ const Report = observer(() => {
 
     await ReportServices.getReportSpecialists(correctValue)
       .then((report: IReportSpecialists[]) => {
+        reportStore.setReportRangeDate(correctValue);
         reportStore.setReportSpecialists(report);
         formSpecialistsReport.resetFields();
       })
@@ -103,8 +116,31 @@ const Report = observer(() => {
 
     await ReportServices.getReportEstablishments(correctValue)
       .then((report: IReportEstablishments[]) => {
+        reportStore.setReportRangeDate(correctValue);
         reportStore.setReportEstablishments(report);
         formEstablishmentsReport.resetFields();
+      })
+  }
+
+
+  const handlerDownloadReportServices = async () => {
+    await ReportServices.downloadReportServices(reportStore.reportRangeDate!)
+      .then(({ file, nameFile }) => {
+        downloadReportFile(file, nameFile);
+      })
+  }
+
+  const handlerDownloadReportEstablishments = async () => {
+    await ReportServices.downloadReportEstablishments(reportStore.reportRangeDate!)
+      .then(({ file, nameFile }) => {
+        downloadReportFile(file, nameFile);
+      });
+  }
+
+  const handlerDownloadReportSpecialists = async () => {
+    await ReportServices.downloadReportSpecialists(reportStore.reportRangeDate!)
+      .then(({ file, nameFile }) => {
+        downloadReportFile(file, nameFile);
       })
   }
 
@@ -114,6 +150,7 @@ const Report = observer(() => {
       reportStore.deleteReportServices();
       reportStore.deleteReportSpecialists();
       reportStore.deleteReportEstablishments();
+      reportStore.deleteReportRangeDate();
     }
   }, [])
 
@@ -172,18 +209,42 @@ const Report = observer(() => {
             <>
               <h2 className="title--border"> Отчёт об услугах </h2>
               <TableReportServices services={reportStore.reportServices} />
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                style={{ marginTop: "20px" }}
+                onClick={handlerDownloadReportServices}
+              >
+                Скачать отчёт
+              </Button>
             </>
           }
           {reportStore.reportSpecialists.length !== 0 &&
             <>
               <h2 className="title--border"> Отчёт о сотрудниках </h2>
               <TableReportSpecialists specialists={reportStore.reportSpecialists} />
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                style={{ marginTop: "20px" }}
+                onClick={handlerDownloadReportSpecialists}
+              >
+                Скачать отчёт
+              </Button>
             </>
           }
           {reportStore.reportEstablishments.length !== 0 &&
             <>
               <h2 className="title--border"> Отчёт о заведениях </h2>
               <TableReportEstablishments establishments={reportStore.reportEstablishments} />
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                style={{ marginTop: "20px" }}
+                onClick={handlerDownloadReportEstablishments}
+              >
+                Скачать отчёт
+              </Button>
             </>
           }
         </Col>
